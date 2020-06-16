@@ -20,16 +20,14 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IPartiesManager
-{
+public interface IPartiesManager {
     /**
      * Get the UUID of the given player's party
      *
      * @param player Player
-     *
      * @return The party object if one player in it is connected, null otherwise
      */
-	IParty getPartyForPlayer(UUID player);
+    IParty getPartyForPlayer(UUID player);
 
     IParty getParty(UUID partie);
 
@@ -37,32 +35,30 @@ public interface IPartiesManager
      * Get members of the given player's party
      *
      * @param party Party UUID {@link IPartiesManager##getPlayerParty(UUID)}
-     *
      * @return A list of UUID
      */
-	List<UUID> getPlayersInParty(UUID party);
+    List<UUID> getPlayersInParty(UUID party);
 
     /**
      * Get the server where the party is
      *
      * @param party Party UUID {@link IPartiesManager##getPlayerParty(UUID)}
-     *
      * @return Server name
      */
     @Deprecated
-	String getCurrentServer(UUID party);
+    String getCurrentServer(UUID party);
 
     /**
      * Get the UUID of the leader of the party
      *
      * @param party Party UUID {@link IPartiesManager##getPlayerParty(UUID)}
-     *
      * @return Leader UUID
      */
-	UUID getLeader(UUID party);
+    UUID getLeader(UUID party);
 
     /**
      * Get all currently on this server (it's a copy)
+     *
      * @return Copied parties list (Party uuid, party)
      */
     HashMap<UUID, IParty> getParties();

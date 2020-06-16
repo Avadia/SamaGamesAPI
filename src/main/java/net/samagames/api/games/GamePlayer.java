@@ -27,8 +27,7 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class GamePlayer
-{
+public class GamePlayer {
     protected final UUID uuid;
 
     protected int coins;
@@ -37,8 +36,7 @@ public class GamePlayer
     protected long startTime;
     protected long playedTime;
 
-    public GamePlayer(Player player)
-    {
+    public GamePlayer(Player player) {
         this.uuid = player.getUniqueId();
 
         this.coins = 0;
@@ -50,23 +48,21 @@ public class GamePlayer
 
     /**
      * Override this to execute something when this player logs-in.
-     *
+     * <p>
      * Please call the {@code super} method at the beginning of your own one.
      *
      * @param reconnect {@code true} if the player is reconnecting—if reconnection is allowed.
      */
-    public void handleLogin(boolean reconnect)
-    {
+    public void handleLogin(boolean reconnect) {
         SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeWelcomeInGameToPlayer(this.getPlayerIfOnline());
     }
 
     /**
      * Override this to execute something when this player logs-out.
-     *
+     * <p>
      * Please call the {@code super} method at the beginning of your own one.
      */
-    public void handleLogout()
-    {
+    public void handleLogout() {
         if (!this.spectator)
             this.stepPlayedTimeCounter();
     }
@@ -77,8 +73,7 @@ public class GamePlayer
      * @param coins_ The amount of coins to credit.
      * @param reason The displayed reason of the credit.
      */
-    public void addCoins(int coins_, String reason)
-    {
+    public void addCoins(int coins_, String reason) {
         SamaGamesAPI.get().getPlayerManager().getPlayerData(this.uuid).creditCoins(coins_, reason, true, (newAmount, difference, error) -> coins += difference);
     }
 
@@ -86,8 +81,7 @@ public class GamePlayer
      * Ìnit the first bound of the played time counter
      * to the current time in milliseconds.
      */
-    public void initPlayedTimeCounter()
-    {
+    public void initPlayedTimeCounter() {
         this.startTime = System.currentTimeMillis();
     }
 
@@ -95,10 +89,8 @@ public class GamePlayer
      * Compute the played time since this player login to a
      * global variable in seconds.
      */
-    public void stepPlayedTimeCounter()
-    {
-        if (this.startTime != -1)
-        {
+    public void stepPlayedTimeCounter() {
+        if (this.startTime != -1) {
             long stayedTime = (System.currentTimeMillis() - this.startTime) / 1000;
             this.playedTime += stayedTime;
         }
@@ -107,8 +99,7 @@ public class GamePlayer
     /**
      * Puts this player into spectator mode.
      */
-    public void setSpectator()
-    {
+    public void setSpectator() {
         this.spectator = true;
         this.stepPlayedTimeCounter();
 
@@ -122,7 +113,7 @@ public class GamePlayer
             bukkitPlayer.setGameMode(GameMode.SPECTATOR);
 
             for (Player player : Bukkit.getOnlinePlayers())
-                player.hidePlayer(bukkitPlayer);
+                player.hidePlayer(SamaGamesAPI.get().getPlugin(), bukkitPlayer);
 
             new FancyMessage("Cliquez ").color(ChatColor.YELLOW).style(ChatColor.BOLD).then("[ICI]").command("/hub").color(ChatColor.AQUA).style(ChatColor.BOLD).then(" pour retourner au hub !").color(ChatColor.YELLOW).style(ChatColor.BOLD).send(bukkitPlayer);
         });
@@ -133,8 +124,7 @@ public class GamePlayer
      *
      * @return The UUID.
      */
-    public UUID getUUID()
-    {
+    public UUID getUUID() {
         return this.uuid;
     }
 
@@ -144,8 +134,7 @@ public class GamePlayer
      *
      * @return The {@link Player} object.
      */
-    public Player getPlayerIfOnline()
-    {
+    public Player getPlayerIfOnline() {
         return Bukkit.getPlayer(this.uuid);
     }
 
@@ -155,8 +144,7 @@ public class GamePlayer
      *
      * @return The {@link OfflinePlayer} object.
      */
-    public OfflinePlayer getOfflinePlayer()
-    {
+    public OfflinePlayer getOfflinePlayer() {
         return Bukkit.getOfflinePlayer(this.uuid);
     }
 
@@ -165,8 +153,7 @@ public class GamePlayer
      *
      * @return {@code true} if online.
      */
-    public boolean isOnline()
-    {
+    public boolean isOnline() {
         return getOfflinePlayer().isOnline();
     }
 
@@ -175,20 +162,18 @@ public class GamePlayer
      *
      * @return The data.
      */
-    public AbstractPlayerData getPlayerData()
-    {
+    public AbstractPlayerData getPlayerData() {
         return SamaGamesAPI.get().getPlayerManager().getPlayerData(this.uuid);
     }
 
     /**
      * Returns the coins this player earned <b>during this game</b>.
-     *
+     * <p>
      * To get the whole amount of coins this player have, use {@link AbstractPlayerData#getCoins()}.
      *
      * @return The earned coins.
      */
-    public int getCoins()
-    {
+    public int getCoins() {
         return this.coins;
     }
 
@@ -198,8 +183,7 @@ public class GamePlayer
      *
      * @return The played time.
      */
-    public long getPlayedTime()
-    {
+    public long getPlayedTime() {
         return this.playedTime;
     }
 
@@ -208,8 +192,7 @@ public class GamePlayer
      *
      * @return {@code true} if spectator.
      */
-    public boolean isSpectator()
-    {
+    public boolean isSpectator() {
         return this.spectator;
     }
 }

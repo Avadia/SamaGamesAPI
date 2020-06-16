@@ -20,12 +20,10 @@ import java.awt.*;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class MapUtils
-{
+public class MapUtils {
     private static int IDS = Short.MAX_VALUE;
 
-    private MapUtils()
-    {
+    private MapUtils() {
     }
 
     /**
@@ -33,8 +31,7 @@ public class MapUtils
      *
      * @return Map
      */
-    public static CustomMap createMap()
-    {
+    public static CustomMap createMap() {
         return new CustomMap(MapUtils.IDS--, 128, 128);
     }
 
@@ -45,8 +42,7 @@ public class MapUtils
      * @return Map
      */
     @SuppressWarnings("deprecation")
-    public static CustomMap fromImage(Image image)
-    {
+    public static CustomMap fromImage(Image image) {
         CustomMap customMap = new CustomMap(MapUtils.IDS--, image.getWidth(null), image.getHeight(null));
         customMap.bytes = MapPalette.imageToBytes(image);
         return customMap;

@@ -24,21 +24,18 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class PlayerWinTemplate
-{
+public class PlayerWinTemplate {
     /**
      * Prepare a message to display the winner of
      * the game
      *
      * @param player Winner
-     *
      * @return Formatted lines
      */
-    public List<String> prepare(Player player)
-    {
+    public List<String> prepare(Player player) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(player)));
-        
+
         return lines;
     }
 
@@ -47,15 +44,13 @@ public class PlayerWinTemplate
      * the game with it's score
      *
      * @param player Winner
-     * @param score Winner's score
-     *
+     * @param score  Winner's score
      * @return Formatted lines
      */
-    public List<String> prepare(Player player, int score)
-    {
+    public List<String> prepare(Player player, int score) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(player) + ChatColor.GRAY + " (" + score + ")"));
-        
+
         return lines;
     }
 
@@ -63,17 +58,15 @@ public class PlayerWinTemplate
      * Prepare a message to display the winner of
      * the game with a commentary
      *
-     * @param player Winner
+     * @param player     Winner
      * @param commentary Commentary
-     *
      * @return Formatted lines
      */
-    public List<String> prepare(Player player, String commentary)
-    {
+    public List<String> prepare(Player player, String commentary) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(player)));
         lines.add(ChatUtils.getCenteredText(commentary));
-        
+
         return lines;
     }
 
@@ -81,18 +74,16 @@ public class PlayerWinTemplate
      * Prepare a message to display the winner of
      * the game with it's score and a commentary
      *
-     * @param player Winner
-     * @param score Winner's score
+     * @param player     Winner
+     * @param score      Winner's score
      * @param commentary Commentary
-     *
      * @return Formatted lines
      */
-    public List<String> prepare(Player player, int score, String commentary)
-    {
+    public List<String> prepare(Player player, int score, String commentary) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(player) + ChatColor.GRAY + " (" + score + ")"));
         lines.add(ChatUtils.getCenteredText(commentary));
-        
+
         return lines;
     }
 
@@ -102,8 +93,7 @@ public class PlayerWinTemplate
      *
      * @param player Winner
      */
-    public void execute(Player player)
-    {
+    public void execute(Player player) {
         new WinMessageTemplate().execute(this.prepare(player));
     }
 
@@ -112,10 +102,9 @@ public class PlayerWinTemplate
      * the game with it's score
      *
      * @param player Winner
-     * @param score Winner's score
+     * @param score  Winner's score
      */
-    public void execute(Player player, int score)
-    {
+    public void execute(Player player, int score) {
         new WinMessageTemplate().execute(this.prepare(player, score));
     }
 
@@ -123,11 +112,10 @@ public class PlayerWinTemplate
      * Send a message to display the winner of
      * the game with a commentary
      *
-     * @param player Winner
+     * @param player     Winner
      * @param commentary Commentary
      */
-    public void execute(Player player, String commentary)
-    {
+    public void execute(Player player, String commentary) {
         new WinMessageTemplate().execute(this.prepare(player, commentary));
     }
 
@@ -135,12 +123,11 @@ public class PlayerWinTemplate
      * Send a message to display the winner of
      * the game with it's score and a commentary
      *
-     * @param player Winner
-     * @param score Winner's score
+     * @param player     Winner
+     * @param score      Winner's score
      * @param commentary Commentary
      */
-    public void execute(Player player, int score, String commentary)
-    {
+    public void execute(Player player, int score, String commentary) {
         new WinMessageTemplate().execute(this.prepare(player, score, commentary));
     }
 }

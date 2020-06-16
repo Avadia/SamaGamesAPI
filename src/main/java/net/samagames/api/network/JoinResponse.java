@@ -16,16 +16,14 @@ package net.samagames.api.network;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class JoinResponse
-{
+public class JoinResponse {
     private String reason;
-	private ResponseType responseType;
+    private ResponseType responseType;
 
     /**
      * Constructor
      */
-    public JoinResponse()
-    {
+    public JoinResponse() {
         this.reason = null;
         this.responseType = ResponseType.ALLOW;
     }
@@ -33,8 +31,7 @@ public class JoinResponse
     /**
      * Allow the join request
      */
-    public void allow()
-    {
+    public void allow() {
         this.responseType = ResponseType.ALLOW;
     }
 
@@ -43,8 +40,7 @@ public class JoinResponse
      *
      * @param reason Reason
      */
-    public void disallow(String reason)
-    {
+    public void disallow(String reason) {
         this.responseType = ResponseType.DENY_OTHER;
         this.reason = reason;
     }
@@ -54,29 +50,26 @@ public class JoinResponse
      *
      * @param responseType Reason
      */
-	public void disallow(ResponseType responseType)
-    {
-		this.responseType = responseType;
-		this.reason = responseType.getMessage();
-	}
+    public void disallow(ResponseType responseType) {
+        this.responseType = responseType;
+        this.reason = responseType.getMessage();
+    }
 
     /**
      * Get the response type used
      *
      * @return Response type
      */
-	public ResponseType getResponseType()
-    {
-		return this.responseType;
-	}
+    public ResponseType getResponseType() {
+        return this.responseType;
+    }
 
     /**
      * Return if the join is allowed
      *
      * @return {@code true} if allowed
      */
-    public boolean isAllowed()
-    {
+    public boolean isAllowed() {
         return this.responseType == ResponseType.ALLOW;
     }
 
@@ -85,8 +78,7 @@ public class JoinResponse
      *
      * @return Reason
      */
-    public String getReason()
-    {
+    public String getReason() {
         return this.reason;
     }
 }

@@ -18,10 +18,8 @@ import net.minecraft.server.v1_12_R1.*;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class EntityCamera extends EntityBat
-{
-    public EntityCamera(World world)
-    {
+public class EntityCamera extends EntityBat {
+    public EntityCamera(World world) {
         super(world);
 
         this.setInvisible(true);
@@ -30,48 +28,46 @@ public class EntityCamera extends EntityBat
         this.setNoAI(true);
     }
 
-    public EntityCamera(Object world)
-    {
+    public EntityCamera(Object world) {
         this((World) world);
     }
 
     @Override
-    protected void M() {}
+    protected void M() {
+    }
 
     @Override
-    public void b(NBTTagCompound nbttagcompound) {}
+    public void b(NBTTagCompound nbttagcompound) {
+    }
 
     @Override
-    public boolean c(NBTTagCompound nbttagcompound)
-    {
+    public boolean c(NBTTagCompound nbttagcompound) {
         return false;
     }
 
     @Override
-    public void a(NBTTagCompound nbttagcompound) {}
+    public void a(NBTTagCompound nbttagcompound) {
+    }
 
     @Override
-    public boolean d(NBTTagCompound nbttagcompound)
-    {
+    public boolean d(NBTTagCompound nbttagcompound) {
         return false;
     }
 
     @Override
-    public void f(NBTTagCompound nbttagcompound) {}
+    public void f(NBTTagCompound nbttagcompound) {
+    }
 
-    public SoundEffect F()
-    {
+    public SoundEffect F() {
         return null;
     }
 
-    protected SoundEffect d(DamageSource var1)
-    {
+    protected SoundEffect d(DamageSource var1) {
         return null;
     }
 
     @Override
-    protected SoundEffect cf()
-    {
+    protected SoundEffect cf() {
         return null;
     }
 }

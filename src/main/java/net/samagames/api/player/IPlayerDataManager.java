@@ -20,49 +20,42 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IPlayerDataManager
-{
-
-	/**
-	 * Get given player's data
+public interface IPlayerDataManager {
+    /**
+     * Get given player's data
      *
-	 * @param player Player's UUID
-     *
-	 * @return Instance
-	 */
+     * @param player Player's UUID
+     * @return Instance
+     */
     AbstractPlayerData getPlayerData(UUID player);
 
     /**
      * Get given player's data
      *
-     * @param player Player's UUID
+     * @param player       Player's UUID
      * @param forceRefresh Refresh the data before return
-     *
      * @return Instance
      */
     AbstractPlayerData getPlayerData(UUID player, boolean forceRefresh);
 
-	/**
-	 * Kick the player from the network (need to add sanction manually)
-	 *
-	 * @param reason Message to show
-	 *
-	 */
-	void kickFromNetwork(UUID player, TextComponent reason);
+    /**
+     * Kick the player from the network (need to add sanction manually)
+     *
+     * @param reason Message to show
+     */
+    void kickFromNetwork(UUID player, TextComponent reason);
 
-	/**
-	 * Send a player to a specific server with the name
-	 *
-	 * @param server Server name
-	 *
-	 */
-	void connectToServer(UUID player, String server);
+    /**
+     * Send a player to a specific server with the name
+     *
+     * @param server Server name
+     */
+    void connectToServer(UUID player, String server);
 
-	/**
-	 * Send a message using the proxy (maybe useless ?)
-	 *
-	 * @param component Message
-	 *
-	 */
-	void sendMessage(UUID player, TextComponent component);
+    /**
+     * Send a message using the proxy (maybe useless ?)
+     *
+     * @param component Message
+     */
+    void sendMessage(UUID player, TextComponent component);
 }

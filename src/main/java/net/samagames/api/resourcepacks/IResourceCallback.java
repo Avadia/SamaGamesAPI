@@ -19,8 +19,7 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IResourceCallback
-{
+public interface IResourceCallback {
     /**
      * Called when the download status is changed
      * WARNING DON'T KICK THE PLAYER HERE
@@ -34,7 +33,6 @@ public interface IResourceCallback
      * Called when a player is about to be automatically kicked because he doesn't have the pack
      *
      * @param player The player to be kicked
-     *
      * @return {@code true} to kick the player, false to cancel
      */
     boolean automaticKick(Player player);

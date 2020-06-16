@@ -20,19 +20,18 @@ import org.bukkit.inventory.ItemStack;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface Powerup
-{
+public interface Powerup {
     void onPickup(Player player);
 
     String getName();
+
     ItemStack getIcon();
 
     double getWeight();
 
     boolean isSpecial();
 
-    default ActivePowerup spawn(Location location)
-    {
+    default ActivePowerup spawn(Location location) {
         return new ActivePowerup(this, location);
     }
 }

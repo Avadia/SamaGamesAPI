@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 /*
@@ -24,8 +25,7 @@ import java.util.logging.Level;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class JsonConfiguration
-{
+public class JsonConfiguration {
     private final File configurationFile;
 
     /**
@@ -33,8 +33,7 @@ public class JsonConfiguration
      *
      * @param configurationFile File of the Json file
      */
-    public JsonConfiguration(File configurationFile)
-    {
+    public JsonConfiguration(File configurationFile) {
         this.configurationFile = configurationFile;
     }
 
@@ -43,8 +42,7 @@ public class JsonConfiguration
      *
      * @param path Path to the Json file
      */
-    public JsonConfiguration(String path)
-    {
+    public JsonConfiguration(String path) {
         this(new File(path));
     }
 
@@ -54,21 +52,18 @@ public class JsonConfiguration
      * @return Json object who represents root
      * configuration
      */
-    public JsonObject load()
-    {
-        try
-        {
-            if(!this.configurationFile.exists())
+    public JsonObject load() {
+        try {
+            if (!this.configurationFile.exists())
                 return null;
 
             FileInputStream fileInputStream = new FileInputStream(this.configurationFile);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "utf-8");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(inputStreamReader);
             StringBuilder builder = new StringBuilder();
             String currentLine;
 
-            while((currentLine = br.readLine()) != null)
-            {
+            while ((currentLine = br.readLine()) != null) {
                 builder.append(currentLine);
             }
 
@@ -77,9 +72,7 @@ public class JsonConfiguration
             fileInputStream.close();
 
             return new JsonParser().parse(builder.toString()).getAsJsonObject();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Bukkit.getLogger().log(Level.SEVERE, "Can't load file '" + this.configurationFile.getName() + "'");
         }
 
@@ -91,14 +84,12 @@ public class JsonConfiguration
      *
      * @param object Root configuration
      */
-    public void save(JsonObject object)
-    {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void save(JsonObject object) {
         Gson gson = new Gson();
 
-        try
-        {
-            if(this.configurationFile.exists())
-            {
+        try {
+            if (this.configurationFile.exists()) {
                 this.configurationFile.delete();
                 this.configurationFile.createNewFile();
             }
@@ -106,9 +97,7 @@ public class JsonConfiguration
             FileWriter writer = new FileWriter(this.configurationFile);
             writer.write(gson.toJson(object));
             writer.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

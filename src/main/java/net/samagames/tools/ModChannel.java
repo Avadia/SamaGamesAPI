@@ -18,13 +18,11 @@ import org.bukkit.ChatColor;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public enum ModChannel
-{
+public enum ModChannel {
     INFORMATION(ChatColor.GREEN, "Information"),
     DISCUSSION(ChatColor.DARK_AQUA, "Discussion"),
     SANCTION(ChatColor.RED, "Sanction"),
-    REPORT(ChatColor.GOLD, "Signalement"),
-    ;
+    REPORT(ChatColor.GOLD, "Signalement");
 
     private final ChatColor color;
     private final String name;
@@ -33,10 +31,9 @@ public enum ModChannel
      * Constructor
      *
      * @param color Prefix color
-     * @param name Prefix name
+     * @param name  Prefix name
      */
-    ModChannel(ChatColor color, String name)
-    {
+    ModChannel(ChatColor color, String name) {
         this.color = color;
         this.name = name;
     }
@@ -46,8 +43,7 @@ public enum ModChannel
      *
      * @return Color
      */
-    public ChatColor getColor()
-    {
+    public ChatColor getColor() {
         return this.color;
     }
 
@@ -56,8 +52,7 @@ public enum ModChannel
      *
      * @return Name
      */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 }

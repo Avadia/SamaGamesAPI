@@ -20,17 +20,15 @@ import java.util.Random;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class ColorUtils
-{
-    private static Random random = new Random();
+public class ColorUtils {
+    private static final Random random = new Random();
 
     /**
      * Pick a random color
      *
      * @return Color
      */
-    public static Color randomColor()
-    {
+    public static Color randomColor() {
         return getColor((random.nextInt(17) + 1));
     }
 
@@ -39,11 +37,9 @@ public class ColorUtils
      * randoms)
      *
      * @param i Number of the color
-     *
      * @return Color
      */
-    public static Color getColor(int i)
-    {
+    public static Color getColor(int i) {
         Color c = null;
 
         if (i == 1)

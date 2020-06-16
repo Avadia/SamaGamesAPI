@@ -1,6 +1,9 @@
 package net.samagames.tools.gameprofile;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
@@ -51,43 +54,39 @@ public class ProfileLoader {
     }
 
     /**
-     Need to be called async
+     * Need to be called async
      */
+    @SuppressWarnings("deprecation")
     public GameProfile loadProfile() {
         UUID id = uuid == null ? parseUUID(getUUID(name)) : parseUUID(uuid);
         GameProfile skinProfile = new GameProfile(UUID.randomUUID(), name);
 
-        try(Jedis jedis = SamaGamesAPI.get().getBungeeResource()) {
+        try (Jedis jedis = SamaGamesAPI.get().getBungeeResource()) {
             String json = jedis == null ? null : jedis.get("cacheSkin:" + uuid);
             GameProfile profile;
 
-            if (json == null)
-            {
+            if (json == null) {
                 //Requete
                 profile = MinecraftServer.getServer().az().fillProfileProperties(new GameProfile(id, null), true);
 
                 if (jedis != null && profile.getName() != null)//Don't save if didn't got data from mojang
                 {
                     JsonArray jsonArray = new JsonArray();
-                    for (Property property : profile.getProperties().values())
-                    {
+                    for (Property property : profile.getProperties().values()) {
                         jsonArray.add(new Gson().toJsonTree(property));
                     }
                     jedis.set("cacheSkin:" + uuid, jsonArray.toString());
                     jedis.expire("cacheSkin:" + uuid, 172800);//2 jours
                 }
                 skinProfile.getProperties().putAll(profile.getProperties());
-            }else
-            {
+            } else {
                 JsonArray parse = new JsonParser().parse(json).getAsJsonArray();
-                for (JsonElement object : parse)
-                {
+                for (JsonElement object : parse) {
                     Property property = new Gson().fromJson(object.toString(), Property.class);
                     skinProfile.getProperties().put(property.getName(), property);
                 }
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -101,10 +100,10 @@ public class ProfileLoader {
 
     private UUID parseUUID(String uuidStr) {
         // Split uuid in to 5 components
-        String[] uuidComponents = new String[] { uuidStr.substring(0, 8),
+        String[] uuidComponents = new String[]{uuidStr.substring(0, 8),
                 uuidStr.substring(8, 12), uuidStr.substring(12, 16),
                 uuidStr.substring(16, 20),
-                uuidStr.substring(20, uuidStr.length())
+                uuidStr.substring(20)
         };
 
         // Combine components with a dash
@@ -116,5 +115,9 @@ public class ProfileLoader {
         // Correct uuid length, remove last dash
         builder.setLength(builder.length() - 1);
         return UUID.fromString(builder.toString());
+    }
+
+    public String getSkinOwner() {
+        return skinOwner;
     }
 }

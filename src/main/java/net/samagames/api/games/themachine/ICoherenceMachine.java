@@ -22,8 +22,7 @@ import org.bukkit.inventory.ItemStack;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface ICoherenceMachine
-{
+public interface ICoherenceMachine {
     /**
      * Override the sub-title message when there is less
      * than 5seconds remaining before the game starts.
@@ -65,6 +64,7 @@ public interface ICoherenceMachine
      *
      * @return Game
      */
+    @SuppressWarnings("rawtypes")
     Game getGame();
 
     /**

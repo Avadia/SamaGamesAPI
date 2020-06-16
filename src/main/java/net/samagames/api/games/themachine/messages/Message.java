@@ -19,19 +19,17 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Message
-{
+public class Message {
     private final String text;
     private final String gameTag;
 
     /**
      * Constructor with a specified prefix
      *
-     * @param text Text of the message
+     * @param text    Text of the message
      * @param gameTag Prefix of the message (game tag)
      */
-    public Message(String text, String gameTag)
-    {
+    public Message(String text, String gameTag) {
         this.text = text;
         this.gameTag = gameTag;
     }
@@ -41,8 +39,7 @@ public class Message
      *
      * @param text Text of the message
      */
-    public Message(String text)
-    {
+    public Message(String text) {
         this(text, null);
     }
 
@@ -51,9 +48,8 @@ public class Message
      *
      * @return This message
      */
-    public Message displayToAll()
-    {
-        Bukkit.broadcastMessage((this.gameTag != null ? this.gameTag  + " " : "") + this.text);
+    public Message displayToAll() {
+        Bukkit.broadcastMessage((this.gameTag != null ? this.gameTag + " " : "") + this.text);
         return this;
     }
 
@@ -62,8 +58,7 @@ public class Message
      *
      * @return This message
      */
-    public Message display(Player player)
-    {
+    public Message display(Player player) {
         player.sendMessage((this.gameTag != null ? this.gameTag + " " : "") + this.text);
         return this;
     }
@@ -73,14 +68,12 @@ public class Message
      *
      * @return Text
      */
-    public String getText()
-    {
+    public String getText() {
         return this.text;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.text;
     }
 }

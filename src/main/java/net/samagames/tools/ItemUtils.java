@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 /*
@@ -34,21 +33,19 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class ItemUtils
-{
+public class ItemUtils {
     /**
      * Open the given written book
      *
-     * @param book Written book
+     * @param book   Written book
      * @param player Player
      */
-    public static void openWrittenBook(ItemStack book, Player player)
-    {
+    public static void openWrittenBook(ItemStack book, Player player) {
         if (book.getType() != Material.WRITTEN_BOOK)
             return;
 
-        ItemStack previous = player.getInventory().getItemInHand();
-        player.getInventory().setItemInHand(book);
+        ItemStack previous = player.getInventory().getItemInMainHand();
+        player.getInventory().setItemInMainHand(book);
 
         ByteBuf buffer = Unpooled.buffer(256);
         buffer.setByte(0, (byte) 1);
@@ -56,7 +53,7 @@ public class ItemUtils
 
         Reflection.sendPacket(player, new PacketPlayOutCustomPayload("MC|BOpen", new PacketDataSerializer(buffer)));
 
-        player.getInventory().setItemInHand(previous);
+        player.getInventory().setItemInMainHand(previous);
     }
 
     /**
@@ -64,11 +61,9 @@ public class ItemUtils
      * string
      *
      * @param stack Stack
-     *
      * @return Formatted string
      */
-    public static String stackToStr(ItemStack stack)
-    {
+    public static String stackToStr(ItemStack stack) {
         return stack.getType().name() + ", " + stack.getAmount() + ", " + stack.getDurability();
     }
 
@@ -77,11 +72,9 @@ public class ItemUtils
      * a object {@link ItemStack}
      *
      * @param string Formatted string
-     *
      * @return Stack
      */
-    public static ItemStack strToStack(String string)
-    {
+    public static ItemStack strToStack(String string) {
         String[] data = string.split(", ");
         return new ItemStack(Material.matchMaterial(data[0]), Integer.parseInt(data[1]), Short.parseShort(data[2]));
     }
@@ -93,8 +86,7 @@ public class ItemUtils
      * @param itemStack The stack
      * @return Cleaned stack
      */
-    public static ItemStack hideAllAttributes(ItemStack itemStack)
-    {
+    public static ItemStack hideAllAttributes(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
 
         for (ItemFlag itemFlag : ItemFlag.values())
@@ -110,11 +102,10 @@ public class ItemUtils
      * Get the given player's username head
      *
      * @param player Player's username
-     *
      * @return Player's head
      */
-    public static ItemStack getPlayerHead(String player)
-    {
+    @SuppressWarnings("deprecation")
+    public static ItemStack getPlayerHead(String player) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         meta.setOwner(player);
@@ -127,20 +118,15 @@ public class ItemUtils
      * Create a player head with a base64 encoded texture
      *
      * @param texture Base64 texture
-     *
      * @return A custom head with your texture
      */
-    public static ItemStack getCustomHead(String texture)
-    {
+    public static ItemStack getCustomHead(String texture) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         ItemMeta headMeta = head.getItemMeta();
 
-        try
-        {
+        try {
             Reflection.setValue(headMeta, "profile", getHeadCustomizedGameProfile(texture));
-        }
-        catch (NoSuchFieldException | IllegalAccessException e)
-        {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -152,11 +138,9 @@ public class ItemUtils
      * Create a {@link GameProfile} instance with a base64 encoded texture
      *
      * @param texture Base64 texture
-     *
      * @return A custom {@link GameProfile} instance with your texture
      */
-    public static GameProfile getHeadCustomizedGameProfile(String texture)
-    {
+    public static GameProfile getHeadCustomizedGameProfile(String texture) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
         PropertyMap propertyMap = profile.getProperties();
 

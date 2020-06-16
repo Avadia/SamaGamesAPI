@@ -20,7 +20,6 @@ import java.util.UUID;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public interface IPermissionsEntity {
-
     UUID getUUID();
 
     long getGroupId();
@@ -54,6 +53,4 @@ public interface IPermissionsEntity {
     boolean hasPermission(String name);
 
     void refresh();
-
-
 }

@@ -19,14 +19,12 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IMessageManager
-{
+public interface IMessageManager {
     /**
      * Send a custom message with a given text
      *
-     * @param text Text
+     * @param text    Text
      * @param gameTag Show game tag as prefix
-     *
      * @return Instance of the message {@link Message}
      */
     Message writeCustomMessage(String text, boolean gameTag);
@@ -35,9 +33,8 @@ public interface IMessageManager
      * Send a welcome message for the given player
      * to all players
      *
-     * @param player Joined player
+     * @param player      Joined player
      * @param playerCount Show the player count
-     *
      * @return Instance of the message {@link Message}
      */
     Message writePlayerJoinToAll(Player player, boolean playerCount);
@@ -46,7 +43,6 @@ public interface IMessageManager
      * Send a welcome message to a given player
      *
      * @param player Joined player
-     *
      * @return Instance of the message {@link Message}
      */
     Message writeWelcomeInGameToPlayer(Player player);
@@ -55,7 +51,6 @@ public interface IMessageManager
      * Send a formatted cooldown message to all players
      *
      * @param remainingTime Remaining time in second
-     *
      * @return Instance of the message {@link Message}
      */
     Message writeGameStartIn(int remainingTime);
@@ -63,14 +58,16 @@ public interface IMessageManager
     /**
      * Send a message to all players that there is
      * no enough players to start the game
-     **
+     * *
+     *
      * @return Instance of the message {@link Message}
      */
     Message writeNotEnoughPlayersToStart();
 
     /**
      * Send a message to all players that the game starts
-     **
+     * *
+     *
      * @return Instance of the message {@link Message}
      */
     Message writeGameStart();
@@ -80,7 +77,6 @@ public interface IMessageManager
      * to all players
      *
      * @param player Leaved player
-     *
      * @return Instance of the message {@link Message}
      */
     Message writePlayerQuited(Player player);
@@ -90,9 +86,8 @@ public interface IMessageManager
      * to all players. Also show the time remaining to
      * rejoin the game
      *
-     * @param player Leaved player
+     * @param player        Leaved player
      * @param remainingTime Time remaining
-     *
      * @return Instance of the message {@link Message}
      */
     Message writePlayerDisconnected(Player player, int remainingTime);
@@ -102,7 +97,6 @@ public interface IMessageManager
      * to all players
      *
      * @param player Rejoined player
-     *
      * @return Instance of the message {@link Message}
      */
     Message writePlayerReconnected(Player player);
@@ -112,7 +106,6 @@ public interface IMessageManager
      * cannot rejoin the game anymore
      *
      * @param player Leaved player {@link OfflinePlayer}
-     *
      * @return Instance of the message {@link Message}
      */
     Message writePlayerReconnectTimeOut(OfflinePlayer player);

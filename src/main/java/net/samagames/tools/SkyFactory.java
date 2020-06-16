@@ -14,24 +14,21 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * SkyFactory class
- *
+ * <p>
  * SkyFactory is a simple class to change the environment of the sky.
  *
  * @author BigTeddy98
  */
-public class SkyFactory implements Listener
-{
+public class SkyFactory implements Listener {
     private final JavaPlugin plugin;
     private final Map<String, Environment> worldEnvironments = new HashMap<>();
 
-    public SkyFactory(JavaPlugin plugin)
-    {
+    public SkyFactory(JavaPlugin plugin) {
         this.plugin = plugin;
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
@@ -40,17 +37,15 @@ public class SkyFactory implements Listener
      * Set a given environment "design" to a given
      * world
      *
-     * @param w World
+     * @param w   World
      * @param env Environment
      */
-    public void setDimension(World w, Environment env)
-    {
+    public void setDimension(World w, Environment env) {
         this.worldEnvironments.put(w.getName(), env);
     }
 
     @EventHandler
-    private void onJoin(PlayerJoinEvent event) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ClassNotFoundException
-    {
+    private void onJoin(PlayerJoinEvent event) throws IllegalArgumentException {
         Player p = event.getPlayer();
 
         if (this.worldEnvironments.containsKey(p.getWorld().getName()))
@@ -58,36 +53,28 @@ public class SkyFactory implements Listener
     }
 
     @EventHandler
-    private void onRespawn(final PlayerRespawnEvent event)
-    {
-        new BukkitRunnable()
-        {
+    private void onRespawn(final PlayerRespawnEvent event) {
+        new BukkitRunnable() {
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     Player p = event.getPlayer();
 
                     if (worldEnvironments.containsKey(p.getWorld().getName()))
                         Reflection.sendPacket(p, getPacket(p));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }.runTaskLater(this.plugin, 1);
     }
 
-    private Object getPacket(Player p) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException
-    {
+    private Object getPacket(Player p) throws IllegalArgumentException {
         World w = p.getWorld();
         return new PacketPlayOutRespawn(getID(this.worldEnvironments.get(w.getName())), this.getDifficulty(w), WorldType.NORMAL, this.getGameMode(p));
     }
 
-    private int getID(Environment env)
-    {
+    private int getID(Environment env) {
         if (env == Environment.NETHER)
             return -1;
         else if (env == Environment.NORMAL)
@@ -98,8 +85,7 @@ public class SkyFactory implements Listener
             return -1;
     }
 
-    private EnumDifficulty getDifficulty(World w) throws ClassNotFoundException
-    {
+    private EnumDifficulty getDifficulty(World w) {
         for (EnumDifficulty gamemode : EnumDifficulty.values())
             if (gamemode.name().equals(w.getDifficulty().name()))
                 return gamemode;
@@ -107,8 +93,7 @@ public class SkyFactory implements Listener
         return null;
     }
 
-    private EnumGamemode getGameMode(Player p) throws ClassNotFoundException
-    {
+    private EnumGamemode getGameMode(Player p) {
         for (EnumGamemode gamemode : EnumGamemode.values())
             if (gamemode.name().equals(p.getGameMode().name()))
                 return gamemode;

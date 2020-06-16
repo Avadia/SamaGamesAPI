@@ -18,9 +18,10 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IGameStatisticsHelper
-{
+public interface IGameStatisticsHelper {
     void increasePlayedTime(UUID uuid, long playedTime);
+
     void increasePlayedGames(UUID uuid);
+
     void increaseWins(UUID uuid);
 }

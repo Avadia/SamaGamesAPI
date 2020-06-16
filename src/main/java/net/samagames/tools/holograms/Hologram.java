@@ -34,25 +34,23 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Hologram
-{
+public class Hologram {
     private static final double distance = 0.24D;
 
-    private HashMap<OfflinePlayer, Boolean> receivers;
-    private HashMap<Integer, EntityArmorStand> entities;
+    private final HashMap<OfflinePlayer, Boolean> receivers;
+    private final HashMap<Integer, EntityArmorStand> entities;
     private List<String> lines;
     private Location location;
-    private BukkitTask taskID;
-    private double rangeView = 60;
-    private boolean linesChanged = false;
+    private final BukkitTask taskID;
+    private final double rangeView = 60;
+    private boolean linesChanged;
 
     /**
      * Constructor
      *
      * @param lines Hologram's lines
      */
-    public Hologram(String... lines)
-    {
+    public Hologram(String... lines) {
         this.receivers = new HashMap<>();
         this.entities = new HashMap<>();
 
@@ -64,23 +62,32 @@ public class Hologram
         this.taskID = Bukkit.getScheduler().runTaskTimerAsynchronously(SamaGamesAPI.get().getPlugin(), this::sendLinesForPlayers, 10L, 10L);
     }
 
+    private static EntityArmorStand generateEntitiesForLine(Location loc, String text) {
+        EntityArmorStand entity = new EntityArmorStand(((CraftWorld) loc.getWorld()).getHandle());
+        entity.setSize(0.00001F, 0.00001F);
+        entity.setInvisible(true);
+        entity.setNoGravity(true);
+        entity.setCustomName(text);
+        entity.setCustomNameVisible(true);
+        entity.setLocation(loc.getX(), loc.getY() - 2, loc.getZ(), 0, 0);
+
+        return entity;
+    }
+
     /**
      * Add hologram's receiver
      *
      * @param offlinePlayer Player
-     *
      * @return {@code true} is success
      */
-    public boolean addReceiver(OfflinePlayer offlinePlayer)
-    {
-        if(!offlinePlayer.isOnline())
+    public boolean addReceiver(OfflinePlayer offlinePlayer) {
+        if (!offlinePlayer.isOnline())
             return false;
 
         Player p = offlinePlayer.getPlayer();
         boolean inRange = false;
 
-        if(p.getLocation().getWorld() == this.location.getWorld() && p.getLocation().distance(this.location) <= this.rangeView)
-        {
+        if (p.getLocation().getWorld() == this.location.getWorld() && p.getLocation().distance(this.location) <= this.rangeView) {
             inRange = true;
             this.sendLines(offlinePlayer.getPlayer());
         }
@@ -94,12 +101,10 @@ public class Hologram
      * Remove hologram's receiver
      *
      * @param offlinePlayer Player
-     *
      * @return {@code true} is success
      */
-    public boolean removeReceiver(OfflinePlayer offlinePlayer)
-    {
-        if(!offlinePlayer.isOnline())
+    public boolean removeReceiver(OfflinePlayer offlinePlayer) {
+        if (!offlinePlayer.isOnline())
             return false;
 
         this.receivers.remove(offlinePlayer);
@@ -111,16 +116,14 @@ public class Hologram
     /**
      * Remove a given line to a given player
      *
-     * @param p Player
+     * @param p    Player
      * @param line Line number
-     *
      * @return {@code true} is success
      */
-    public boolean removeLineForPlayer(Player p, int line)
-    {
+    public boolean removeLineForPlayer(Player p, int line) {
         EntityArmorStand entity = this.entities.get(line);
 
-        if(entity == null)
+        if (entity == null)
             return false;
 
         Reflection.sendPacket(p, new PacketPlayOutEntityDestroy(entity.getId()));
@@ -131,10 +134,8 @@ public class Hologram
     /**
      * Remove lines to all players
      */
-    public void removeLinesForPlayers()
-    {
-        for (OfflinePlayer offlinePlayer : this.receivers.keySet())
-        {
+    public void removeLinesForPlayers() {
+        for (OfflinePlayer offlinePlayer : this.receivers.keySet()) {
             if (!offlinePlayer.isOnline())
                 continue;
 
@@ -145,8 +146,7 @@ public class Hologram
     /**
      * Destroy the hologram
      */
-    public void destroy()
-    {
+    public void destroy() {
         this.removeLinesForPlayers();
 
         this.clearEntities();
@@ -159,8 +159,7 @@ public class Hologram
      * Destroy the hologram, it can't be
      * used anymore
      */
-    public void fullDestroy()
-    {
+    public void fullDestroy() {
         this.destroy();
         this.receivers.clear();
         this.taskID.cancel();
@@ -171,8 +170,7 @@ public class Hologram
      *
      * @param lines Hologram's lines
      */
-    public void change(String... lines)
-    {
+    public void change(String... lines) {
         this.removeLinesForPlayers();
 
         this.clearEntities();
@@ -186,20 +184,9 @@ public class Hologram
     }
 
     /**
-     * Set hologram location
-     *
-     * @param location Location
-     */
-    public void setLocation(Location location)
-    {
-        this.location = location;
-    }
-
-    /**
      * Generate hologram in world
      */
-    public void generateLines()
-    {
+    public void generateLines() {
         this.generateLines(this.location);
     }
 
@@ -209,12 +196,10 @@ public class Hologram
      *
      * @param loc Hologram's location
      */
-    public void generateLines(Location loc)
-    {
-        Location first = loc.clone().add(0, (this.lines.size() / 2) * distance, 0);
+    public void generateLines(Location loc) {
+        Location first = loc.clone().add(0, (this.lines.size() / 2.0) * distance, 0);
 
-        for (int i = 0; i < this.lines.size(); i++)
-        {
+        for (int i = 0; i < this.lines.size(); i++) {
             this.entities.put(i, generateEntitiesForLine(first.clone(), this.lines.get(i)));
             first.subtract(0, distance, 0);
         }
@@ -225,35 +210,26 @@ public class Hologram
     /**
      * Send hologram's lines to all players
      */
-    public void sendLinesForPlayers()
-    {
-        for(OfflinePlayer offlinePlayer : this.receivers.keySet())
-        {
-            if(!offlinePlayer.isOnline())
+    public void sendLinesForPlayers() {
+        for (OfflinePlayer offlinePlayer : this.receivers.keySet()) {
+            if (!offlinePlayer.isOnline())
                 continue;
 
             Player p = offlinePlayer.getPlayer();
             boolean wasInRange = this.receivers.get(offlinePlayer);
             boolean inRange = false;
 
-            if(p.getLocation().getWorld() == this.location.getWorld() && p.getLocation().distance(this.location) <= this.rangeView)
+            if (p.getLocation().getWorld() == this.location.getWorld() && p.getLocation().distance(this.location) <= this.rangeView)
                 inRange = true;
 
-            if(this.linesChanged && inRange)
-            {
+            if (this.linesChanged && inRange) {
                 this.sendLines(p);
                 this.linesChanged = false;
-            }
-            else if(wasInRange == inRange)
-            {
+            } else if (wasInRange == inRange) {
                 continue;
-            }
-            else if(wasInRange)
-            {
+            } else if (wasInRange) {
                 this.removeLines(p);
-            }
-            else
-            {
+            } else {
                 this.sendLines(p);
             }
 
@@ -266,8 +242,7 @@ public class Hologram
      *
      * @param p Player
      */
-    public void sendLines(Player p)
-    {
+    public void sendLines(Player p) {
         for (int i = 0; i < this.lines.size(); i++)
             this.sendPacketForLine(p, i);
     }
@@ -277,8 +252,7 @@ public class Hologram
      *
      * @param p Player
      */
-    public void removeLines(Player p)
-    {
+    public void removeLines(Player p) {
         for (int i = 0; i < this.lines.size(); i++)
             this.removeLineForPlayer(p, i);
     }
@@ -287,16 +261,14 @@ public class Hologram
      * Clear hologram's entities who permits
      * all the system to work
      */
-    public void clearEntities()
-    {
+    public void clearEntities() {
         this.entities.clear();
     }
 
     /**
      * Clear hologram's lines
      */
-    public void clearLines()
-    {
+    public void clearLines() {
         this.lines.clear();
     }
 
@@ -305,29 +277,23 @@ public class Hologram
      *
      * @return Location
      */
-    public Location getLocation()
-    {
+    public Location getLocation() {
         return this.location;
     }
 
-    private static EntityArmorStand generateEntitiesForLine(Location loc, String text)
-    {
-        EntityArmorStand entity = new EntityArmorStand(((CraftWorld) loc.getWorld()).getHandle());
-        entity.setSize(0.00001F, 0.00001F);
-        entity.setInvisible(true);
-        entity.setNoGravity(true);
-        entity.setCustomName(text);
-        entity.setCustomNameVisible(true);
-        entity.setLocation(loc.getX(), loc.getY() - 2, loc.getZ(), 0, 0);
-
-        return entity;
+    /**
+     * Set hologram location
+     *
+     * @param location Location
+     */
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    private boolean sendPacketForLine(Player p, int line)
-    {
+    private boolean sendPacketForLine(Player p, int line) {
         EntityArmorStand entity = this.entities.get(line);
 
-        if(entity == null)
+        if (entity == null)
             return false;
 
         Reflection.sendPacket(p, new PacketPlayOutSpawnEntity(entity, 78));

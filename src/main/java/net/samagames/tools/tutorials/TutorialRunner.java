@@ -4,7 +4,6 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.Reflection;
 import net.samagames.tools.Titles;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -26,33 +25,29 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class TutorialRunner implements Runnable
-{
-    private Plugin p;
+public class TutorialRunner implements Runnable {
+    private final Plugin p;
 
     private final String tutorialInChatPrefix = ChatColor.GRAY + "│ " + ChatColor.RESET;
 
-    private Player player;
-    private Tutorial tutorial;
+    private final Player player;
+    private final Tutorial tutorial;
 
     private int currentChapter = 0;
     private int currentText = 0;
     private long currentTimer = 0;
 
-    public TutorialRunner(Tutorial tutorial, UUID playerId)
-    {
-	    this.p = SamaGamesAPI.get().getPlugin();
+    public TutorialRunner(Tutorial tutorial, UUID playerId) {
+        this.p = SamaGamesAPI.get().getPlugin();
 
-	    this.player   = p.getServer().getPlayer(playerId);
+        this.player = p.getServer().getPlayer(playerId);
         this.tutorial = tutorial;
     }
 
 
     @Override
-    public void run()
-    {
-        if (!player.isOnline())
-        {
+    public void run() {
+        if (!player.isOnline()) {
             tutorial.stop(player.getUniqueId(), true);
             return;
         }
@@ -63,8 +58,7 @@ public class TutorialRunner implements Runnable
             return;
         }
 
-        if (currentTimer > 0)
-        {
+        if (currentTimer > 0) {
             currentTimer -= 10;
             return;
         }
@@ -78,8 +72,7 @@ public class TutorialRunner implements Runnable
 
 
         // New chapter, new location
-        if (currentText == 0)
-        {
+        if (currentText == 0) {
             chapter.teleport(player);
             Reflection.playSound(player, player.getLocation(), Reflection.PackageType.getServerVersion().equals("v1_8_R3") ? "LEVEL_UP" : "ENTITY_PLAYER_LEVELUP", 1L, 2L);
         }
@@ -94,8 +87,7 @@ public class TutorialRunner implements Runnable
 
 
         // Chat version
-        if (chapter.isDisplayedInChat())
-        {
+        if (chapter.isDisplayedInChat()) {
             if (currentText == 0) player.sendMessage(tutorialInChatPrefix + chapter.getTitle());
             player.sendMessage(tutorialInChatPrefix + chapter.getContent().get(currentText).getLeft());
         }
@@ -106,8 +98,7 @@ public class TutorialRunner implements Runnable
         // Next one?
         currentText++;
 
-        if (currentText == chapter.getContent().size())
-        {
+        if (currentText == chapter.getContent().size()) {
             currentChapter++;
             currentText = 0;
         }

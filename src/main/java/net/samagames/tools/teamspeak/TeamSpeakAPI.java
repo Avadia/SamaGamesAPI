@@ -27,43 +27,33 @@ import java.util.logging.Level;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 @SuppressWarnings("ALL")
-public class TeamSpeakAPI
-{
+public class TeamSpeakAPI {
     private static final int TIMEOUT = 20000;
     private static int generator = 0;
     private static Map<Integer, MutablePair<ResultType, Object>> results = new HashMap<>();
 
-    private TeamSpeakAPI()
-    {
-    }
-
-    static
-    {
+    static {
         SamaGamesAPI.get().getPubSub().subscribe("tsbotresponse", new TeamSpeakConsumer());
     }
 
-    private static void publish(int id, String string)
-    {
+    private TeamSpeakAPI() {
+    }
+
+    private static void publish(int id, String string) {
         Jedis jedis = null;
-        try
-        {
+        try {
             jedis = SamaGamesAPI.get().getBungeeResource();
             if (jedis != null)
                 jedis.publish("tsbot", SamaGamesAPI.get().getServerName() + "/" + id + ":" + string);
-        }
-        catch (Exception exception)
-        {
+        } catch (Exception exception) {
             SamaGamesAPI.get().getPlugin().getLogger().log(Level.SEVERE, "Jedis error", exception);
-        }
-        finally
-        {
+        } finally {
             if (jedis != null)
                 jedis.close();
         }
     }
 
-    public static int createChannel(@Nonnull String name, @Nullable Map<ChannelProperty, String> channelProperties, @Nullable Map<ChannelPermission, Integer> permissions)
-    {
+    public static int createChannel(@Nonnull String name, @Nullable Map<ChannelProperty, String> channelProperties, @Nullable Map<ChannelPermission, Integer> permissions) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.INTEGER, -1);
         int id = generator++;
         TeamSpeakAPI.results.put(id, pair);
@@ -73,75 +63,72 @@ public class TeamSpeakAPI
         if (permissions != null)
             permissions.forEach(((channelPermission, integer) -> msg[0] += ":" + channelPermission.toString().toLowerCase() + "-" + integer));
         TeamSpeakAPI.publish(id, msg[0]);
-        try
-        {
-            synchronized (pair)
-            {
+        try {
+            synchronized (pair) {
                 pair.wait(TeamSpeakAPI.TIMEOUT);
             }
-        } catch (Exception ignored) {}
-        return (int)pair.getRight();
+        } catch (Exception ignored) {
+        }
+        return (int) pair.getRight();
     }
 
-    public static boolean deleteChannel(int channelId)
-    {
+    public static boolean deleteChannel(int channelId) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.BOOLEAN, false);
         int id = generator++;
         TeamSpeakAPI.results.put(id, pair);
         TeamSpeakAPI.publish(id, "deletechannel:" + channelId);
-        try
-        {
-           synchronized (pair)
-           {
-               pair.wait(TeamSpeakAPI.TIMEOUT);
-           }
-        } catch (Exception ignored) {}
-        return (boolean)pair.getRight();
+        try {
+            synchronized (pair) {
+                pair.wait(TeamSpeakAPI.TIMEOUT);
+            }
+        } catch (Exception ignored) {
+        }
+        return (boolean) pair.getRight();
     }
 
-    public static List<UUID> movePlayers(@Nonnull List<UUID> uuids, int channelId)
-    {
+    public static List<UUID> movePlayers(@Nonnull List<UUID> uuids, int channelId) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.UUID_LIST, new ArrayList<>());
         int id = generator++;
         TeamSpeakAPI.results.put(id, pair);
         final String[] msg = {"move:" + channelId};
         uuids.forEach(uuid -> msg[0] += ":" + uuid);
         TeamSpeakAPI.publish(id, msg[0]);
-        try
-        {
-            synchronized (pair)
-            {
+        try {
+            synchronized (pair) {
                 pair.wait(TeamSpeakAPI.TIMEOUT);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return (List<UUID>) pair.getRight();
     }
 
-    public static boolean isLinked(@Nonnull UUID uuid)
-    {
+    public static boolean isLinked(@Nonnull UUID uuid) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.BOOLEAN, false);
         int id = generator++;
         TeamSpeakAPI.results.put(id, pair);
         TeamSpeakAPI.publish(id, "linked:" + uuid);
-        try
-        {
-            synchronized (pair)
-            {
+        try {
+            synchronized (pair) {
                 pair.wait(TeamSpeakAPI.TIMEOUT);
             }
-        } catch (Exception ignored) {}
-        return (boolean)pair.getRight();
+        } catch (Exception ignored) {
+        }
+        return (boolean) pair.getRight();
     }
 
-    private static class TeamSpeakConsumer implements IPacketsReceiver
-    {
+    private enum ResultType {
+        UUID_LIST,
+        BOOLEAN,
+        INTEGER
+    }
+
+    private static class TeamSpeakConsumer implements IPacketsReceiver {
         @Override
-        public void receive(String channel, String packet)
-        {
+        public void receive(String channel, String packet) {
             String[] args = packet.split(":");
             String[] prefix = args[0].split("/");
             if (!prefix[0].equals(SamaGamesAPI.get().getServerName()))
-                return ;
+                return;
             int id = Integer.parseInt(prefix[1]);
             MutablePair<ResultType, Object> result = TeamSpeakAPI.results.get(id);
             TeamSpeakAPI.results.remove(id);
@@ -149,8 +136,7 @@ public class TeamSpeakAPI
             if (!ok)
                 SamaGamesAPI.get().getPlugin().getLogger().severe("[TeamSpeakAPI] Error : " + (args.length > 2 ? args[2] : "Unknown") + "(packet = " + packet + ")");
             else
-                switch (result.getLeft())
-                {
+                switch (result.getLeft()) {
                     case UUID_LIST:
                         List<UUID> uuid = (List<UUID>) result.getRight();
                         for (int i = 1; i < args.length; i++)
@@ -161,21 +147,13 @@ public class TeamSpeakAPI
                         break;
                     case BOOLEAN:
                         result.setRight(args[1].equalsIgnoreCase("OK") || args[1].equalsIgnoreCase("true"));
-                        break ;
+                        break;
                     default:
-                        break ;
+                        break;
                 }
-            synchronized (result)
-            {
+            synchronized (result) {
                 result.notifyAll();
             }
         }
-    }
-
-    private enum ResultType
-    {
-        UUID_LIST,
-        BOOLEAN,
-        INTEGER
     }
 }

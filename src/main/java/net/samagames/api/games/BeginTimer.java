@@ -23,9 +23,9 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class BeginTimer implements Runnable
-{
+public class BeginTimer implements Runnable {
     private int timeStart = 30;
+    @SuppressWarnings("rawtypes")
     private final Game game;
     private final SamaGamesAPI api;
     private int time;
@@ -36,8 +36,8 @@ public class BeginTimer implements Runnable
      *
      * @param game Game
      */
-    public BeginTimer(Game game)
-    {
+    @SuppressWarnings("rawtypes")
+    public BeginTimer(Game game) {
         this.game = game;
         this.api = SamaGamesAPI.get();
         this.time = this.timeStart;
@@ -46,34 +46,30 @@ public class BeginTimer implements Runnable
 
     /**
      * Timer loop called every second.
-     *
+     * <p>
      * It calculate the time remaining before the game starts.
      * Messages and Titles we'll be displayed to the players
      * depending of the time remaining.
-     *
+     * <p>
      * Also, the XP level of the player we'll be modified with
      * the number of seconds remaining.
      */
     @Override
-    public void run()
-    {
-        if (this.api.getGameManager().isFreeMode())
-        {
+    public void run() {
+        if (this.api.getGameManager().isFreeMode()) {
             this.game.getBeginTimer().cancel();
             return;
         }
 
         int nPlayers = this.game.getConnectedPlayers();
 
-        if (nPlayers >= this.api.getGameManager().getGameProperties().getMinSlots() && !this.ready)
-        {
+        if (nPlayers >= this.api.getGameManager().getGameProperties().getMinSlots() && !this.ready) {
             this.ready = true;
             this.game.setStatus(Status.READY_TO_START);
             this.time = this.timeStart;
         }
 
-        if (nPlayers < this.api.getGameManager().getGameProperties().getMinSlots() && this.ready)
-        {
+        if (nPlayers < this.api.getGameManager().getGameProperties().getMinSlots() && this.ready) {
             this.ready = false;
             this.game.setStatus(Status.WAITING_FOR_PLAYERS);
 
@@ -83,29 +79,24 @@ public class BeginTimer implements Runnable
                 p.setLevel(this.timeStart);
         }
 
-        if (this.ready)
-        {
+        if (this.ready) {
             this.time--;
 
-            if((this.time < 5 && this.time > 0) || (this.time > 5 && this.time % 10 == 0))
+            if ((this.time < 5 && this.time > 0) || (this.time > 5 && this.time % 10 == 0))
                 this.api.getGameManager().getCoherenceMachine().getMessageManager().writeGameStartIn(this.time);
 
-            if(this.time <= 5 && this.time > 0)
+            if (this.time <= 5 && this.time > 0)
                 for (Player player : Bukkit.getOnlinePlayers())
                     Titles.sendTitle(player, 0, 22, 0, ChatColor.RED + "" + ChatColor.BOLD + this.time, ChatColor.YELLOW + this.api.getGameManager().getCoherenceMachine().getStartCountdownCatchPhrase());
 
             this.sendSound(this.time);
 
-            if(this.time <= 0)
-            {
+            if (this.time <= 0) {
                 Bukkit.getScheduler().runTask(this.api.getPlugin(), () ->
                 {
-                    try
-                    {
+                    try {
                         this.game.startGame();
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
@@ -116,11 +107,9 @@ public class BeginTimer implements Runnable
     }
 
     /**
-     *
-     * @param timeStart
+     * @param timeStart time to start
      */
-    public void setTimeStart(int timeStart)
-    {
+    public void setTimeStart(int timeStart) {
         this.timeStart = timeStart;
     }
 
@@ -130,17 +119,14 @@ public class BeginTimer implements Runnable
      *
      * @param seconds Actual remaining seconds
      */
-    private void sendSound(int seconds)
-    {
+    private void sendSound(int seconds) {
         boolean ring = false;
 
-        if (seconds <= 5 && seconds != 0)
-        {
+        if (seconds <= 5 && seconds != 0) {
             ring = true;
         }
 
-        for(Player player : Bukkit.getOnlinePlayers())
-        {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.setLevel(seconds);
 
             if (ring)
@@ -157,8 +143,7 @@ public class BeginTimer implements Runnable
      * @return The seconds left; the maximal waiting time if the counter is not started.
      * Use {@link #isTimerRunning()} to differentiate these cases.
      */
-    public int getSecondsLeft()
-    {
+    public int getSecondsLeft() {
         return this.time;
     }
 
@@ -169,8 +154,7 @@ public class BeginTimer implements Runnable
      *
      * @return {@code true} if the timer is running.
      */
-    public boolean isTimerRunning()
-    {
+    public boolean isTimerRunning() {
         return this.ready && this.time > 0;
     }
 }

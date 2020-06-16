@@ -19,16 +19,14 @@ import java.time.Instant;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class AchievementProgress
-{
-    private long progressId;
+public class AchievementProgress {
+    private final long progressId;
     private int progress;
-    private Timestamp startTime;
+    private final Timestamp startTime;
     private Timestamp unlockTime;
     private boolean changed;
 
-    AchievementProgress(long progressId, int progress, Timestamp startTime, Timestamp unlockTime, boolean changed)
-    {
+    AchievementProgress(long progressId, int progress, Timestamp startTime, Timestamp unlockTime, boolean changed) {
         this.progressId = progressId;
         this.progress = progress;
         this.startTime = startTime;
@@ -41,8 +39,7 @@ public class AchievementProgress
      *
      * @return progress
      */
-    public int getProgress()
-    {
+    public int getProgress() {
         return this.progress;
     }
 
@@ -51,8 +48,7 @@ public class AchievementProgress
      *
      * @param amount Amount to increase
      */
-    public void setProgress(int amount)
-    {
+    public void setProgress(int amount) {
         this.progress = amount;
         this.changed = true;
     }
@@ -62,8 +58,7 @@ public class AchievementProgress
      *
      * @return Start time
      */
-    public Timestamp getStartTime()
-    {
+    public Timestamp getStartTime() {
         return this.startTime;
     }
 
@@ -72,8 +67,7 @@ public class AchievementProgress
      *
      * @return Unlock time
      */
-    public Timestamp getUnlockTime()
-    {
+    public Timestamp getUnlockTime() {
         return this.unlockTime;
     }
 
@@ -82,8 +76,7 @@ public class AchievementProgress
      *
      * @return Id
      */
-    public long getProgressId()
-    {
+    public long getProgressId() {
         return this.progressId;
     }
 
@@ -91,8 +84,7 @@ public class AchievementProgress
      * Internal
      * Unlock achievement
      */
-    void unlock()
-    {
+    void unlock() {
         this.unlockTime = Timestamp.from(Instant.now());
         this.changed = true;
     }
@@ -102,8 +94,7 @@ public class AchievementProgress
      *
      * @return Check if this achievements progress as changed and must be updated
      */
-    public boolean isChanged()
-    {
+    public boolean isChanged() {
         return this.changed;
     }
 }

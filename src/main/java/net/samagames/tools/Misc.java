@@ -21,8 +21,7 @@ import java.util.regex.Pattern;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Misc
-{
+public class Misc {
     private static final Pattern URL = Pattern.compile("\\b(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 
     /**
@@ -30,11 +29,9 @@ public class Misc
      * structured phrase
      *
      * @param time Milliseconds
-     *
      * @return Structured phrase
      */
-    public static String formatTime(long time)
-    {
+    public static String formatTime(long time) {
         long days = TimeUnit.MILLISECONDS.toDays(time);
         time -= TimeUnit.DAYS.toMillis(days);
         long hours = TimeUnit.MILLISECONDS.toHours(time);
@@ -66,16 +63,13 @@ public class Misc
      * Parse a raw phrase into a date {@link Date}
      *
      * @param str Raw phrase
-     *
      * @return Date object
      */
-    public static Date parseTime(String str)
-    {
+    public static Date parseTime(String str) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
 
-        for (String t : str.split("\\+"))
-        {
+        for (String t : str.split("\\+")) {
             String[] end = t.split(":");
             int type;
 
@@ -98,8 +92,7 @@ public class Misc
      *
      * @return Instance
      */
-    public static Pattern getURLPattern()
-    {
+    public static Pattern getURLPattern() {
         return URL;
     }
 }

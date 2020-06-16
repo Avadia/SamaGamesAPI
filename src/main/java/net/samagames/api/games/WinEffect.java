@@ -26,29 +26,25 @@ import java.util.Random;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class WinEffect implements Runnable
-{
+public class WinEffect implements Runnable {
     private final Player player;
     private int time;
 
-    public WinEffect(Player player)
-    {
+    public WinEffect(Player player) {
         this.player = player;
         this.time = 0;
     }
 
     @Override
-    public void run()
-    {
-        if (this.time < 20)
-        {
+    public void run() {
+        if (this.time < 20) {
             Firework fw = (Firework) player.getWorld().spawnEntity(player.getPlayer().getLocation(), EntityType.FIREWORK);
             FireworkMeta fwm = fw.getFireworkMeta();
 
             Random r = new Random();
             int rt = r.nextInt(4) + 1;
 
-            FireworkEffect.Type type = FireworkEffect.Type.BALL;
+            FireworkEffect.Type type;
 
             if (rt == 1)
                 type = FireworkEffect.Type.BALL;
@@ -58,7 +54,7 @@ public class WinEffect implements Runnable
                 type = FireworkEffect.Type.BURST;
             else if (rt == 4)
                 type = FireworkEffect.Type.CREEPER;
-            else if (rt == 5)
+            else
                 type = FireworkEffect.Type.STAR;
 
             int r1i = r.nextInt(15) + 1;

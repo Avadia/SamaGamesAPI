@@ -21,34 +21,37 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-class EntityRegistrar
-{
-    private static BiomeBase[] BIOMES;
+class EntityRegistrar {
+    private static final BiomeBase[] BIOMES;
 
-    static <E extends Entity> void registerEntity(String name, int id, Class<? extends E> nmsClass, Class<? extends E> customClass)
-    {
-        try
-        {
-            registerEntityInEntityEnum(customClass, name, id);
+    static {
+        BIOMES = new BiomeBase[BiomeBase.REGISTRY_ID.keySet().size()];
+
+        int i = 0;
+
+        for (MinecraftKey key : BiomeBase.REGISTRY_ID.keySet()) {
+            BIOMES[i] = BiomeBase.REGISTRY_ID.get(key);
+            i++;
         }
-        catch (Exception e)
-        {
+    }
+
+    @SuppressWarnings({"unchecked", "SameParameterValue", "ClassGetClass"})
+    static <E extends Entity> void registerEntity(String name, int id, Class<? extends E> nmsClass, Class<? extends E> customClass) {
+        try {
+            registerEntityInEntityEnum(customClass, name, id);
+        } catch (Exception e) {
             e.printStackTrace();
 
             return;
         }
 
-        if (EntityInsentient.class.isAssignableFrom(nmsClass) && EntityInsentient.class.isAssignableFrom(customClass))
-        {
-            for (Object biomeBase : BIOMES)
-            {
+        if (EntityInsentient.class.isAssignableFrom(nmsClass) && EntityInsentient.class.isAssignableFrom(customClass)) {
+            for (Object biomeBase : BIOMES) {
                 if (biomeBase == null)
                     break;
 
-                for (String field : new String[]{"t", "u", "v", "w"})
-                {
-                    try
-                    {
+                for (String field : new String[]{"t", "u", "v", "w"}) {
+                    try {
                         Field list = BiomeBase.class.getDeclaredField(field);
                         list.setAccessible(true);
                         List<Object> mobList = (List<Object>) list.get(biomeBase);
@@ -58,9 +61,7 @@ class EntityRegistrar
                         for (Object mob : mobList)
                             if (nmsClass.getClass().equals(entityClassField.get(mob)))
                                 entityClassField.set(mob, customClass);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -68,25 +69,10 @@ class EntityRegistrar
         }
     }
 
-    private static void registerEntityInEntityEnum(Class<? extends Entity> customClass, String name, int id) throws Exception
-    {
+    private static void registerEntityInEntityEnum(Class<? extends Entity> customClass, String name, int id) {
         MinecraftKey key = new MinecraftKey(name);
         EntityTypes.b.a(id, key, customClass);
 
-        if (!EntityTypes.d.contains(key))
-            EntityTypes.d.add(key);
-    }
-
-    static
-    {
-        BIOMES = new BiomeBase[BiomeBase.REGISTRY_ID.keySet().size()];
-
-        int i = 0;
-
-        for (MinecraftKey key : BiomeBase.REGISTRY_ID.keySet())
-        {
-            BIOMES[i] = BiomeBase.REGISTRY_ID.get(key);
-            i++;
-        }
+        EntityTypes.d.add(key);
     }
 }

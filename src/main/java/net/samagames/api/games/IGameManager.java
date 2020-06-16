@@ -23,13 +23,13 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IGameManager
-{
+public interface IGameManager {
     /**
      * Register the arena
      *
      * @param game Arena object
      */
+    @SuppressWarnings("rawtypes")
     void registerGame(Game game);
 
     /**
@@ -113,6 +113,7 @@ public interface IGameManager
      *
      * @return The registered game (null if none)
      */
+    @SuppressWarnings("rawtypes")
     Game getGame();
 
     /**
@@ -212,13 +213,15 @@ public interface IGameManager
     boolean isReconnectAllowed(UUID player);
 
     /**
-     *  Define if the cache of a player will be deleted att disconnection (playerdata, permission, etc)
-     *  @param keepIt true for keep the cache, false to let it go
+     * Define if the cache of a player will be deleted att disconnection (playerdata, permission, etc)
+     *
+     * @param keepIt true for keep the cache, false to let it go
      */
     void setKeepPlayerCache(boolean keepIt);
 
     /**
      * Get if the cache is currently kept after a layer disconnection
+     *
      * @return true to keep it, false to let it go
      */
     boolean isKeepingPlayerCache();

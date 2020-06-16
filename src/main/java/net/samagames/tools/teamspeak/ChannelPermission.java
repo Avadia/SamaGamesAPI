@@ -16,8 +16,7 @@ package net.samagames.tools.teamspeak;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public enum ChannelPermission
-{
+public enum ChannelPermission {
     B_SERVERINSTANCE_HELP_VIEW,
     B_SERVERINSTANCE_VERSION_VIEW,
     B_SERVERINSTANCE_INFO_VIEW,

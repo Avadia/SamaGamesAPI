@@ -11,11 +11,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Reflection {
-
     public static void playSound(Player player, Location location, String soundName, float volume, float pitch) {
         try {
             Class<?> soundClass = getClass("org.bukkit.Sound");
-            Sound sound = (Sound) soundClass.getField(soundName).get(null);
+            Sound sound = (Sound) Objects.requireNonNull(soundClass).getField(soundName).get(null);
 
             Method playSoundMethod = getMethod(player.getClass(), "playSound", Location.class, Sound.class, float.class, float.class);
             playSoundMethod.invoke(player, location, sound, volume, pitch);
@@ -47,7 +46,7 @@ public class Reflection {
             Class<?> packetClass = getNMSClass("Packet");
             Class<?> entityPlayerClass = getNMSClass("EntityPlayer");
             Field playerConnectionField = getField(entityPlayerClass, "playerConnection");
-            Method sendPacketMethod = getMethod(playerConnectionField.getType(), "sendPacket", packetClass);
+            Method sendPacketMethod = getMethod(Objects.requireNonNull(playerConnectionField).getType(), "sendPacket", packetClass);
 
             Object entityPlayer = getHandle(player);
             Object playerConnection = playerConnectionField.get(entityPlayer);
@@ -96,7 +95,7 @@ public class Reflection {
         if (constructor == null) throw new RuntimeException("No such constructor");
         constructor.setAccessible(true);
         try {
-            return (T) constructor.newInstance(paramaters);
+            return constructor.newInstance(paramaters);
         } catch (InvocationTargetException ex) {
             throw new RuntimeException(ex.getCause());
         } catch (Exception ex) {
@@ -520,10 +519,12 @@ public class Reflection {
 
     /**
      * Set a final static var
+     *
      * @param field The field object
      * @param value The new value
-     * @throws ReflectiveOperationException
+     * @throws ReflectiveOperationException Exception
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void setFinalStatic(Field field, Object value) throws ReflectiveOperationException {
         field.setAccessible(true);
         Class.class.getModifiers();
@@ -535,9 +536,10 @@ public class Reflection {
 
     /**
      * Set a final static var
+     *
      * @param field The field object
      * @param value The new value
-     * @throws ReflectiveOperationException
+     * @throws ReflectiveOperationException Exception
      */
     public static void setFinal(Object object, Field field, Object value) throws ReflectiveOperationException {
         field.setAccessible(true);
@@ -585,7 +587,7 @@ public class Reflection {
          *
          * @param path Path of the package
          */
-        private PackageType(String path) {
+        PackageType(String path) {
             this.path = path;
         }
 
@@ -595,7 +597,7 @@ public class Reflection {
          * @param parent Parent package of the package
          * @param path   Path of the package
          */
-        private PackageType(PackageType parent, String path) {
+        PackageType(PackageType parent, String path) {
             this(parent + "." + path);
         }
 
@@ -672,7 +674,7 @@ public class Reflection {
          * @param primitive Primitive class of this data type
          * @param reference Reference class of this data type
          */
-        private DataType(Class<?> primitive, Class<?> reference) {
+        DataType(Class<?> primitive, Class<?> reference) {
             this.primitive = primitive;
             this.reference = reference;
         }
@@ -921,6 +923,7 @@ public class Reflection {
         STATUS_OUT_PONG("PacketStatusOutPong"),
         STATUS_OUT_SERVER_INFO("PacketStatusOutServerInfo");
 
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private static final Map<String, PacketType> NAME_MAP = new HashMap<>();
         private final String name;
         private Class<?> packet;
@@ -937,7 +940,7 @@ public class Reflection {
          *
          * @param name Name of this packet
          */
-        private PacketType(String name) {
+        PacketType(String name) {
             this.name = name;
         }
 
@@ -960,5 +963,4 @@ public class Reflection {
             return packet == null ? (packet = PackageType.MINECRAFT_SERVER.getClass(name)) : packet;
         }
     }
-
 }

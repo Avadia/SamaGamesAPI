@@ -18,19 +18,14 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class DirectionUtils
-{
-    public enum Directions { NORTH, SOUTH, EAST, WEST }
-
+public class DirectionUtils {
     /**
      * Get given player's location with his location
      *
      * @param player Player
-     *
      * @return Enumeration entry {@link Directions}
      */
-    public static Directions getPlayerDirection(Player player)
-    {
+    public static Directions getPlayerDirection(Player player) {
         double rotation = (player.getLocation().getYaw() - 90) % 360;
 
         if (rotation < 0)
@@ -49,4 +44,6 @@ public class DirectionUtils
         else
             return null;
     }
+
+    public enum Directions {NORTH, SOUTH, EAST, WEST}
 }

@@ -19,12 +19,11 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IJoinManager
-{
+public interface IJoinManager {
     /**
      * Register a JoinHandler which is going to be called by the manager
      *
-     * @param handler The handler
+     * @param handler  The handler
      * @param priority The handler priority (0 = Lowest, please do not use priorities under 10)
      */
     void registerHandler(IJoinHandler handler, int priority);

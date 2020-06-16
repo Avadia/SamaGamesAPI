@@ -22,23 +22,20 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class BasicMessageTemplate
-{
+public class BasicMessageTemplate {
     /**
      * Prepare a empty message with spacers and given
      * content
      *
      * @param lines Content of the message
-     *
      * @return Formatted lines
      */
-    public List<String> prepare(List<String> lines)
-    {
+    public List<String> prepare(List<String> lines) {
         List<String> finalLines = new ArrayList<>();
         finalLines.add(ChatColor.GOLD + "" + ChatColor.BOLD + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
         finalLines.addAll(lines);
         finalLines.add(ChatColor.GOLD + "" + ChatColor.BOLD + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
-        
+
         return finalLines;
     }
 
@@ -48,8 +45,7 @@ public class BasicMessageTemplate
      *
      * @param lines Content of the message
      */
-    public void execute(List<String> lines)
-    {
+    public void execute(List<String> lines) {
         this.prepare(lines).forEach(Bukkit::broadcastMessage);
     }
 }

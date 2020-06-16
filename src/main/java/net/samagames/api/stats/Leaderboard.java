@@ -16,19 +16,17 @@ package net.samagames.api.stats;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Leaderboard
-{
+public class Leaderboard {
     private final PlayerStatData first, second, third;
 
     /**
      * Constructor
      *
-     * @param first First player into the leaderboard {@link PlayerStatData}
+     * @param first  First player into the leaderboard {@link PlayerStatData}
      * @param second Second player into the leaderboard {@link PlayerStatData}
-     * @param third Third player into the leaderboard {@link PlayerStatData}
+     * @param third  Third player into the leaderboard {@link PlayerStatData}
      */
-    public Leaderboard(PlayerStatData first, PlayerStatData second, PlayerStatData third)
-    {
+    public Leaderboard(PlayerStatData first, PlayerStatData second, PlayerStatData third) {
         this.first = first;
         this.second = second;
         this.third = third;
@@ -39,8 +37,7 @@ public class Leaderboard
      *
      * @return First player
      */
-    public PlayerStatData getFirst()
-    {
+    public PlayerStatData getFirst() {
         return this.first;
     }
 
@@ -49,8 +46,7 @@ public class Leaderboard
      *
      * @return Second player
      */
-    public PlayerStatData getSecond()
-    {
+    public PlayerStatData getSecond() {
         return this.second;
     }
 
@@ -59,16 +55,15 @@ public class Leaderboard
      *
      * @return Third player
      */
-    public PlayerStatData getThird()
-    {
+    public PlayerStatData getThird() {
         return this.third;
     }
 
-    public static class PlayerStatData{
-        private String name;
-        private int score;
-        public PlayerStatData(String name, int score)
-        {
+    public static class PlayerStatData {
+        private final String name;
+        private final int score;
+
+        public PlayerStatData(String name, int score) {
             this.name = name;
             this.score = score;
         }

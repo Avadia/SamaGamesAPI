@@ -20,21 +20,19 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class IncrementationAchievement extends Achievement
-{
+public class IncrementationAchievement extends Achievement {
     private final int objective;
 
     /**
      * Constructor
      *
-     * @param id Achievement ID
-     * @param displayName Achievement's display name in GUIs
+     * @param id             Achievement ID
+     * @param displayName    Achievement's display name in GUIs
      * @param parentCategory Achievement's parent category ID
-     * @param description Achievement's description in GUIs
-     * @param objective Achievement's goal to reach
+     * @param description    Achievement's description in GUIs
+     * @param objective      Achievement's goal to reach
      */
-    public IncrementationAchievement(int id, String displayName, AchievementCategory parentCategory, String[] description, int objective)
-    {
+    public IncrementationAchievement(int id, String displayName, AchievementCategory parentCategory, String[] description, int objective) {
         super(id, displayName, parentCategory, description);
         this.objective = objective;
     }
@@ -45,24 +43,19 @@ public class IncrementationAchievement extends Achievement
      * @param player Player
      * @param amount Amount
      */
-    public void increment(UUID player, int amount)
-    {
+    public void increment(UUID player, int amount) {
         AchievementProgress progress = this.progress.get(player);
 
-        if (progress == null)
-        {
+        if (progress == null) {
             progress = new AchievementProgress(-1, 0, Timestamp.from(Instant.now()), null, true);
             this.progress.put(player, progress);
         }
 
-        if (progress.getProgress() + amount > this.objective && progress.getUnlockTime() == null)
-        {
+        if (progress.getProgress() + amount > this.objective && progress.getUnlockTime() == null) {
             progress.unlock();
             progress.setProgress(this.objective);
             this.sendRewardMessage(player);
-        }
-        else if (progress.getUnlockTime() == null)
-        {
+        } else if (progress.getUnlockTime() == null) {
             progress.setProgress(progress.getProgress() + amount);
         }
     }
@@ -71,11 +64,9 @@ public class IncrementationAchievement extends Achievement
      * Get the given player's progress of the achievement
      *
      * @param player Player
-     *
      * @return Actual progress
      */
-    public int getActualState(UUID player)
-    {
+    public int getActualState(UUID player) {
         AchievementProgress progress = this.progress.get(player);
         return progress == null ? 0 : progress.getProgress();
     }
@@ -85,8 +76,7 @@ public class IncrementationAchievement extends Achievement
      *
      * @return Goal
      */
-    public int getObjective()
-    {
+    public int getObjective() {
         return this.objective;
     }
 }

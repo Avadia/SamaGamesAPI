@@ -18,13 +18,12 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface NPCInteractCallback
-{
+public interface NPCInteractCallback {
     /**
      * Function called after action
      *
      * @param rightClick true if right clicked or false left clicked
-     * @param player player who performed the action
+     * @param player     player who performed the action
      */
     void done(boolean rightClick, Player player);
 }

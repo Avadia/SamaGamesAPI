@@ -16,21 +16,19 @@ package net.samagames.tools;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class JsonPrivateMessage
-{
-    private UnknownPlayer sender;
-    private UnknownPlayer receiver;
-    private String message;
+public class JsonPrivateMessage {
+    private final UnknownPlayer sender;
+    private final UnknownPlayer receiver;
+    private final String message;
 
     /**
      * Constructor
      *
-     * @param sender Sender of the private message
+     * @param sender   Sender of the private message
      * @param receiver Receiver of the private message
-     * @param message Message's content
+     * @param message  Message's content
      */
-    public JsonPrivateMessage(UnknownPlayer sender, UnknownPlayer receiver, String message)
-    {
+    public JsonPrivateMessage(UnknownPlayer sender, UnknownPlayer receiver, String message) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
@@ -41,8 +39,7 @@ public class JsonPrivateMessage
      *
      * @return Sender
      */
-    public UnknownPlayer getSender()
-    {
+    public UnknownPlayer getSender() {
         return this.sender;
     }
 
@@ -51,8 +48,7 @@ public class JsonPrivateMessage
      *
      * @return Receiver
      */
-    public UnknownPlayer getReceiver()
-    {
+    public UnknownPlayer getReceiver() {
         return this.receiver;
     }
 
@@ -61,8 +57,7 @@ public class JsonPrivateMessage
      *
      * @return Message's content
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return this.message;
     }
 }

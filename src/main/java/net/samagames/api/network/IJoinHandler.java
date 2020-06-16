@@ -20,19 +20,16 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IJoinHandler
-{
+public interface IJoinHandler {
     /**
      * Called when an user wanted to connect, by right clicking a game sign for example.
      * (Before player is ont the server)
      *
-     * @param player Asking player
+     * @param player   Asking player
      * @param response Response object {@link JoinResponse}
-     *
      * @return Filled response
      */
-    default JoinResponse requestJoin(UUID player, JoinResponse response)
-    {
+    default JoinResponse requestJoin(UUID player, JoinResponse response) {
         return response;
     }
 
@@ -40,31 +37,31 @@ public interface IJoinHandler
      * Called when a party wanted to connect, by right clicking a game sign for example.
      * (Before player is on the server)
      *
-     * @param party Party uuid
-     * @param player The player who join
+     * @param party    Party uuid
+     * @param player   The player who join
      * @param response Response object {@link JoinResponse}
-     *
      * @return Filled response
      */
-    default JoinResponse requestPartyJoin(UUID party, UUID player, JoinResponse response)
-    {
+    default JoinResponse requestPartyJoin(UUID party, UUID player, JoinResponse response) {
         return response;
     }
 
     /**
      * Event fired when a player login
      *
-     * @param player Joined player's UUID
+     * @param player   Joined player's UUID
      * @param username Joined player's username
      */
-    default void onLogin(UUID player, String username) {}
+    default void onLogin(UUID player, String username) {
+    }
 
     /**
      * Event fired when a player logged
      *
      * @param player Joined player's UUID
      */
-    default void finishJoin(Player player) {}
+    default void finishJoin(Player player) {
+    }
 
     /**
      * Event fired when a moderator login
@@ -73,12 +70,14 @@ public interface IJoinHandler
      *
      * @param player Joined moderator
      */
-    default void onModerationJoin(Player player) {}
+    default void onModerationJoin(Player player) {
+    }
 
     /**
      * Event fired when a player logout
      *
      * @param player Joined player
      */
-    default void onLogout(Player player) {}
+    default void onLogout(Player player) {
+    }
 }

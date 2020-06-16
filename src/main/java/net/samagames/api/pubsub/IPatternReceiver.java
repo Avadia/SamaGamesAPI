@@ -16,14 +16,13 @@ package net.samagames.api.pubsub;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IPatternReceiver
-{
-	/**
-	 * Fired when a Redis PubSub message is received
+public interface IPatternReceiver {
+    /**
+     * Fired when a Redis PubSub message is received
      *
      * @param pattern PubSub message's pattern
-	 * @param channel PubSub message's channel
-	 * @param packet PubSub message's content
-	 */
+     * @param channel PubSub message's channel
+     * @param packet  PubSub message's content
+     */
     void receive(String pattern, String channel, String packet);
 }

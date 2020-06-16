@@ -27,44 +27,37 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class CustomNPC extends EntityPlayer
-{
+public class CustomNPC extends EntityPlayer {
     private NPCInteractCallback callback;
 
     private Hologram hologram;
 
-    public CustomNPC(World world, GameProfile gameprofile, PlayerInteractManager playerInteractManager)
-    {
+    public CustomNPC(World world, GameProfile gameprofile, PlayerInteractManager playerInteractManager) {
         super(world.getServer().getServer(), (WorldServer) world, gameprofile, playerInteractManager);
         playerInteractManager.b(EnumGamemode.SURVIVAL);
         this.playerConnection = new VoidPlayerConnection(world.getServer().getServer(), this);
         this.getDataWatcher().set(br, Byte.MAX_VALUE);
     }
 
-    public CustomNPC(Object world, GameProfile gameprofile)
-    {
+    public CustomNPC(Object world, GameProfile gameprofile) {
         this((World) world, gameprofile, new PlayerInteractManager((World) world));
     }
 
-    public void onInteract(boolean rightClick, Player damager)
-    {
-        if(callback != null)
+    public void onInteract(boolean rightClick, Player damager) {
+        if (callback != null)
             callback.done(rightClick, damager);
     }
 
-    public CustomNPC setCallback(NPCInteractCallback callback)
-    {
+    public NPCInteractCallback getCallback() {
+        return callback;
+    }
+
+    public CustomNPC setCallback(NPCInteractCallback callback) {
         this.callback = callback;
         return this;
     }
 
-    public NPCInteractCallback getCallback()
-    {
-        return callback;
-    }
-
-    public void setLocation(Location loc)
-    {
+    public void setLocation(Location loc) {
         setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 

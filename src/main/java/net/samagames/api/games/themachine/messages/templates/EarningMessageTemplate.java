@@ -24,27 +24,23 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class EarningMessageTemplate
-{
+public class EarningMessageTemplate {
     /**
      * Prepare a message to show how many
      * coins and the pearl have been earned
      *
      * @param coins Coins earned
      * @param pearl The pearl earned, null if none
-     *
      * @return Formatted lines
      */
-    public List<String> prepare(int coins, Pearl pearl)
-    {
+    public List<String> prepare(int coins, Pearl pearl) {
         List<String> finalLines = new ArrayList<>();
         finalLines.add(ChatUtils.getCenteredText(ChatColor.WHITE + "•" + ChatColor.BOLD + " Récompenses " + ChatColor.RESET + ChatColor.WHITE + "•"));
         finalLines.add("");
         finalLines.add(ChatUtils.getCenteredText(ChatColor.GOLD + "Vous avez gagné " + coins + (coins == 1 ? " pièce !" : " pièces !")));
         finalLines.add("");
 
-        if (pearl != null)
-        {
+        if (pearl != null) {
             finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Vous avez gagné une perle de " + ChatColor.AQUA + "niveau " + pearl.getStars() + ChatColor.GREEN + "!"));
             finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Echangez-là auprès de " + ChatColor.GOLD + "Graou" + ChatColor.GREEN + " dans le Hub !"));
             finalLines.add("");
@@ -58,11 +54,10 @@ public class EarningMessageTemplate
      * and the pearl have been earned to a given player
      *
      * @param player Player to send the message
-     * @param coins Coins earned
-     * @param pearl Pearl earned
+     * @param coins  Coins earned
+     * @param pearl  Pearl earned
      */
-    public void execute(Player player, int coins, Pearl pearl)
-    {
+    public void execute(Player player, int coins, Pearl pearl) {
         new BasicMessageTemplate().prepare(this.prepare(coins, pearl)).forEach(player::sendMessage);
     }
 }

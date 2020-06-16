@@ -16,12 +16,11 @@ package net.samagames.tools;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface CallBack<V>
-{
+public interface CallBack<V> {
     /**
      * Function called after action
      *
-     * @param data Data returned by the action
+     * @param data  Data returned by the action
      * @param error Error
      */
     void done(V data, Throwable error);

@@ -5,7 +5,6 @@ import net.samagames.tools.Reflection;
 import net.samagames.tools.Titles;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -30,8 +29,7 @@ import java.util.Random;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class PowerupManager
-{
+public class PowerupManager {
     private final JavaPlugin plugin;
     private final Random random;
     private final List<Powerup> powerups;
@@ -42,8 +40,7 @@ public class PowerupManager
     private int despawnTime;
     private double totalWeight;
 
-    public PowerupManager(JavaPlugin plugin)
-    {
+    public PowerupManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.random = new Random();
 
@@ -54,8 +51,7 @@ public class PowerupManager
         this.despawnTime = 20;
     }
 
-    public void start()
-    {
+    public void start() {
         this.spawnTask = this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, () ->
         {
             if (this.random.nextInt(this.inverseFrequency) == 0)
@@ -63,35 +59,29 @@ public class PowerupManager
         }, 1L, 1L);
     }
 
-    public void stop()
-    {
+    public void stop() {
         this.spawnTask.cancel();
     }
 
-    public void registerPowerup(Powerup powerup)
-    {
+    public void registerPowerup(Powerup powerup) {
         this.powerups.add(powerup);
         this.totalWeight += powerup.getWeight();
     }
 
-    public void registerLocation(Location location)
-    {
+    public void registerLocation(Location location) {
         this.locations.add(location);
     }
 
-    public void setInverseFrequency(int inverseFrequency)
-    {
+    public void setInverseFrequency(int inverseFrequency) {
         this.inverseFrequency = inverseFrequency;
     }
 
-    public void setDespawnTime(int despawnTime)
-    {
+    public void setDespawnTime(int despawnTime) {
         this.despawnTime = despawnTime;
     }
 
-    private void spawnRandomPowerup()
-    {
-        if(this.locations.isEmpty())
+    private void spawnRandomPowerup() {
+        if (this.locations.isEmpty())
             return;
 
         Location location = this.locations.get(this.random.nextInt(this.locations.size()));
@@ -99,26 +89,23 @@ public class PowerupManager
         Powerup powerup = null;
         double randomIndex = this.random.nextDouble() * this.totalWeight;
 
-        for(Powerup testedPowerup : this.powerups)
-        {
+        for (Powerup testedPowerup : this.powerups) {
             randomIndex -= testedPowerup.getWeight();
 
-            if(randomIndex <= 0.0D)
-            {
+            if (randomIndex <= 0.0D) {
                 powerup = testedPowerup;
                 break;
             }
         }
 
-        if(powerup == null)
+        if (powerup == null)
             throw new RuntimeException("Cannot find a powerup to spawn");
 
         this.locations.remove(location);
 
         ActivePowerup activePowerup = powerup.spawn(location);
 
-        for (Player player : this.plugin.getServer().getOnlinePlayers())
-        {
+        for (Player player : this.plugin.getServer().getOnlinePlayers()) {
             Reflection.playSound(player, player.getLocation(), Reflection.PackageType.getServerVersion().equals("v1_8_R3") ? "ARROW_HIT" : "ENTITY_ARROW_HIT_PLAYER", 1L, 1L);
             Titles.sendTitle(player, 5, 30, 5, ChatColor.GOLD + "✯", "");
         }
@@ -127,8 +114,7 @@ public class PowerupManager
 
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
         {
-            if (activePowerup.isAlive())
-            {
+            if (activePowerup.isAlive()) {
                 activePowerup.remove(false);
                 this.locations.add(location);
             }

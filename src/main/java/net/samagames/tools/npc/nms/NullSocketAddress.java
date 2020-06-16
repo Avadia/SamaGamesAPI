@@ -16,9 +16,9 @@ package net.samagames.tools.npc.nms;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import java.net.SocketAddress;
 
 public class NullSocketAddress extends SocketAddress {
-
     private static final long serialVersionUID = 1L;
 }

@@ -2,8 +2,6 @@ package net.samagames.api.stats;
 
 import net.samagames.api.games.GamesNames;
 
-import java.util.UUID;
-
 /*
  * This file is part of SamaGamesAPI.
  *
@@ -20,32 +18,34 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IStatsManager
-{
-
+@SuppressWarnings("DanglingJavadoc")
+public interface IStatsManager {
     void finish();
+
     void clearCache();
 
     /**
      * Get the player cached stats instance
      * player
      *
-     *
      * @return IPlayerStats with all stats loaded
      */
-    IPlayerStats getPlayerStats(UUID player);
+    //TODO Missing class
+    //IPlayerStats getPlayerStats(UUID player);
 
     /**
      * Define if a game will be loaded at player join
-     * @param game The game wanted
+     *
+     * @param game  The game wanted
      * @param value The value wanted (true to set auto load for the specified games, false to disable autoload)
      */
     void setStatsToLoad(GamesNames game, boolean value);
 
     /**
      * Know if a game is already loaded by the manager
+     *
      * @param game The wanted game
-     * @return
+     * @return boolean
      */
     boolean isStatsLoading(GamesNames game);
 
@@ -54,8 +54,7 @@ public interface IStatsManager
      *
      * @param game Select game
      * @param stat Stat
-     *
      * @return Leaderboard instance {@link Leaderboard}
      */
-	Leaderboard getLeaderboard(GamesNames game, String stat);
+    Leaderboard getLeaderboard(GamesNames game, String stat);
 }

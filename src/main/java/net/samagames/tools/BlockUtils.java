@@ -9,6 +9,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
+import java.util.Objects;
+
 /*
  * This file is part of SamaGamesAPI.
  *
@@ -25,22 +27,20 @@ import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class BlockUtils
-{
+public class BlockUtils {
     /**
      * Set the given texture to a skull placed in the world
      *
      * @param texture Base64 texture
      */
-    public static void setCustomSkull(Block block, String texture)
-    {
+    public static void setCustomSkull(Block block, String texture) {
         block.setType(Material.SKULL);
 
         Skull skullData = (Skull) block.getState();
         skullData.setSkullType(SkullType.PLAYER);
 
         World world = ((CraftWorld) block.getWorld()).getHandle();
-        ((TileEntitySkull) world.getTileEntity(new BlockPosition(block.getX(), block.getY(), block.getZ()))).setGameProfile(ItemUtils.getHeadCustomizedGameProfile(texture));
+        ((TileEntitySkull) Objects.requireNonNull(world.getTileEntity(new BlockPosition(block.getX(), block.getY(), block.getZ())))).setGameProfile(ItemUtils.getHeadCustomizedGameProfile(texture));
 
         block.getState().update(true);
     }

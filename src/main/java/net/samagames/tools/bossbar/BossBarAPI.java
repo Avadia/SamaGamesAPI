@@ -8,7 +8,9 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -28,8 +30,7 @@ import java.util.concurrent.ConcurrentMap;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class BossBarAPI
-{
+public class BossBarAPI {
     private static final ConcurrentMap<UUID, BossBar> bossBars = new ConcurrentHashMap<>();
 
     /**
@@ -37,8 +38,7 @@ public class BossBarAPI
      *
      * @param message Message on the top of the bar
      */
-    public static Pair<UUID, BossBar> getBar(String message)
-    {
+    public static Pair<UUID, BossBar> getBar(String message) {
         return getBar(message, BarColor.PURPLE, BarStyle.SOLID, 100.0D);
     }
 
@@ -46,13 +46,12 @@ public class BossBarAPI
      * Set a boss bar with a given color, style and a progress to a
      * given player
      *
-     * @param message Message on the top of the bar
-     * @param color Color of the bar
-     * @param style Style of the bar
+     * @param message  Message on the top of the bar
+     * @param color    Color of the bar
+     * @param style    Style of the bar
      * @param progress Filling percentage
      */
-    public static Pair<UUID, BossBar> getBar(String message, BarColor color, BarStyle style, double progress)
-    {
+    public static Pair<UUID, BossBar> getBar(String message, BarColor color, BarStyle style, double progress) {
         return getBar(message, color, style, progress, false, false, false);
     }
 
@@ -61,16 +60,15 @@ public class BossBarAPI
      * player. Also you can enable the darken sky, the boss music ambiance
      * and enable fog to a given player
      *
-     * @param message Message on the top of the bar
-     * @param color Color of the bar
-     * @param style Style of the bar
-     * @param progress Filling percentage
+     * @param message   Message on the top of the bar
+     * @param color     Color of the bar
+     * @param style     Style of the bar
+     * @param progress  Filling percentage
      * @param darkenSky Enable darken sky
      * @param playMusic Enable boss music
      * @param createFog Enable the fog
      */
-    public static Pair<UUID, BossBar> getBar(String message, BarColor color, BarStyle style, double progress, boolean darkenSky, boolean playMusic, boolean createFog)
-    {
+    public static Pair<UUID, BossBar> getBar(String message, BarColor color, BarStyle style, double progress, boolean darkenSky, boolean playMusic, boolean createFog) {
         BossBar bossBar = Bukkit.createBossBar(message, color, style);
         bossBar.setProgress(progress < 0 ? 0D : progress / 100.0D);
 
@@ -94,8 +92,7 @@ public class BossBarAPI
      *
      * @param player Player
      */
-    public static void removeBar(Player player)
-    {
+    public static void removeBar(Player player) {
         Map<UUID, BossBar> list = new HashMap<>(bossBars);
         list.forEach((uuid, bossBar) ->
         {
@@ -108,8 +105,7 @@ public class BossBarAPI
     /**
      * Remove the boss bar of all the players
      */
-    public static void flushBars()
-    {
+    public static void flushBars() {
         bossBars.values().forEach(BossBar::removeAll);
         bossBars.clear();
     }

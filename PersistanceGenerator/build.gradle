@@ -13,26 +13,7 @@ targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenCentral()
-
     mavenLocal()
-
-    maven { url "http://maven.samagames.net/public/" }
-
-    maven {
-        url "http://maven.samagames.net/developpers/"
-        credentials {
-            username sguser
-            password sgpass
-        }
-    }
-
-    maven {
-        url "http://maven.samagames.net/network/"
-        credentials {
-            username sguser
-            password sgpass
-        }
-    }
 }
 
 dependencies {
@@ -50,6 +31,5 @@ task(runSimple, dependsOn: 'makePretty', type: JavaExec) {
     main = 'net.samagames.generator.Generator'
     classpath = sourceSets.main.runtimeClasspath
 }
-
 
 defaultTasks 'runSimple'

@@ -24,15 +24,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class GameGuiManager implements IGuiManager
-{
-    private ConcurrentHashMap<UUID, AbstractGui> playersGui;
+public class GameGuiManager implements IGuiManager {
+    private final ConcurrentHashMap<UUID, AbstractGui> playersGui;
 
     /**
      * Constructor
      */
-    public GameGuiManager()
-    {
+    public GameGuiManager() {
         this.playersGui = new ConcurrentHashMap<>();
     }
 
@@ -40,12 +38,10 @@ public class GameGuiManager implements IGuiManager
      * Open a given GUI to a given Player
      *
      * @param player The player to show the GUI
-     * @param gui The AbstractGui to show
+     * @param gui    The AbstractGui to show
      */
-    public void openGui(Player player, AbstractGui gui)
-    {
-        if(this.playersGui.containsKey(player.getUniqueId()))
-        {
+    public void openGui(Player player, AbstractGui gui) {
+        if (this.playersGui.containsKey(player.getUniqueId())) {
             player.closeInventory();
             this.playersGui.remove(player.getUniqueId());
         }
@@ -59,10 +55,8 @@ public class GameGuiManager implements IGuiManager
      *
      * @param player Player to close the GUI
      */
-    public void closeGui(Player player)
-    {
-        if(this.playersGui.containsKey(player.getUniqueId()))
-        {
+    public void closeGui(Player player) {
+        if (this.playersGui.containsKey(player.getUniqueId())) {
             player.closeInventory();
             this.playersGui.remove(player.getUniqueId());
         }
@@ -74,22 +68,18 @@ public class GameGuiManager implements IGuiManager
      *
      * @param player The Player for data to remove
      */
-    public void removeClosedGui(Player player)
-    {
-        if(this.playersGui.containsKey(player.getUniqueId()))
-            this.playersGui.remove(player.getUniqueId());
+    public void removeClosedGui(Player player) {
+        this.playersGui.remove(player.getUniqueId());
     }
 
     /**
      * Get the opened GUI of a given Player (@see HumanEntity)
      *
      * @param player A HumanEntity
-     *
      * @return The AbstractGui
      */
     @Override
-    public AbstractGui getPlayerGui(HumanEntity player)
-    {
+    public AbstractGui getPlayerGui(HumanEntity player) {
         return this.getPlayerGui(player.getUniqueId());
     }
 
@@ -97,19 +87,10 @@ public class GameGuiManager implements IGuiManager
      * Get the opened GUI of a given Player (@see UUID)
      *
      * @param uuid Player UUID
-     *
      * @return The AbstractGui
      */
-    public AbstractGui getPlayerGui(UUID uuid)
-    {
-        if(this.playersGui.containsKey(uuid))
-        {
-            return this.playersGui.get(uuid);
-        }
-        else
-        {
-            return null;
-        }
+    public AbstractGui getPlayerGui(UUID uuid) {
+        return this.playersGui.getOrDefault(uuid, null);
     }
 
     /**
@@ -118,8 +99,7 @@ public class GameGuiManager implements IGuiManager
      * @return A map with players UUID and their GUIs
      */
     @Override
-    public ConcurrentHashMap<UUID, AbstractGui> getPlayersGui()
-    {
+    public ConcurrentHashMap<UUID, AbstractGui> getPlayersGui() {
         return this.playersGui;
     }
 }

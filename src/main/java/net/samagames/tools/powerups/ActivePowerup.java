@@ -33,8 +33,7 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class ActivePowerup implements Listener
-{
+public class ActivePowerup implements Listener {
     private final UUID uuid;
     private final Powerup parent;
     private final Location location;
@@ -47,8 +46,7 @@ public class ActivePowerup implements Listener
 
     private boolean alive;
 
-    public ActivePowerup(Powerup parent, Location location)
-    {
+    public ActivePowerup(Powerup parent, Location location) {
         this.uuid = UUID.randomUUID();
         this.parent = parent;
         this.location = location;
@@ -56,8 +54,7 @@ public class ActivePowerup implements Listener
         this.spawn();
     }
 
-    public void remove(boolean got)
-    {
+    public void remove(boolean got) {
         this.entityTitle.remove();
         this.entityItem.remove();
         this.entityBase.remove();
@@ -80,8 +77,7 @@ public class ActivePowerup implements Listener
         this.alive = false;
     }
 
-    private void spawn()
-    {
+    private void spawn() {
         World world = this.location.getWorld();
 
         ItemStack powerupItem = this.parent.getIcon().clone();
@@ -107,8 +103,8 @@ public class ActivePowerup implements Listener
         this.entityTitle.setCustomNameVisible(true);
         this.entityTitle.setCanPickupItems(false);
 
-        this.entityBase.setPassenger(this.entityItem);
-        this.entityItem.setPassenger(this.entityTitle);
+        this.entityBase.addPassenger(this.entityItem);
+        this.entityItem.addPassenger(this.entityTitle);
 
         this.particlesTask = Bukkit.getScheduler().runTaskTimerAsynchronously(SamaGamesAPI.get().getPlugin(), () ->
                 ParticleEffect.SPELL_INSTANT.display(0.5F, 0.5F, 0.5F, 0.1F, 2, this.location, 100.0), 1L, 5L);
@@ -118,13 +114,11 @@ public class ActivePowerup implements Listener
         Bukkit.getPluginManager().registerEvents(this, SamaGamesAPI.get().getPlugin());
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
-    private void onPlayerPickupItem(PlayerPickupItemEvent event)
-    {
-        if (event.getItem().getItemStack() != null && event.getItem().getItemStack().getItemMeta() != null && event.getItem().getItemStack().getItemMeta().getDisplayName() != null)
-        {
-            if (this.alive && event.getItem().getItemStack().getItemMeta().getDisplayName().equals(this.uuid.toString()))
-            {
+    private void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        if (event.getItem().getItemStack() != null && event.getItem().getItemStack().getItemMeta() != null && event.getItem().getItemStack().getItemMeta().getDisplayName() != null) {
+            if (this.alive && event.getItem().getItemStack().getItemMeta().getDisplayName().equals(this.uuid.toString())) {
                 event.setCancelled(true);
 
                 HandlerList.unregisterAll(this);
@@ -135,8 +129,7 @@ public class ActivePowerup implements Listener
         }
     }
 
-    public boolean isAlive()
-    {
+    public boolean isAlive() {
         return this.alive;
     }
 }

@@ -35,46 +35,36 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class GameProfileBuilder
-{
+public class GameProfileBuilder {
     private static final String SERVICE_URL = "https://api.razex.de/user/profile/%s";
     private static final String JSON_SKIN = "{\"timestamp\":%d,\"profileId\":\"%s\",\"profileName\":\"%s\",\"isPublic\":true,\"textures\":{\"SKIN\":{\"url\":\"%s\"}}}";
     private static final String JSON_CAPE = "{\"timestamp\":%d,\"profileId\":\"%s\",\"profileName\":\"%s\",\"isPublic\":true,\"textures\":{\"SKIN\":{\"url\":\"%s\"},\"CAPE\":{\"url\":\"%s\"}}}";
 
-    private static Gson gson = new GsonBuilder().disableHtmlEscaping().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).registerTypeAdapter(GameProfile.class, new GameProfileSerializer()).registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer()).create();
+    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).registerTypeAdapter(GameProfile.class, new GameProfileSerializer()).registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer()).create();
 
-    private static HashMap<UUID, CachedProfile> cache = new HashMap<>();
+    private static final HashMap<UUID, CachedProfile> cache = new HashMap<>();
 
     private static long cacheTime = -1;
 
-    public static GameProfile fetch(UUID uuid) throws IOException
-    {
+    public static GameProfile fetch(UUID uuid) throws IOException {
         return fetch(uuid, false);
     }
 
-    public static GameProfile fetch(UUID uuid, boolean forceNew) throws IOException
-    {
-        if (!forceNew && cache.containsKey(uuid) && cache.get(uuid).isValid())
-        {
+    public static GameProfile fetch(UUID uuid, boolean forceNew) throws IOException {
+        if (!forceNew && cache.containsKey(uuid) && cache.get(uuid).isValid()) {
             return cache.get(uuid).profile;
-        }
-        else
-        {
+        } else {
             HttpURLConnection connection = (HttpURLConnection) new URL(String.format(SERVICE_URL, UUIDTypeAdapter.fromUUID(uuid))).openConnection();
             connection.setReadTimeout(5000);
 
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
-            {
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStreamReader response = new InputStreamReader(connection.getInputStream());
                 GameProfile result = gson.fromJson(new BufferedReader(response), GameProfile.class);
 
                 cache.put(uuid, new CachedProfile(result));
                 return result;
-            }
-            else
-            {
-                if (!forceNew && cache.containsKey(uuid))
-                {
+            } else {
+                if (!forceNew && cache.containsKey(uuid)) {
                     return cache.get(uuid).profile;
                 }
 
@@ -84,23 +74,21 @@ public class GameProfileBuilder
         }
     }
 
-    public static GameProfile getProfile(UUID uuid, String name, String skin)
-    {
+    public static GameProfile getProfile(UUID uuid, String name, String skin) {
         return getProfile(uuid, name, skin, null);
     }
 
-    public static GameProfile getProfile(UUID uuid, String name, String skinUrl, String capeUrl)
-    {
+    @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
+    public static GameProfile getProfile(UUID uuid, String name, String skinUrl, String capeUrl) {
         GameProfile profile = new GameProfile(uuid, name);
         boolean cape = capeUrl != null && !capeUrl.isEmpty();
 
-        List<Object> args = new ArrayList<Object>();
+        List<Object> args = new ArrayList<>();
         args.add(System.currentTimeMillis());
         args.add(UUIDTypeAdapter.fromUUID(uuid));
         args.add(name);
         args.add(skinUrl);
-        if (cape)
-        {
+        if (cape) {
             args.add(capeUrl);
         }
 
@@ -108,25 +96,20 @@ public class GameProfileBuilder
         return profile;
     }
 
-    public static void setCacheTime(long time)
-    {
+    public static void setCacheTime(long time) {
         GameProfileBuilder.cacheTime = time;
     }
 
-    private static class GameProfileSerializer implements JsonSerializer<GameProfile>, JsonDeserializer<GameProfile>
-    {
+    private static class GameProfileSerializer implements JsonSerializer<GameProfile>, JsonDeserializer<GameProfile> {
         @Override
-        public GameProfile deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException
-        {
+        public GameProfile deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
             JsonObject object = (JsonObject) json;
             UUID uuid = object.has("uuid") ? (UUID) context.deserialize(object.get("uuid"), UUID.class) : null;
             String username = object.has("username") ? object.getAsJsonPrimitive("username").getAsString() : null;
 
-            if (object.has("properties"))
-            {
+            if (object.has("properties")) {
                 JsonArray properties = object.getAsJsonArray("properties");
-                for (JsonElement entry : properties)
-                {
+                for (JsonElement entry : properties) {
                     JsonObject property = (JsonObject) entry;
                     String value = property.get("value").toString();
                     value = Base64Coder.encodeString(value);
@@ -138,10 +121,8 @@ public class GameProfileBuilder
             PropertyMap properties = object.has("properties") ? (PropertyMap) context.deserialize(object.get("properties"), PropertyMap.class) : null;
             GameProfile profile = new GameProfile(uuid, username);
 
-            if (properties != null)
-            {
-                for (Entry<String, Property> prop : properties.entries())
-                {
+            if (properties != null) {
+                for (Entry<String, Property> prop : properties.entries()) {
                     profile.getProperties().put(prop.getKey(), prop.getValue());
                 }
             }
@@ -150,29 +131,23 @@ public class GameProfileBuilder
         }
 
         @Override
-        public JsonElement serialize(GameProfile profile, Type type, JsonSerializationContext context)
-        {
+        public JsonElement serialize(GameProfile profile, Type type, JsonSerializationContext context) {
             JsonObject result = new JsonObject();
-            if (profile.getId() != null)
-            {
+            if (profile.getId() != null) {
                 result.add("uuid", context.serialize(profile.getId()));
             }
 
-            if (profile.getName() != null)
-            {
+            if (profile.getName() != null) {
                 result.addProperty("username", profile.getName());
             }
 
-            if (!profile.getProperties().isEmpty())
-            {
+            if (!profile.getProperties().isEmpty()) {
                 result.add("properties", context.serialize(profile.getProperties()));
             }
 
-            if (result.has("properties"))
-            {
+            if (result.has("properties")) {
                 JsonArray properties = result.getAsJsonArray("properties");
-                for (JsonElement entry : properties)
-                {
+                for (JsonElement entry : properties) {
                     JsonObject property = (JsonObject) entry;
                     String value = property.getAsJsonPrimitive("value").getAsString();
                     value = Base64Coder.decodeString(value);
@@ -185,19 +160,16 @@ public class GameProfileBuilder
         }
     }
 
-    private static class CachedProfile
-    {
-        private long timestamp = System.currentTimeMillis();
-        private GameProfile profile;
+    private static class CachedProfile {
+        private final long timestamp = System.currentTimeMillis();
+        private final GameProfile profile;
 
-        public CachedProfile(GameProfile profile)
-        {
+        public CachedProfile(GameProfile profile) {
             this.profile = profile;
         }
 
-        public boolean isValid()
-        {
-            return cacheTime < 0 ? true : (System.currentTimeMillis() - timestamp) < cacheTime;
+        public boolean isValid() {
+            return cacheTime < 0 || (System.currentTimeMillis() - timestamp) < cacheTime;
         }
     }
 }

@@ -19,32 +19,31 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IAchievementManager
-{
+public interface IAchievementManager {
     /**
      * Increase the progress of a given achievement to a given player
      *
-     * @param player Player
+     * @param player      Player
      * @param achievement Achievement
-     * @param amount Amount
+     * @param amount      Amount
      */
     void incrementAchievement(UUID player, IncrementationAchievement achievement, int amount);
 
     /**
      * Increase the progress of a given achievement to a given player
      *
-     * @param player Player
+     * @param player      Player
      * @param achievement Achievement
-     * @param amount Amount
+     * @param amount      Amount
      */
     void incrementAchievement(UUID player, int achievement, int amount);
 
     /**
      * Increase achievements progress, usefull for linked achievements
      *
-     * @param player Player
+     * @param player       Player
      * @param achievements Achievement id array
-     * @param amount Amount
+     * @param amount       Amount
      */
     void incrementAchievements(UUID player, int[] achievements, int amount);
 
@@ -52,7 +51,6 @@ public interface IAchievementManager
      * Get the achievement with the given ID
      *
      * @param id ID
-     *
      * @return Achievement
      */
     Achievement getAchievementByID(int id);
@@ -61,7 +59,6 @@ public interface IAchievementManager
      * Get the achievement category with the given ID
      *
      * @param id ID
-     *
      * @return Achievement category
      */
     AchievementCategory getAchievementCategoryByID(int id);
@@ -83,9 +80,8 @@ public interface IAchievementManager
     /**
      * Return if the given player has unlocked the given achievement
      *
-     * @param player Player
+     * @param player      Player
      * @param achievement Achievement
-     *
      * @return {@code true} if unlocked
      */
     boolean isUnlocked(UUID player, Achievement achievement);
@@ -94,8 +90,7 @@ public interface IAchievementManager
      * Return if the given player has unlocked the given achievement ID
      *
      * @param player Player
-     * @param id Achievement's ID
-     *
+     * @param id     Achievement's ID
      * @return {@code true} if unlocked
      */
     boolean isUnlocked(UUID player, int id);

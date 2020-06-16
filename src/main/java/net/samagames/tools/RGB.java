@@ -16,8 +16,7 @@ package net.samagames.tools;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class RGB
-{
+public class RGB {
     private final int r, g, b;
 
     /**
@@ -27,8 +26,7 @@ public class RGB
      * @param g Green color (max 255)
      * @param b Blue color (max 255)
      */
-    public RGB(int r, int g, int b)
-    {
+    public RGB(int r, int g, int b) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -39,8 +37,7 @@ public class RGB
      *
      * @return Red color (between 0 and 255)
      */
-    public int getRed()
-    {
+    public int getRed() {
         return this.r;
     }
 
@@ -49,8 +46,7 @@ public class RGB
      *
      * @return Green color (between 0 and 255)
      */
-    public int getGreen()
-    {
+    public int getGreen() {
         return this.g;
     }
 
@@ -59,8 +55,7 @@ public class RGB
      *
      * @return Blue color (between 0 and 255)
      */
-    public int getBlue()
-    {
+    public int getBlue() {
         return this.b;
     }
 }

@@ -18,38 +18,38 @@ import org.bukkit.ChatColor;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public enum ResponseType
-{
-	ALLOW(),
-	DENY_OTHER(),
-	DENY_CANT_RECEIVE(ChatColor.RED + "La partie ne peut pas vous recevoir."),
-	DENY_FULL(ChatColor.RED + "La partie est pleine."),
-	DENY_VIPONLY(ChatColor.RED + "La partie est pleine. Devenez " + ChatColor.GREEN + "VIP" + ChatColor.RED + " pour rejoindre."),
-	DENY_NOT_READY(ChatColor.RED + "Cette arène n'est pas prête. Merci de patienter."),
-	DENY_IN_GAME(ChatColor.RED + "La partie est déjà en cours.");
+public enum ResponseType {
+    ALLOW(),
+    DENY_OTHER(),
+    DENY_CANT_RECEIVE(ChatColor.RED + "La partie ne peut pas vous recevoir."),
+    DENY_FULL(ChatColor.RED + "La partie est pleine."),
+    DENY_VIPONLY(ChatColor.RED + "La partie est pleine. Devenez " + ChatColor.GREEN + "VIP" + ChatColor.RED + " pour rejoindre."),
+    DENY_NOT_READY(ChatColor.RED + "Cette arène n'est pas prête. Merci de patienter."),
+    DENY_IN_GAME(ChatColor.RED + "La partie est déjà en cours.");
 
-	private String message = null;
+    private String message = null;
 
-	/**
-	 * Empty constructor
-	 */
-	ResponseType() {}
-
-	/**
-	 * Constructor
-	 *
-	 * @param message Reason of disallowing a join request
+    /**
+     * Empty constructor
      */
-	ResponseType(String message) {
-		this.message = message;
-	}
+    ResponseType() {
+    }
 
-	/**
-	 * Get reason of disallowing a join request
-	 *
-	 * @return Reason
+    /**
+     * Constructor
+     *
+     * @param message Reason of disallowing a join request
      */
-	public String getMessage() {
-		return message;
-	}
+    ResponseType(String message) {
+        this.message = message;
+    }
+
+    /**
+     * Get reason of disallowing a join request
+     *
+     * @return Reason
+     */
+    public String getMessage() {
+        return message;
+    }
 }

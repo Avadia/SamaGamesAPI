@@ -20,16 +20,14 @@ import java.util.ArrayList;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Rainbow
-{
+public class Rainbow {
     /**
      * Get a ordered list of color to make
      * a beautiful rainbow
      *
      * @return A list of color
      */
-    public static ArrayList<ChatColor> getRainbow()
-    {
+    public static ArrayList<ChatColor> getRainbow() {
         ArrayList<ChatColor> rainbowContent = new ArrayList<>();
 
         rainbowContent.add(ChatColor.DARK_RED);

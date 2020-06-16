@@ -19,36 +19,30 @@ import java.util.concurrent.TimeUnit;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class CraftingPearl
-{
+public class CraftingPearl {
     private final UUID uuid;
     private final int stars;
     private final long createdAt;
 
-    public CraftingPearl(UUID uuid, int stars, long createdAt)
-    {
+    public CraftingPearl(UUID uuid, int stars, long createdAt) {
         this.uuid = uuid;
         this.stars = stars;
         this.createdAt = createdAt;
     }
 
-    public UUID getUUID()
-    {
+    public UUID getUUID() {
         return this.uuid;
     }
 
-    public int getStars()
-    {
+    public int getStars() {
         return this.stars;
     }
 
-    public long getCreation()
-    {
+    public long getCreation() {
         return this.createdAt;
     }
 
-    public long getCreationInMinutes()
-    {
+    public long getCreationInMinutes() {
         return TimeUnit.MILLISECONDS.toMinutes(this.createdAt - System.currentTimeMillis());
     }
 }

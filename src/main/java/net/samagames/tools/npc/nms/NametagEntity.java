@@ -26,11 +26,9 @@ import java.lang.reflect.Field;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class NametagEntity extends EntityAmbient
-{
-    public NametagEntity(final Player player)
-    {
-        super(((CraftWorld)player.getWorld()).getHandle());
+public class NametagEntity extends EntityAmbient {
+    public NametagEntity(final Player player) {
+        super(((CraftWorld) player.getWorld()).getHandle());
         final Location location = player.getLocation();
         this.setInvisible(true);
         this.setPosition(location.getX(), location.getY(), location.getZ());
@@ -38,8 +36,7 @@ public class NametagEntity extends EntityAmbient
             final Field invulnerable = Entity.class.getDeclaredField("invulnerable");
             invulnerable.setAccessible(true);
             invulnerable.setBoolean(this, true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -47,22 +44,19 @@ public class NametagEntity extends EntityAmbient
         this.hideTag(player);
     }
 
-    public void hideTag(final Player player)
-    {
-        ((CraftPlayer)player).getHandle().passengers.add(this);
+    public void hideTag(final Player player) {
+        ((CraftPlayer) player).getHandle().passengers.add(this);
     }
 
-    public void B_()
-    {
-        final double motX = 0.0;
-        this.motZ = motX;
-        this.motY = motX;
-        this.motX = motX;
+    public void B_() {
+        final double temp = 0.0;
+        this.motZ = temp;
+        this.motY = temp;
+        this.motX = temp;
         this.a(0.0f, 0.0f);
         this.a(0.0f, 0.0f, 0.0f);
     }
 
-    public void C(final Entity entity)
-    {
+    public void C(final Entity entity) {
     }
 }

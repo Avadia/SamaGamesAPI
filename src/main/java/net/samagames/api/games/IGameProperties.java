@@ -19,8 +19,7 @@ import com.google.gson.JsonObject;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IGameProperties
-{
+public interface IGameProperties {
     /**
      * Reload the properties from the file (root/game.json)
      */
@@ -50,9 +49,8 @@ public interface IGameProperties
     /**
      * Get a game option
      *
-     * @param key Option key
+     * @param key          Option key
      * @param defaultValue Default value
-     *
      * @return The value
      */
     JsonElement getGameOption(String key, JsonElement defaultValue);
@@ -67,16 +65,15 @@ public interface IGameProperties
     /**
      * Get a game option
      *
-     * @param key Option key
+     * @param key          Option key
      * @param defaultValue Default value
-     *
      * @return The value
      */
     JsonElement getMapProperty(String key, JsonElement defaultValue);
-    
+
     /**
      * Get the map properties
-     * 
+     *
      * @return The properties
      */
     JsonObject getMapProperties();

@@ -21,7 +21,6 @@ import java.net.SocketAddress;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class NullChannel extends AbstractChannel {
-
     public NullChannel() {
         super(null);
     }
@@ -47,23 +46,23 @@ public class NullChannel extends AbstractChannel {
     }
 
     @Override
-    protected void doBeginRead() throws Exception {
+    protected void doBeginRead() {
     }
 
     @Override
-    protected void doBind(SocketAddress arg0) throws Exception {
+    protected void doBind(SocketAddress arg0) {
     }
 
     @Override
-    protected void doClose() throws Exception {
+    protected void doClose() {
     }
 
     @Override
-    protected void doDisconnect() throws Exception {
+    protected void doDisconnect() {
     }
 
     @Override
-    protected void doWrite(ChannelOutboundBuffer arg0) throws Exception {
+    protected void doWrite(ChannelOutboundBuffer arg0) {
     }
 
     @Override
@@ -85,5 +84,4 @@ public class NullChannel extends AbstractChannel {
     protected SocketAddress remoteAddress0() {
         return null;
     }
-
 }

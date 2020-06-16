@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,13 +25,11 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class TutorialChapter
-{
+public class TutorialChapter {
+    private final Location location;
 
-    private Location location;
-
-    private String title;
-    private List<Pair<String, Long>> content;
+    private final String title;
+    private final List<Pair<String, Long>> content;
 
     private boolean displayInChat = true;
 
@@ -42,8 +39,7 @@ public class TutorialChapter
      * @param title    The title of this chapter.
      * @param content  The content of this chapter.
      */
-    public TutorialChapter(Location location, String title, List<Pair<String, Long>> content)
-    {
+    public TutorialChapter(Location location, String title, List<Pair<String, Long>> content) {
         this.location = location;
         this.title = title;
         this.content = content;
@@ -54,8 +50,7 @@ public class TutorialChapter
      * @param title    The title of this chapter.
      * @param content  The content of this chapter.
      */
-    public TutorialChapter(Location location, String title, List<Pair<String, Long>> content, boolean displayInChat)
-    {
+    public TutorialChapter(Location location, String title, List<Pair<String, Long>> content, boolean displayInChat) {
         this(location, title, content);
 
         this.displayInChat = displayInChat;
@@ -67,8 +62,7 @@ public class TutorialChapter
      *
      * @param uuid The UUID of the player.
      */
-    public void teleport(UUID uuid)
-    {
+    public void teleport(UUID uuid) {
         teleport(Bukkit.getPlayer(uuid));
     }
 
@@ -77,8 +71,7 @@ public class TutorialChapter
      *
      * @param player The player.
      */
-    public void teleport(Player player)
-    {
+    public void teleport(Player player) {
         player.teleport(location);
     }
 
@@ -87,8 +80,7 @@ public class TutorialChapter
      *
      * @return The title.
      */
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
@@ -97,8 +89,7 @@ public class TutorialChapter
      *
      * @return The content.
      */
-    public List<Pair<String, Long>> getContent()
-    {
+    public List<Pair<String, Long>> getContent() {
         return content;
     }
 
@@ -107,8 +98,7 @@ public class TutorialChapter
      *
      * @return {@code true} if displayed in the chat.
      */
-    public boolean isDisplayedInChat()
-    {
+    public boolean isDisplayedInChat() {
         return displayInChat;
     }
 }

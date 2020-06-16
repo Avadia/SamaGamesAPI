@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IPearlManager
-{
+public interface IPearlManager {
     Pearl runGiveAlgorythm(Player player, int gameTime, boolean win);
 }

@@ -1,7 +1,6 @@
 package net.samagames.tools.cameras;
 
 import net.minecraft.server.v1_12_R1.World;
-import net.samagames.tools.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,9 +11,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -34,14 +31,12 @@ import java.util.concurrent.ConcurrentMap;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Camera
-{
+public class Camera {
     private final ConcurrentMap<UUID, GameMode> viewers;
     private final boolean fixed;
-    private EntityCamera entityCamera;
+    private final EntityCamera entityCamera;
 
-    Camera(Location initialPosition, boolean fixed)
-    {
+    Camera(Location initialPosition, boolean fixed) {
         this.viewers = new ConcurrentHashMap<>();
         this.fixed = fixed;
 
@@ -52,32 +47,27 @@ public class Camera
         ((LivingEntity) this.entityCamera.getBukkitEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
     }
 
-    public void move(Location to)
-    {
+    public void move(Location to) {
         this.entityCamera.getBukkitEntity().teleport(to);
     }
 
-    void remove(Location backPosition)
-    {
+    void remove(Location backPosition) {
         this.viewers.keySet().stream().filter(viewer -> Bukkit.getPlayer(viewer) != null).forEach(viewer -> this.removeViewer(Bukkit.getPlayer(viewer), backPosition));
         this.entityCamera.die();
     }
 
-    public void addViewer(Player player)
-    {
+    public void addViewer(Player player) {
         this.viewers.put(player.getUniqueId(), player.getGameMode());
 
         player.setGameMode(GameMode.SPECTATOR);
         player.setSpectatorTarget(this.entityCamera.getBukkitEntity());
     }
 
-    public void removeViewer(Player player)
-    {
+    public void removeViewer(Player player) {
         this.removeViewer(player, null);
     }
 
-    public void removeViewer(Player player, Location backPosition)
-    {
+    public void removeViewer(Player player, Location backPosition) {
         player.setSpectatorTarget(null);
         player.setGameMode(this.viewers.get(player.getUniqueId()));
 
@@ -87,18 +77,15 @@ public class Camera
         this.viewers.remove(player.getUniqueId());
     }
 
-    public EntityCamera getEntityCamera()
-    {
+    public EntityCamera getEntityCamera() {
         return this.entityCamera;
     }
 
-    public boolean isPlayerViewing(Player player)
-    {
+    public boolean isPlayerViewing(Player player) {
         return this.viewers.containsKey(player.getUniqueId());
     }
 
-    public boolean isFixed()
-    {
+    public boolean isFixed() {
         return this.fixed;
     }
 }

@@ -19,8 +19,7 @@ import org.bukkit.inventory.ItemStack;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class AchievementCategory
-{
+public class AchievementCategory {
     private final int id;
     private final String displayName;
     private final ItemStack icon;
@@ -30,13 +29,12 @@ public class AchievementCategory
     /**
      * Constructor
      *
-     * @param id Achievement category's ID
+     * @param id          Achievement category's ID
      * @param displayName Achievement category's display name in GUIs
-     * @param icon Achievement category's icon {@link ItemStack} in GUIs
+     * @param icon        Achievement category's icon {@link ItemStack} in GUIs
      * @param description Achievement category's description in GUIs
      */
-    public AchievementCategory(int id, String displayName, ItemStack icon, String[] description, AchievementCategory parent)
-    {
+    public AchievementCategory(int id, String displayName, ItemStack icon, String[] description, AchievementCategory parent) {
         this.id = id;
         this.displayName = displayName;
         this.icon = icon;
@@ -47,13 +45,12 @@ public class AchievementCategory
     /**
      * Constructor
      *
-     * @param id Achievement category's ID
+     * @param id          Achievement category's ID
      * @param displayName Achievement category's display name in GUIs
-     * @param material Achievement category's icon {@link Material} in GUIs
+     * @param material    Achievement category's icon {@link Material} in GUIs
      * @param description Achievement category's description in GUIs
      */
-    public AchievementCategory(int id, String displayName, Material material, String[] description, AchievementCategory parent)
-    {
+    public AchievementCategory(int id, String displayName, Material material, String[] description, AchievementCategory parent) {
         this(id, displayName, new ItemStack(material, 1), description, parent);
     }
 
@@ -62,8 +59,7 @@ public class AchievementCategory
      *
      * @return ID
      */
-    public int getID()
-    {
+    public int getID() {
         return this.id;
     }
 
@@ -72,8 +68,7 @@ public class AchievementCategory
      *
      * @return Display name
      */
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return this.displayName;
     }
 
@@ -82,8 +77,7 @@ public class AchievementCategory
      *
      * @return Icon
      */
-    public ItemStack getIcon()
-    {
+    public ItemStack getIcon() {
         return this.icon;
     }
 
@@ -92,8 +86,7 @@ public class AchievementCategory
      *
      * @return Description
      */
-    public String[] getDescription()
-    {
+    public String[] getDescription() {
         return this.description;
     }
 
@@ -102,8 +95,7 @@ public class AchievementCategory
      *
      * @return Parent category
      */
-    public AchievementCategory getParent()
-    {
+    public AchievementCategory getParent() {
         return this.parent;
     }
 }

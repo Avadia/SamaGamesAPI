@@ -22,32 +22,28 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Titles
-{
+public class Titles {
     /**
      * Send title
      *
-     * @param player Player
-     * @param fadeIn Fade in time (in ticks)
-     * @param stay Stay time (in ticks)
-     * @param fadeOut Fade out time (in ticks)
-     * @param title Title text
+     * @param player   Player
+     * @param fadeIn   Fade in time (in ticks)
+     * @param stay     Stay time (in ticks)
+     * @param fadeOut  Fade out time (in ticks)
+     * @param title    Title text
      * @param subtitle Subtitle text
      */
-    public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle)
-    {
+    public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
         Reflection.sendPacket(player, new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut));
 
-        if (subtitle != null)
-        {
+        if (subtitle != null) {
             subtitle = subtitle.replaceAll("%player%", player.getDisplayName());
             subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
 
             Reflection.sendPacket(player, new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + subtitle + "\"}")));
         }
 
-        if (title != null)
-        {
+        if (title != null) {
             title = title.replaceAll("%player%", player.getDisplayName());
             title = ChatColor.translateAlternateColorCodes('&', title);
 
@@ -62,8 +58,7 @@ public class Titles
      * @param header Header line
      * @param footer Footer line
      */
-    public static void sendTabTitle(Player player, String header, String footer)
-    {
+    public static void sendTabTitle(Player player, String header, String footer) {
         if (header == null) header = "";
         header = ChatColor.translateAlternateColorCodes('&', header);
 
@@ -73,16 +68,13 @@ public class Titles
         header = header.replaceAll("%player%", player.getDisplayName());
         footer = footer.replaceAll("%player%", player.getDisplayName());
 
-        try
-        {
+        try {
             PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
             Reflection.setField(packet.getClass().getDeclaredField("a"), packet, IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + header + "\"}"));
             Reflection.setField(packet.getClass().getDeclaredField("b"), packet, IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
 
             Reflection.sendPacket(player, packet);
-        }
-        catch (NoSuchFieldException e)
-        {
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
     }

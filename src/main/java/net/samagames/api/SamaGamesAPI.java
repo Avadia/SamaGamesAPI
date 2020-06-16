@@ -43,20 +43,27 @@ import java.util.logging.Level;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public abstract class SamaGamesAPI
-{
-	private static SamaGamesAPI instance;
-    private JavaPlugin plugin;
+public abstract class SamaGamesAPI {
+    private static SamaGamesAPI instance;
+    private final JavaPlugin plugin;
 
     /**
      * Constructor
      *
      * @param plugin Root plugin
      */
-	public SamaGamesAPI(JavaPlugin plugin)
-    {
-		instance = this;
+    public SamaGamesAPI(JavaPlugin plugin) {
+        instance = this;
         this.plugin = plugin;
+    }
+
+    /**
+     * Get the instance of the API
+     *
+     * @return Instance
+     */
+    public static SamaGamesAPI get() {
+        return instance;
     }
 
     /**
@@ -64,19 +71,11 @@ public abstract class SamaGamesAPI
      * the console
      *
      * @param level Log level
-     * @param text Log test
+     * @param text  Log test
      */
-    public void log(Level level, String text)
-    {
+    public void log(Level level, String text) {
         this.plugin.getLogger().log(level, text);
     }
-
-    /**
-     * Get the server name (for exemple UHCRun_435fvb345)
-     *
-     * @return Server's name
-     */
-	public abstract String getServerName();
 
     /**
      * Get the server options
@@ -93,12 +92,11 @@ public abstract class SamaGamesAPI
     public abstract Jedis getBungeeResource();
 
     /**
-     * Get a new instance of the shop manager of
-     * a given game code name
+     * Get the server name (for exemple UHCRun_435fvb345)
      *
-     * @return New instance
+     * @return Server's name
      */
-	public abstract IShopsManager getShopsManager();
+    public abstract String getServerName();
 
     /**
      * Get instance of the stats manager
@@ -108,25 +106,26 @@ public abstract class SamaGamesAPI
     public abstract IStatsManager getStatsManager();
 
     /**
+     * Get a new instance of the shop manager of
+     * a given game code name
+     *
+     * @return New instance
+     */
+    public abstract IShopsManager getShopsManager();
+
+    /**
      * Get the instance of the GUI manager
      *
      * @return Instance
      */
-	public abstract IGuiManager getGuiManager();
+    public abstract IGuiManager getGuiManager();
 
     /**
      * Get the instance of the settings manager
      *
      * @return Instance
      */
-	public abstract ISettingsManager getSettingsManager();
-
-    /**
-     * Get the instance of the player data manager
-     *
-     * @return Instance
-     */
-	public abstract IPlayerDataManager getPlayerManager();
+    public abstract ISettingsManager getSettingsManager();
 
     /**
      * Get the instance of the achievement manager
@@ -136,11 +135,11 @@ public abstract class SamaGamesAPI
     public abstract IAchievementManager getAchievementManager();
 
     /**
-     * Get the instance of the game manager
+     * Get the instance of the player data manager
      *
      * @return Instance
      */
-	public abstract IGameManager getGameManager();
+    public abstract IPlayerDataManager getPlayerManager();
 
     /**
      * Get the instance of the Redis PubSub API
@@ -150,11 +149,11 @@ public abstract class SamaGamesAPI
     public abstract IPubSubAPI getPubSub();
 
     /**
-     * Get the instance of the resource packs manager
+     * Get the instance of the game manager
      *
      * @return Instance
      */
-	public abstract IResourcePacksManager getResourcePacksManager();
+    public abstract IGameManager getGameManager();
 
     /**
      * Get the instance of the friends manager
@@ -164,11 +163,11 @@ public abstract class SamaGamesAPI
     public abstract IFriendsManager getFriendsManager();
 
     /**
-     * Get the instance of the permissions manager manager
+     * Get the instance of the resource packs manager
      *
      * @return Instance
      */
-	public abstract IPermissionsManager getPermissionsManager();
+    public abstract IResourcePacksManager getResourcePacksManager();
 
     /**
      * Get the instance of the join manager
@@ -178,11 +177,11 @@ public abstract class SamaGamesAPI
     public abstract IJoinManager getJoinManager();
 
     /**
-     * Get the instance of the parties manager
+     * Get the instance of the permissions manager manager
      *
      * @return Instance
      */
-	public abstract IPartiesManager getPartiesManager();
+    public abstract IPermissionsManager getPermissionsManager();
 
     /**
      * Get the instance of the NPC manager
@@ -217,8 +216,14 @@ public abstract class SamaGamesAPI
 
     public abstract Slack getSlackLogsPublisher();
 
-    public void slackLog(Level level, SlackMessage message)
-    {
+    /**
+     * Get the instance of the parties manager
+     *
+     * @return Instance
+     */
+    public abstract IPartiesManager getPartiesManager();
+
+    public void slackLog(Level level, SlackMessage message) {
         String color;
 
         if (level == Level.FINE)
@@ -230,11 +235,10 @@ public abstract class SamaGamesAPI
         else
             color = "#28D7E5";
 
-        try
-        {
+        try {
             this.getSlackLogsPublisher().push(new SlackAttachment("").color(color).text(message));
+        } catch (IOException ignored) {
         }
-        catch (IOException ignored) {}
     }
 
     /**
@@ -242,18 +246,7 @@ public abstract class SamaGamesAPI
      *
      * @return Root plugin instance
      */
-    public JavaPlugin getPlugin()
-    {
+    public JavaPlugin getPlugin() {
         return this.plugin;
-    }
-
-    /**
-     * Get the instance of the API
-     *
-     * @return Instance
-     */
-    public static SamaGamesAPI get()
-    {
-        return instance;
     }
 }

@@ -16,12 +16,11 @@ package net.samagames.api.pubsub;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface ISender
-{
+public interface ISender {
     /**
      * Publish a given message
      *
      * @param message Message
      */
-	void publish(PendingMessage message);
+    void publish(PendingMessage message);
 }

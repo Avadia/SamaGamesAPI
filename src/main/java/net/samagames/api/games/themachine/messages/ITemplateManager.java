@@ -18,12 +18,11 @@ import net.samagames.api.games.themachine.messages.templates.*;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface ITemplateManager
-{
+public interface ITemplateManager {
     /**
      * Get a new instance of a basic message template
      * {@link BasicMessageTemplate}
-     *
+     * <p>
      * Basically, you don't have to use this template, it's
      * empty and isn't doing anything useful for you.
      *
@@ -34,7 +33,7 @@ public interface ITemplateManager
     /**
      * Get a new instance of a win message template
      * {@link WinMessageTemplate}
-     *
+     * <p>
      * Basically, you don't have to use this template, it's
      * empty and isn't doing anything useful for you.
      *
@@ -45,10 +44,10 @@ public interface ITemplateManager
     /**
      * Get a new instance of a player win template
      * {@link PlayerWinTemplate}
-     *
+     * <p>
      * With this template, you'll be able to show a win message
      * for one player only.
-     *
+     * <p>
      * Optionally, you can give a score and a commentary.
      *
      * @return Instance
@@ -58,10 +57,10 @@ public interface ITemplateManager
     /**
      * Get a new instance of a player leaderboard win template
      * {@link PlayerLeaderboardWinTemplate}
-     *
+     * <p>
      * With this template, you'll be able to show a win message
      * for three players only.
-     *
+     * <p>
      * Optionally, you can give a score and a commentary for
      * each players.
      *
@@ -72,7 +71,7 @@ public interface ITemplateManager
     /**
      * Get a new instance of a earning message template
      * {@link EarningMessageTemplate}
-     *
+     * <p>
      * Basically, you don't have to use this template, it's
      * empty and isn't doing anything useful for you.
      *

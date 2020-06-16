@@ -18,36 +18,31 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IUUIDTranslator
-{
-	/**
-	 * Get the UUID of a given username
+public interface IUUIDTranslator {
+    /**
+     * Get the UUID of a given username
      *
-	 * @param name Username
-	 * @param allowMojangCheck Allow Mojang asking
-     *
-	 * @return UUID
-	 */
+     * @param name             Username
+     * @param allowMojangCheck Allow Mojang asking
+     * @return UUID
+     */
     UUID getUUID(String name, boolean allowMojangCheck);
 
     /**
      * Get the UUID of a given username
      *
      * @param name Username
-     *
      * @return UUID
      */
-    default UUID getUUID(String name)
-    {
-		return this.getUUID(name, false);
-	}
+    default UUID getUUID(String name) {
+        return this.getUUID(name, false);
+    }
 
     /**
      * Get the username of a given UUID
      *
-     * @param uuid UUID
+     * @param uuid             UUID
      * @param allowMojangCheck Allow Mojang asking
-     *
      * @return Username
      */
     String getName(UUID uuid, boolean allowMojangCheck);
@@ -56,11 +51,9 @@ public interface IUUIDTranslator
      * Get the username of a given UUID
      *
      * @param uuid UUID
-     *
      * @return Username
      */
-    default String getName(UUID uuid)
-    {
-		return this.getName(uuid, false);
-	}
+    default String getName(UUID uuid) {
+        return this.getName(uuid, false);
+    }
 }

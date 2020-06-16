@@ -23,15 +23,13 @@ import org.bukkit.scheduler.BukkitRunnable;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-class AdvertisingTask extends BukkitRunnable
-{
+class AdvertisingTask extends BukkitRunnable {
     private final BossBar bossBar;
     private String lastMessage;
     private int style;
     private int loop;
 
-    AdvertisingTask()
-    {
+    AdvertisingTask() {
         this.bossBar = BossBarAPI.getBar("").getValue();
         this.style = 0;
         this.loop = 0;
@@ -40,27 +38,23 @@ class AdvertisingTask extends BukkitRunnable
     }
 
     @Override
-    public void run()
-    {
-        if (this.style == 0)
-        {
+    public void run() {
+        if (this.style == 0) {
             if (this.loop < 20)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "mc.samagames.net" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
             else if (this.loop < 22)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "mc.samagames.net" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "play.avadia.fr" + ChatColor.YELLOW + " !";
             else if (this.loop < 24)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "mc.samagames.net" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
             else if (this.loop < 26)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "mc.samagames.net" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "play.avadia.fr" + ChatColor.YELLOW + " !";
             else if (this.loop < 28)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "mc.samagames.net" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
             else if (this.loop < 30)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "mc.samagames.net" + ChatColor.YELLOW + " !";
-        }
-        else if (this.style == 1)
-        {
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "play.avadia.fr" + ChatColor.YELLOW + " !";
+        } else if (this.style == 1) {
             if (this.loop < 20)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "mc.samagames.net" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
             else if (this.loop < 36)
                 this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + this.colorIpAt() + ChatColor.YELLOW + " !";
         }
@@ -69,8 +63,7 @@ class AdvertisingTask extends BukkitRunnable
 
         this.loop++;
 
-        if ((this.style == 0 && this.loop >= 30) || (this.style == 1 && this.loop >= 36))
-        {
+        if ((this.style == 0 && this.loop >= 30) || (this.style == 1 && this.loop >= 36)) {
             this.loop = 0;
             this.style++;
 
@@ -79,37 +72,30 @@ class AdvertisingTask extends BukkitRunnable
         }
     }
 
-    public void addPlayer(Player player)
-    {
+    public void addPlayer(Player player) {
         this.bossBar.addPlayer(player);
     }
 
-    public void removePlayer(Player player)
-    {
+    public void removePlayer(Player player) {
         this.bossBar.removePlayer(player);
     }
 
-    private String colorIpAt()
-    {
+    private String colorIpAt() {
         int charIndex = this.loop - 20;
-        String ip = "mc.samagames.net";
+        String ip = "play.avadia.fr";
 
         StringBuilder formattedIp = new StringBuilder();
 
-        if (charIndex > 0)
-        {
-            formattedIp.append(ip.substring(0, charIndex - 1));
-            formattedIp.append(ChatColor.YELLOW).append(ip.substring(charIndex - 1, charIndex));
-        }
-        else
-        {
-            formattedIp.append(ip.substring(0, charIndex));
+        if (charIndex > 0) {
+            formattedIp.append(ip, 0, charIndex - 1);
+            formattedIp.append(ChatColor.YELLOW).append(ip, charIndex - 1, charIndex);
+        } else {
+            formattedIp.append(ip, 0, charIndex);
         }
 
         formattedIp.append(ChatColor.RED).append(ip.charAt(charIndex));
 
-        if (charIndex + 1 < ip.length())
-        {
+        if (charIndex + 1 < ip.length()) {
             formattedIp.append(ChatColor.YELLOW).append(ip.charAt(charIndex + 1));
 
             if (charIndex + 2 < ip.length())

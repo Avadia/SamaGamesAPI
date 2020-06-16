@@ -34,22 +34,19 @@ import java.util.UUID;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class Generator {
+    private static final List<JavaFile> toBuild = new ArrayList<>();
 
-    private static List<JavaFile> toBuild = new ArrayList<>();
-
-    private static String header =
+    private static final String header =
             " Dynamic code generation by Silvanoky";
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 
         loadGameStats();
 
         build();
     }
 
-    public static void loadGameStats()
-    {
+    public static void loadGameStats() {
         // STATISTICS
         TypeSpec.Builder playerStatsBuilder = TypeSpec.interfaceBuilder("IPlayerStats")
                 .addModifiers(Modifier.PUBLIC);
@@ -64,8 +61,7 @@ public class Generator {
         String package_game = package_ + ".games";
 
         Field[] playerStatisticFields = PlayerStatisticsBean.class.getDeclaredFields();
-        for (Field field : playerStatisticFields)
-        {
+        for (Field field : playerStatisticFields) {
             field.setAccessible(true);
             TypeSpec statInterface = createInterfaceOfType(field.getType(), true);
 
@@ -93,13 +89,12 @@ public class Generator {
         //END SHOP ITEM
     }
 
-    public static void build()
-    {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void build() {
         try {
             File file = new File("./Generation");
             file.delete();
-            for (JavaFile javaFile : toBuild)
-            {
+            for (JavaFile javaFile : toBuild) {
                 javaFile.writeTo(file);
             }
         } catch (IOException e) {
@@ -107,48 +102,44 @@ public class Generator {
         }
     }
 
-    public static MethodSpec getMethod(String name, TypeName retur)
-    {
+    public static MethodSpec getMethod(String name, TypeName retur) {
         MethodSpec.Builder getter = MethodSpec.methodBuilder(name);
         getter.addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
         getter.returns(retur);
         return getter.build();
     }
 
-    public static MethodSpec getMethod(String name, Type type)
-    {
+    public static MethodSpec getMethod(String name, Type type) {
         return getMethod(name, TypeName.get(type));
     }
 
+    @SuppressWarnings({"rawtypes", "unused"})
     public static TypeSpec createInterfaceOfType(Class type) {
         return createInterfaceOfType(type, true, true);
     }
 
+    @SuppressWarnings("rawtypes")
     public static TypeSpec createInterfaceOfType(Class type, boolean useIncrement) {
         return createInterfaceOfType(type, useIncrement, true);
     }
 
-    public static TypeSpec createInterfaceOfType(Class type, boolean useIncrement, boolean isUpdatable)
-    {
-        String name = "I" +type.getSimpleName().replaceAll("Bean", "");
+    @SuppressWarnings("rawtypes")
+    public static TypeSpec createInterfaceOfType(Class type, boolean useIncrement, boolean isUpdatable) {
+        String name = "I" + type.getSimpleName().replaceAll("Bean", "");
 
         TypeSpec.Builder object = TypeSpec.interfaceBuilder(name)
                 .addModifiers(Modifier.PUBLIC);
         object.addJavadoc(header);
-        if (isUpdatable)
-        {
+        if (isUpdatable) {
             object.addMethod(getMethod("update", void.class));
             object.addMethod(getMethod("refresh", void.class));
         }
 
         Method[] subDeclaredMethods = type.getDeclaredMethods();
-        for (Method method : subDeclaredMethods)
-        {
+        for (Method method : subDeclaredMethods) {
             String methodName = method.getName();
-            if (method.getParameters().length > 0)
-            {
-                if (methodName.startsWith("set") && useIncrement)
-                {
+            if (method.getParameters().length > 0) {
+                if (methodName.startsWith("set") && useIncrement) {
                     boolean isIncrementable = false;
                     Class<?> type1 = method.getParameters()[0].getType();
                     if (type1.equals(int.class)
@@ -157,8 +148,7 @@ public class Generator {
                             || type1.equals(float.class))
                         isIncrementable = true;
 
-                    if (isIncrementable)
-                    {
+                    if (isIncrementable) {
                         methodName = "incrBy" + methodName.substring(3);
                     }
                 }
@@ -166,10 +156,8 @@ public class Generator {
             }
 
             MethodSpec.Builder builder = MethodSpec.methodBuilder(methodName);
-            if (method.getParameterCount() > 0)
-            {
-                for (Parameter parameter : method.getParameters())
-                {
+            if (method.getParameterCount() > 0) {
+                for (Parameter parameter : method.getParameters()) {
                     builder.addParameter(parameter.getType(), parameter.getName());
                 }
             }

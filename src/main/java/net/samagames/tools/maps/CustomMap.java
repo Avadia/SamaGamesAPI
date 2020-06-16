@@ -24,15 +24,13 @@ import java.util.ArrayList;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class CustomMap
-{
-    private int xSize;
-    private int ySize;
-    private int id;
+public class CustomMap {
+    private final int xSize;
+    private final int ySize;
+    private final int id;
     byte[] bytes;
 
-    CustomMap(int id, int xSize, int ySize)
-    {
+    CustomMap(int id, int xSize, int ySize) {
         this.xSize = xSize;
         this.ySize = ySize;
         this.id = id;
@@ -42,12 +40,11 @@ public class CustomMap
     /**
      * Set a pixel color
      *
-     * @param x x Coordinate
-     * @param y y Coordinate
+     * @param x     x Coordinate
+     * @param y     y Coordinate
      * @param color Color as Byte, @<a href="http://minecraft.gamepedia.com/Map_item_format#1.8.1_Color_Table">http://minecraft.gamepedia.com/Map_item_format#1.8.1_Color_Table</a>
      */
-    public void setPixel(int x, int y, byte color)
-    {
+    public void setPixel(int x, int y, byte color) {
         if (x < 0 || x >= this.xSize)
             throw new IllegalArgumentException("x out of range (" + x + ")");
         if (y < 0 || y >= this.ySize)
@@ -61,9 +58,8 @@ public class CustomMap
      *
      * @param player Player
      */
-    public void sendToPlayer(Player player)
-    {
-        Reflection.sendPacket(player, new PacketPlayOutMap(this.id, (byte)0, false, new ArrayList<>(), this.bytes, 0, 0, this.xSize, this.ySize));
+    public void sendToPlayer(Player player) {
+        Reflection.sendPacket(player, new PacketPlayOutMap(this.id, (byte) 0, false, new ArrayList<>(), this.bytes, 0, 0, this.xSize, this.ySize));
     }
 
     /**
@@ -71,8 +67,7 @@ public class CustomMap
      *
      * @return ItemStack
      */
-    public ItemStack toItemStack()
-    {
-        return new ItemStack(Material.MAP, 1, (short)this.id);
+    public ItemStack toItemStack() {
+        return new ItemStack(Material.MAP, 1, (short) this.id);
     }
 }

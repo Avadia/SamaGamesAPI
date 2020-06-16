@@ -20,10 +20,9 @@ import org.bukkit.block.Block;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class SimpleBlock
-{
-    private Material type;
-    private byte data;
+public class SimpleBlock {
+    private final Material type;
+    private final byte data;
 
     /**
      * Constructor
@@ -31,8 +30,7 @@ public class SimpleBlock
      * @param type Block's material
      * @param data Block's metadata
      */
-    public SimpleBlock(Material type, byte data)
-    {
+    public SimpleBlock(Material type, byte data) {
         this.type = type;
         this.data = data;
     }
@@ -43,8 +41,7 @@ public class SimpleBlock
      * @param type Block's material
      * @param data Block's metadata
      */
-    public SimpleBlock(Material type, int data)
-    {
+    public SimpleBlock(Material type, int data) {
         this(type, (byte) data);
     }
 
@@ -53,8 +50,7 @@ public class SimpleBlock
      *
      * @param type Block's material
      */
-    public SimpleBlock(Material type)
-    {
+    public SimpleBlock(Material type) {
         this(type, (byte) 0);
     }
 
@@ -63,8 +59,8 @@ public class SimpleBlock
      *
      * @param block Block
      */
-    public SimpleBlock(Block block)
-    {
+    @SuppressWarnings("deprecation")
+    public SimpleBlock(Block block) {
         this(block.getType(), block.getData());
     }
 
@@ -73,8 +69,7 @@ public class SimpleBlock
      *
      * @param location Block's location
      */
-    public SimpleBlock(Location location)
-    {
+    public SimpleBlock(Location location) {
         this(location.getBlock());
     }
 
@@ -83,8 +78,7 @@ public class SimpleBlock
      *
      * @return Material
      */
-    public Material getType()
-    {
+    public Material getType() {
         return this.type;
     }
 
@@ -93,8 +87,7 @@ public class SimpleBlock
      *
      * @return Metadata
      */
-    public byte getData()
-    {
+    public byte getData() {
         return this.data;
     }
 }

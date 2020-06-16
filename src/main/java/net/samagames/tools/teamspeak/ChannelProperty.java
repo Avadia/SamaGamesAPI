@@ -16,8 +16,7 @@ package net.samagames.tools.teamspeak;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public enum ChannelProperty
-{
+public enum ChannelProperty {
     CHANNEL_CODEC,
     CHANNEL_CODEC_IS_UNENCRYPTED,
     CHANNEL_CODEC_QUALITY,

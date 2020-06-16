@@ -19,28 +19,24 @@ import org.bukkit.util.ChatPaginator;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class ChatUtils
-{
+public class ChatUtils {
     /**
      * Add space to a given text to center it
      * into the chat
      *
      * @param base Base text
-     *
      * @return Formatted text
      */
-    public static String getCenteredText(String base)
-    {
+    public static String getCenteredText(String base) {
         StringBuilder builder = new StringBuilder();
         int startPos = getPosToWriteCentered(ChatColor.stripColor(base));
-        
-        for(int i = 0; i < startPos; i++)
-        {
+
+        for (int i = 0; i < startPos; i++) {
             builder.append(" ");
         }
-        
+
         builder.append(base);
-        
+
         return builder.toString();
     }
 
@@ -49,11 +45,9 @@ public class ChatUtils
      * given text
      *
      * @param text Base text
-     *
      * @return Number of space
      */
-    public static int getPosToWriteCentered(String text)
-    {
+    public static int getPosToWriteCentered(String text) {
         return (ChatPaginator.AVERAGE_CHAT_PAGE_WIDTH / 2) - (text.length() / 2);
     }
 }

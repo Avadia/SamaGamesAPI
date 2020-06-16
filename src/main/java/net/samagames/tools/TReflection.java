@@ -16,11 +16,12 @@ import java.util.regex.Pattern;
  */
 public final class TReflection {
     // Deduce the net.minecraft.server.v* package
-    private static String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
-    private static String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
-    private static String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
+    private static final String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
+    private static final String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
+    private static final String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
     // Variable replacement
-    private static Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
+    private static final Pattern MATCH_VARIABLE = Pattern.compile("\\{([^}]+)}");
+
     private TReflection() {
         // Seal class
     }
@@ -28,10 +29,9 @@ public final class TReflection {
     /**
      * Retrieve a field accessor for a specific field type and name.
      *
-     * @param target - the target type.
-     * @param name - the name of the field, or NULL to ignore.
+     * @param target    - the target type.
+     * @param name      - the name of the field, or NULL to ignore.
      * @param fieldType - a compatible field type.
-     *
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(Class<?> target, String name, Class<T> fieldType) {
@@ -42,9 +42,8 @@ public final class TReflection {
      * Retrieve a field accessor for a specific field type and name.
      *
      * @param className - lookup name of the class, see {@link #getClass(String)}.
-     * @param name - the name of the field, or NULL to ignore.
+     * @param name      - the name of the field, or NULL to ignore.
      * @param fieldType - a compatible field type.
-     *
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(String className, String name, Class<T> fieldType) {
@@ -54,10 +53,9 @@ public final class TReflection {
     /**
      * Retrieve a field accessor for a specific field type and name.
      *
-     * @param target - the target type.
+     * @param target    - the target type.
      * @param fieldType - a compatible field type.
-     * @param index - the number of compatible fields to skip.
-     *
+     * @param index     - the number of compatible fields to skip.
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(Class<?> target, Class<T> fieldType, int index) {
@@ -69,8 +67,7 @@ public final class TReflection {
      *
      * @param className - lookup name of the class, see {@link #getClass(String)}.
      * @param fieldType - a compatible field type.
-     * @param index - the number of compatible fields to skip.
-     *
+     * @param index     - the number of compatible fields to skip.
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(String className, Class<T> fieldType, int index) {
@@ -124,12 +121,10 @@ public final class TReflection {
     /**
      * Search for the first publically and privately defined method of the given name and parameter count.
      *
-     * @param className - lookup name of the class, see {@link #getClass(String)}.
+     * @param className  - lookup name of the class, see {@link #getClass(String)}.
      * @param methodName - the method name, or NULL to skip.
-     * @param params - the expected parameters.
-     *
+     * @param params     - the expected parameters.
      * @return An object that invokes this specific method.
-     *
      * @throws IllegalStateException If we cannot find this method.
      */
     public static MethodInvoker getMethod(String className, String methodName, Class<?>... params) {
@@ -139,12 +134,10 @@ public final class TReflection {
     /**
      * Search for the first publically and privately defined method of the given name and parameter count.
      *
-     * @param clazz - a class to start with.
+     * @param clazz      - a class to start with.
      * @param methodName - the method name, or NULL to skip.
-     * @param params - the expected parameters.
-     *
+     * @param params     - the expected parameters.
      * @return An object that invokes this specific method.
-     *
      * @throws IllegalStateException If we cannot find this method.
      */
     public static MethodInvoker getMethod(Class<?> clazz, String methodName, Class<?>... params) {
@@ -154,13 +147,11 @@ public final class TReflection {
     /**
      * Search for the first publically and privately defined method of the given name and parameter count.
      *
-     * @param clazz - a class to start with.
+     * @param clazz      - a class to start with.
      * @param methodName - the method name, or NULL to skip.
      * @param returnType - the expected return type, or NULL to ignore.
-     * @param params - the expected parameters.
-     *
+     * @param params     - the expected parameters.
      * @return An object that invokes this specific method.
-     *
      * @throws IllegalStateException If we cannot find this method.
      */
     public static MethodInvoker getTypedMethod(Class<?> clazz, String methodName, Class<?> returnType, Class<?>... params) {
@@ -189,10 +180,8 @@ public final class TReflection {
      * Search for the first publically and privately defined constructor of the given name and parameter count.
      *
      * @param className - lookup name of the class, see {@link #getClass(String)}.
-     * @param params - the expected parameters.
-     *
+     * @param params    - the expected parameters.
      * @return An object that invokes this constructor.
-     *
      * @throws IllegalStateException If we cannot find this method.
      */
     public static ConstructorInvoker getConstructor(String className, Class<?>... params) {
@@ -202,11 +191,9 @@ public final class TReflection {
     /**
      * Search for the first publically and privately defined constructor of the given name and parameter count.
      *
-     * @param clazz - a class to start with.
+     * @param clazz  - a class to start with.
      * @param params - the expected parameters.
-     *
      * @return An object that invokes this constructor.
-     *
      * @throws IllegalStateException If we cannot find this method.
      */
     public static ConstructorInvoker getConstructor(Class<?> clazz, Class<?>... params) {
@@ -233,13 +220,13 @@ public final class TReflection {
      * This is useful when looking up fields by a NMS or OBC type.
      * <p>
      *
-     * @see {@link #getClass()} for more information.
      * @param lookupName - the class name with variables.
-     *
      * @return The class.
+     * @see {@link #getClass()} for more information.
      */
+    @SuppressWarnings("JavaDoc")
     public static Class<Object> getUntypedClass(String lookupName) {
-        @SuppressWarnings({ "rawtypes", "unchecked" })
+        @SuppressWarnings({"rawtypes", "unchecked"})
         Class<Object> clazz = (Class) getClass(lookupName);
         return clazz;
     }
@@ -269,9 +256,7 @@ public final class TReflection {
      * </table>
      *
      * @param lookupName - the class name with variables.
-     *
      * @return The looked up class.
-     *
      * @throws IllegalArgumentException If a variable or class could not be found.
      */
     public static Class<?> getClass(String lookupName) {
@@ -282,7 +267,6 @@ public final class TReflection {
      * Retrieve a class in the net.minecraft.server.VERSION.* package.
      *
      * @param name - the name of the class, excluding the package.
-     *
      * @throws IllegalArgumentException If the class doesn't exist.
      */
     public static Class<?> getMinecraftClass(String name) {
@@ -293,7 +277,6 @@ public final class TReflection {
      * Retrieve a class in the org.bukkit.craftbukkit.VERSION.* package.
      *
      * @param name - the name of the class, excluding the package.
-     *
      * @throws IllegalArgumentException If the class doesn't exist.
      */
     public static Class<?> getCraftBukkitClass(String name) {
@@ -304,7 +287,6 @@ public final class TReflection {
      * Retrieve a class by its canonical name.
      *
      * @param canonicalName - the canonical name.
-     *
      * @return The class.
      */
     private static Class<?> getCanonicalClass(String canonicalName) {
@@ -319,7 +301,6 @@ public final class TReflection {
      * Expand variables such as "{nms}" and "{obc}" to their corresponding packages.
      *
      * @param name - the full name of the class.
-     *
      * @return The expanded string.
      */
     private static String expandVariables(String name) {
@@ -328,7 +309,7 @@ public final class TReflection {
 
         while (matcher.find()) {
             String variable = matcher.group(1);
-            String replacement = "";
+            String replacement;
 
             // Expand all detected variables
             if ("nms".equalsIgnoreCase(variable))
@@ -358,10 +339,9 @@ public final class TReflection {
          * Invoke a constructor for a specific class.
          *
          * @param arguments - the arguments to pass to the constructor.
-         *
          * @return The constructed object.
          */
-        public Object invoke(Object... arguments);
+        Object invoke(Object... arguments);
     }
 
     /**
@@ -371,12 +351,11 @@ public final class TReflection {
         /**
          * Invoke a method on a specific target object.
          *
-         * @param target - the target object, or NULL for a static method.
+         * @param target    - the target object, or NULL for a static method.
          * @param arguments - the arguments to pass to the method.
-         *
          * @return The return value, or NULL if is void.
          */
-        public Object invoke(Object target, Object... arguments);
+        Object invoke(Object target, Object... arguments);
     }
 
     /**
@@ -389,27 +368,24 @@ public final class TReflection {
          * Retrieve the content of a field.
          *
          * @param target - the target object, or NULL for a static field.
-         *
          * @return The value of the field.
          */
-        public T get(Object target);
+        T get(Object target);
 
         /**
          * Set the content of a field.
          *
          * @param target - the target object, or NULL for a static field.
-         *
-         * @param value - the new value of the field.
+         * @param value  - the new value of the field.
          */
-        public void set(Object target, Object value);
+        void set(Object target, Object value);
 
         /**
          * Determine if the given object has this field.
          *
          * @param target - the object to test.
-         *
          * @return TRUE if it does, FALSE otherwise.
          */
-        public boolean hasField(Object target);
+        boolean hasField(Object target);
     }
 }

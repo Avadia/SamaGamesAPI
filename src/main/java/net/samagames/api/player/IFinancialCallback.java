@@ -16,15 +16,14 @@ package net.samagames.api.player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IFinancialCallback
-{
+public interface IFinancialCallback {
     /**
      * Fired after financial operation
      *
-     * @param newAmount New amount of money
+     * @param newAmount  New amount of money
      * @param difference Difference of money between before and
      *                   after the operation
-     * @param error {@link Throwable} error if the operation failed
+     * @param error      {@link Throwable} error if the operation failed
      */
-	void done(long newAmount, long difference, Throwable error);
+    void done(long newAmount, long difference, Throwable error);
 }

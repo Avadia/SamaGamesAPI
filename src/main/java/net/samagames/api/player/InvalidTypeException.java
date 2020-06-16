@@ -16,38 +16,38 @@ package net.samagames.api.player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class InvalidTypeException extends IllegalArgumentException
-{
-	/**
-	 * Constructor
-	 */
-	public InvalidTypeException() {}
-
-	/**
-	 * Constructor
-	 *
-	 * @param message Exception message
+public class InvalidTypeException extends IllegalArgumentException {
+    /**
+     * Constructor
      */
-	public InvalidTypeException(String message) {
-		super(message);
-	}
+    public InvalidTypeException() {
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param message Exception message
-	 * @param cause Error message
-	 */
-	public InvalidTypeException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Constructor
+     *
+     * @param message Exception message
+     */
+    public InvalidTypeException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param cause Error message
-	 */
-	public InvalidTypeException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Constructor
+     *
+     * @param message Exception message
+     * @param cause   Error message
+     */
+    public InvalidTypeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param cause Error message
+     */
+    public InvalidTypeException(Throwable cause) {
+        super(cause);
+    }
 }

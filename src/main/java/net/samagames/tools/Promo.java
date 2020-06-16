@@ -18,10 +18,9 @@ import java.util.Date;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Promo
-{
+public class Promo {
     public Date end;
-    public int multiply = 1;
+    public int multiply;
     public String message = null;
 
     /**
@@ -29,8 +28,7 @@ public class Promo
      *
      * @param promoData Raw data
      */
-    public Promo(String promoData)
-    {
+    public Promo(String promoData) {
         String[] split = promoData.split(":");
         this.multiply = Integer.parseInt(split[0]);
 
@@ -42,8 +40,7 @@ public class Promo
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.multiply + ":" + this.end.getTime() + ((this.message != null) ? ":" + this.message : "");
     }
 }

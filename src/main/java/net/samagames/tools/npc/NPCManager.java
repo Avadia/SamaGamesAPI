@@ -19,7 +19,10 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /*
  * This file is part of SamaGamesAPI.
@@ -38,66 +41,48 @@ import java.util.*;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class NPCManager implements Listener {
-
     public SamaGamesAPI api;
 
-    private Map<CustomNPC, Hologram> entities = new HashMap<>();
+    private final Map<CustomNPC, Hologram> entities = new HashMap<>();
 
     private CallBack<CustomNPC> scoreBoardRegister;
 
-    public NPCManager(SamaGamesAPI api)
-    {
+    public NPCManager(SamaGamesAPI api) {
         this.api = api;
 
         Bukkit.getPluginManager().registerEvents(this, api.getPlugin());
     }
 
-    private void updateForAllNPC(CustomNPC npc)
-    {
-        List<Player> players = new ArrayList<>();
-        players.addAll(Bukkit.getOnlinePlayers());
-        /*for(Player p : players)
-        {
-            sendNPC(p, npc);
-        }*/
-    }
-
-    public void sendNPC(Player p, CustomNPC npc)
-    {
+    public void sendNPC(Player p, CustomNPC npc) {
         Reflection.sendPacket(p, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc));
 
-        p.hidePlayer(npc.getBukkitEntity());
-        p.showPlayer(npc.getBukkitEntity());
+        p.hidePlayer(api.getPlugin(), npc.getBukkitEntity());
+        p.showPlayer(api.getPlugin(), npc.getBukkitEntity());
 
         this.api.getPlugin().getServer().getScheduler().runTaskLater(this.api.getPlugin(), () ->
-        {
-            Reflection.sendPacket(p, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc));
-        }, 60L);
+                Reflection.sendPacket(p, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc)), 60L);
     }
 
-    public void removeNPC(Player p, CustomNPC npc)
-    {
-        p.hidePlayer(npc.getBukkitEntity());
+    public void removeNPC(Player p, CustomNPC npc) {
+        p.hidePlayer(api.getPlugin(), npc.getBukkitEntity());
     }
 
     /**
      * Need to be called async
-     * @param location
-     * @param skinUUID
-     * @return
+     *
+     * @param location loc
+     * @param skinUUID skinUUID
+     * @return npc
      */
-    public CustomNPC createNPC(Location location, UUID skinUUID)
-    {
-        return createNPC(location, skinUUID, new String[] { "[NPC] " + entities.size() });
+    public CustomNPC createNPC(Location location, UUID skinUUID) {
+        return createNPC(location, skinUUID, new String[]{"[NPC] " + entities.size()});
     }
 
-    public CustomNPC createNPC(Location location, UUID skinUUID, String[] hologramLines)
-    {
+    public CustomNPC createNPC(Location location, UUID skinUUID, String[] hologramLines) {
         return createNPC(location, skinUUID, hologramLines, true);
     }
 
-    public CustomNPC createNPC(Location location, UUID skinUUID, String[] hologramLines, boolean showByDefault)
-    {
+    public CustomNPC createNPC(Location location, UUID skinUUID, String[] hologramLines, boolean showByDefault) {
         World world = ((CraftWorld) location.getWorld()).getHandle();
         GameProfile gameProfile = new ProfileLoader(skinUUID.toString(), "[NPC] " + entities.size(), skinUUID).loadProfile();
 
@@ -107,8 +92,7 @@ public class NPCManager implements Listener {
 
         Hologram hologram = null;
 
-        if (hologramLines != null)
-        {
+        if (hologramLines != null) {
             hologram = new Hologram(hologramLines);
             hologram.generateLines(location.clone().add(0.0D, 1.8D, 0.0D));
         }
@@ -121,10 +105,8 @@ public class NPCManager implements Listener {
         if (scoreBoardRegister != null)
             scoreBoardRegister.done(npc, null);
 
-        if (showByDefault)
-        {
-            for(Player player : Bukkit.getOnlinePlayers())
-            {
+        if (showByDefault) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 sendNPC(player, npc);
 
                 if (hologram != null)
@@ -132,19 +114,15 @@ public class NPCManager implements Listener {
             }
         }
 
-        //Bukkit.getScheduler().runTaskLater(api.getPlugin(), () -> updateForAllNPC(npc), 2L);
         return npc;
     }
 
-    public void removeNPC(String name)
-    {
+    public void removeNPC(String name) {
         removeNPC(getNPCEntity(name));
     }
 
-    public void removeNPC(CustomNPC npc)
-    {
-        if (npc != null)
-        {
+    public void removeNPC(CustomNPC npc) {
+        if (npc != null) {
             if (npc.getHologram() != null)
                 npc.getHologram().destroy();
 
@@ -155,8 +133,7 @@ public class NPCManager implements Listener {
         }
     }
 
-    public CustomNPC getNPCEntity(String name)
-    {
+    public CustomNPC getNPCEntity(String name) {
         for (CustomNPC entity : entities.keySet())
             if (entity.getName().equals(name))
                 return entity;
@@ -169,28 +146,23 @@ public class NPCManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerHitNPC(EntityDamageByEntityEvent event)
-    {
-        if (Reflection.getHandle(event.getEntity()) instanceof CustomNPC && event.getDamager() instanceof Player)
-        {
+    public void onPlayerHitNPC(EntityDamageByEntityEvent event) {
+        if (Reflection.getHandle(event.getEntity()) instanceof CustomNPC && event.getDamager() instanceof Player) {
             CustomNPC npc = (CustomNPC) Reflection.getHandle(event.getEntity());
-            npc.onInteract(false, (Player) event.getDamager());
+            Objects.requireNonNull(npc).onInteract(false, (Player) event.getDamager());
         }
     }
 
     @EventHandler
-    public void onPlayerInteractNPC(PlayerInteractEntityEvent event)
-    {
-        if (Reflection.getHandle(event.getRightClicked()) instanceof CustomNPC)
-        {
+    public void onPlayerInteractNPC(PlayerInteractEntityEvent event) {
+        if (Reflection.getHandle(event.getRightClicked()) instanceof CustomNPC) {
             CustomNPC npc = (CustomNPC) Reflection.getHandle(event.getRightClicked());
-            npc.onInteract(true, event.getPlayer());
+            Objects.requireNonNull(npc).onInteract(true, event.getPlayer());
         }
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event)
-    {
+    public void onPlayerMove(PlayerMoveEvent event) {
         this.entities.keySet().forEach(customNPC ->
         {
             if (event.getFrom().distanceSquared(customNPC.getBukkitEntity().getLocation()) > 2500
@@ -200,8 +172,7 @@ public class NPCManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerTeleport(PlayerTeleportEvent event)
-    {
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
         this.entities.keySet().forEach(customNPC ->
         {
             if (event.getFrom().distanceSquared(customNPC.getBukkitEntity().getLocation()) > 2500
@@ -211,8 +182,7 @@ public class NPCManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Bukkit.getScheduler().runTaskLater(api.getPlugin(), () -> entities.keySet().forEach(customNPC ->
         {
             sendNPC(event.getPlayer(), customNPC);
@@ -221,15 +191,12 @@ public class NPCManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerKickEvent event)
-    {
-        this.entities.entrySet().forEach(customNPC ->
-                customNPC.getValue().removeReceiver(event.getPlayer()));
+    public void onPlayerLeave(PlayerKickEvent event) {
+        this.entities.forEach((key, value) -> value.removeReceiver(event.getPlayer()));
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event)
-    {
-        this.entities.entrySet().forEach(customNPC -> customNPC.getValue().removeReceiver(event.getPlayer()));
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        this.entities.forEach((key, value) -> value.removeReceiver(event.getPlayer()));
     }
 }

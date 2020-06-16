@@ -379,11 +379,11 @@ public enum ParticleEffect {
      * </ul>
      */
     MOB_APPEARANCE("mobappearance", 41, 8),
- 	DRAGON_BREATH("dragonbreath", 42, 9),
- 	END_ROD("endrod", 43, 9),
- 	DAMAGE_INDICATOR("damageindicator", 44, 9),
- 	SWEEP_ATTACK("sweepattack", 45, 9),
- 	FALLING_DUST("fallingdust", 46, 10, ParticleProperty.REQUIRES_DATA);
+    DRAGON_BREATH("dragonbreath", 42, 9),
+    END_ROD("endrod", 43, 9),
+    DAMAGE_INDICATOR("damageindicator", 44, 9),
+    SWEEP_ATTACK("sweepattack", 45, 9),
+    FALLING_DUST("fallingdust", 46, 10, ParticleProperty.REQUIRES_DATA);
 
     private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<>();
     private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<>();
@@ -408,7 +408,7 @@ public enum ParticleEffect {
      * @param requiredVersion Version which is required (1.x)
      * @param properties      Properties of this particle effect
      */
-    private ParticleEffect(String name, int id, int requiredVersion, ParticleProperty... properties) {
+    ParticleEffect(String name, int id, int requiredVersion, ParticleProperty... properties) {
         this.name = name;
         this.id = id;
         this.requiredVersion = requiredVersion;
@@ -910,7 +910,7 @@ public enum ParticleEffect {
      * @author DarkBlade12
      * @since 1.7
      */
-    public static enum ParticleProperty {
+    public enum ParticleProperty {
         /**
          * The particle effect requires water to be displayed
          */
@@ -926,7 +926,7 @@ public enum ParticleEffect {
         /**
          * The particle effect uses the offsets as color values
          */
-        COLORABLE;
+        COLORABLE
     }
 
     /**
@@ -1402,9 +1402,9 @@ public enum ParticleEffect {
                 getHandle = Reflection.getMethod("CraftPlayer", Reflection.PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
                 playerConnection = Reflection.getField("EntityPlayer", Reflection.PackageType.MINECRAFT_SERVER, false, "playerConnection");
                 sendPacket = Reflection.getMethod(playerConnection.getType(), "sendPacket", Reflection.PackageType.MINECRAFT_SERVER.getClass("Packet"));
-                } catch (Exception exception) {
-                    throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
-                }
+            } catch (Exception exception) {
+                throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
+            }
             initialized = true;
         }
 
@@ -1508,7 +1508,6 @@ public enum ParticleEffect {
          * @throws IllegalArgumentException If the range is lower than 1
          * @see #sendTo(Location center, Player player)
          */
-        @SuppressWarnings("deprecation")
         public void sendTo(Location center, double range) throws IllegalArgumentException {
             if (range < 1) {
                 throw new IllegalArgumentException("The range is lower than 1");

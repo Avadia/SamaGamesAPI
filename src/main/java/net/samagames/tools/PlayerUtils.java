@@ -24,18 +24,15 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class PlayerUtils
-{
+public class PlayerUtils {
     /**
      * Get a fully formatted player name with
      * rank and color
      *
      * @param uuid Player's UUID
-     *
      * @return Formatted name
      */
-    public static String getFullyFormattedPlayerName(UUID uuid)
-    {
+    public static String getFullyFormattedPlayerName(UUID uuid) {
         AbstractPlayerData playerData = SamaGamesAPI.get().getPlayerManager().getPlayerData(uuid);
         IPermissionsEntity playerPermissionEntity = SamaGamesAPI.get().getPermissionsManager().getPlayer(uuid);
 
@@ -47,11 +44,9 @@ public class PlayerUtils
      * rank and color
      *
      * @param player Player
-     *
      * @return Formatted name
      */
-    public static String getFullyFormattedPlayerName(Player player)
-    {
+    public static String getFullyFormattedPlayerName(Player player) {
         return getFullyFormattedPlayerName(player.getUniqueId());
     }
 
@@ -59,11 +54,9 @@ public class PlayerUtils
      * Get a colored formatted player name
      *
      * @param uuid Player's UUID
-     *
      * @return Formatted name
      */
-    public static String getColoredFormattedPlayerName(UUID uuid)
-    {
+    public static String getColoredFormattedPlayerName(UUID uuid) {
         AbstractPlayerData playerData = SamaGamesAPI.get().getPlayerManager().getPlayerData(uuid);
         IPermissionsEntity playerPermissionEntity = SamaGamesAPI.get().getPermissionsManager().getPlayer(uuid);
 
@@ -74,11 +67,9 @@ public class PlayerUtils
      * Get a colored formatted player name
      *
      * @param player Player
-     *
      * @return Formatted name
      */
-    public static String getColoredFormattedPlayerName(Player player)
-    {
+    public static String getColoredFormattedPlayerName(Player player) {
         return getColoredFormattedPlayerName(player.getUniqueId());
     }
 }

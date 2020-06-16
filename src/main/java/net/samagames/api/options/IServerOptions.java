@@ -16,8 +16,7 @@ package net.samagames.api.options;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IServerOptions
-{
+public interface IServerOptions {
     /**
      * Get if the tab we'll be filled with ranks
      *

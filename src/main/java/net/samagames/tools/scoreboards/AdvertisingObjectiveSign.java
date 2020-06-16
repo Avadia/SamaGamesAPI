@@ -19,8 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable
-{
+public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable {
     private final String originalDisplayName;
     private final String advertisingText;
 
@@ -36,12 +35,11 @@ public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable
      * @param name        Objective's name
      * @param displayName Objective's display name
      */
-    public AdvertisingObjectiveSign(JavaPlugin plugin, String name, String displayName)
-    {
+    public AdvertisingObjectiveSign(JavaPlugin plugin, String name, String displayName) {
         super(name, displayName);
 
         this.originalDisplayName = displayName;
-        this.advertisingText = "      Vous jouez sur mc.samagames.net !                  "; // 6 spaces before and 18 spaces after
+        this.advertisingText = "      Vous jouez sur play.avadia.fr !                  "; // 6 spaces before and 18 spaces after
 
         this.finalText = this.advertisingText;
         this.ticks = 0;
@@ -52,8 +50,7 @@ public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable
     }
 
     @Override
-    public void updateLines()
-    {
+    public void updateLines() {
         this.setDisplayName(this.finalText);
         super.updateLines();
     }
@@ -62,16 +59,11 @@ public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable
      * Create and apply the design of the scoreboard's title
      */
     @Override
-    public void run()
-    {
-        if (!this.advertisingState)
-        {
-            if (this.ticks == 0)
-            {
+    public void run() {
+        if (!this.advertisingState) {
+            if (this.ticks == 0) {
                 this.finalText = this.originalDisplayName;
-            }
-            else if (this.ticks == 150)
-            {
+            } else if (this.ticks == 150) {
                 this.advertisingState = true;
                 this.ticks = 0;
 
@@ -79,15 +71,12 @@ public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable
             }
 
             this.ticks += 5;
-        }
-        else
-        {
+        } else {
             this.finalText = ChatColor.YELLOW + "" + ChatColor.BOLD + this.advertisingText.substring(this.advertisingCursor, this.advertisingCursor + 16);
 
             this.advertisingCursor++;
 
-            if (this.advertisingCursor >= this.advertisingText.length() - 16)
-            {
+            if (this.advertisingCursor >= this.advertisingText.length() - 16) {
                 this.advertisingCursor = 0;
                 this.advertisingState = false;
             }

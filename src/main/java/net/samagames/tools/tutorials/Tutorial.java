@@ -34,269 +34,245 @@ import java.util.concurrent.ConcurrentHashMap;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Tutorial implements Listener
-{
-	private final Plugin p;
+public class Tutorial implements Listener {
+    private final Plugin p;
 
-	/**
-	 * Map: player's UUID -> task executing the tutorial
-	 */
-	private Map<UUID, BukkitTask> viewers = new ConcurrentHashMap<>();
+    /**
+     * Map: player's UUID -> task executing the tutorial
+     */
+    private final Map<UUID, BukkitTask> viewers = new ConcurrentHashMap<>();
 
-	/**
-	 * Chapter's contents
-	 */
-	private List<TutorialChapter> content = new LinkedList<>();
-
-
-	private long timeNeededToPlayThisTutorial = 0l;
-	private Long tutorialHour = null;
+    /**
+     * Chapter's contents
+     */
+    private final List<TutorialChapter> content = new LinkedList<>();
 
 
-	public Tutorial()
-	{
-		p = SamaGamesAPI.get().getPlugin();
-		p.getServer().getPluginManager().registerEvents(this, p);
-	}
+    private long timeNeededToPlayThisTutorial = 0L;
+    private Long tutorialHour = null;
+
+
+    public Tutorial() {
+        p = SamaGamesAPI.get().getPlugin();
+        p.getServer().getPluginManager().registerEvents(this, p);
+    }
 
 
 
 
-	/* * ***  PUBLIC TUTORIAL API  *** * */
+    /* * ***  PUBLIC TUTORIAL API  *** * */
 
 
-	/**
-	 * Adds a chapter in the tutorial.
-	 *
-	 * @param chapter The chapter to add.
-	 */
-	public void addChapter(TutorialChapter chapter)
-	{
-		content.add(chapter);
+    /**
+     * Adds a chapter in the tutorial.
+     *
+     * @param chapter The chapter to add.
+     */
+    public void addChapter(TutorialChapter chapter) {
+        content.add(chapter);
 
-		long readingTime = 0;
+        long readingTime = 0;
 
-		for (Pair<String, Long> line : chapter.getContent())
-			readingTime += line.getRight();
+        for (Pair<String, Long> line : chapter.getContent())
+            readingTime += line.getRight();
 
-		timeNeededToPlayThisTutorial += readingTime;
-	}
+        timeNeededToPlayThisTutorial += readingTime;
+    }
 
-	/**
-	 * The time of the day this tutorial is displayed.
-	 *
-	 * You can set a value above 24000 ticks if you want to play with moon phases.<br/>
-	 * If {@code null}, the time is not changed. This is the default behavior.
-	 *
-	 * @param tutorialHour The time of the day this tutorial will be played.
-	 */
-	public void setTutorialHour(final Long tutorialHour)
-	{
-		this.tutorialHour = tutorialHour;
-	}
+    /**
+     * The time of the day this tutorial is displayed.
+     * <p>
+     * You can set a value above 24000 ticks if you want to play with moon phases.<br/>
+     * If {@code null}, the time is not changed. This is the default behavior.
+     *
+     * @param tutorialHour The time of the day this tutorial will be played.
+     */
+    public void setTutorialHour(final Long tutorialHour) {
+        this.tutorialHour = tutorialHour;
+    }
 
-	/**
-	 * Returns this tutorial's duration.
-	 *
-	 * @return The duration, in ticks.
-	 */
-	public long getTimeNeededToPlayThisTutorial()
-	{
-		return timeNeededToPlayThisTutorial;
-	}
+    /**
+     * Returns this tutorial's duration.
+     *
+     * @return The duration, in ticks.
+     */
+    public long getTimeNeededToPlayThisTutorial() {
+        return timeNeededToPlayThisTutorial;
+    }
 
 
 
 
-	/* * ***  TUTORIAL EVENTS  *** * */
+    /* * ***  TUTORIAL EVENTS  *** * */
 
 
-	/**
-	 * This method is called when the tutorial is finished for the given player.
-	 *
-	 * @param player The player who just finished the tutorial. May be {@code null}.
-	 * @param interrupted {@code true} if the tutorial is stopped because it was interrupted
-	 *                    using {@link #stopForAll(String)}, {@link #stop(UUID)} or if the
-	 *                    user disconnected.
-	 */
-	protected void onTutorialEnds(Player player, boolean interrupted) {}
-
-
-
-
-	/* * ***  TUTORIAL LAUNCHERS AND HALTERS  *** * */
-
-
-	/**
-	 * Starts the tutorial for the given player.
-	 *
-	 * @param id The UUID of the player.
-	 */
-	public void start(UUID id)
-	{
-		if (isWatchingTutorial(id))
-		{
-			p.getLogger().info(p.getServer().getPlayer(id).getName() + "(" + id + ") is trying to see the tutorial whilst watching it.");
-			return;
-		}
-
-		Player player = p.getServer().getPlayer(id);
-
-		// The player cannot move anymore (except with our teleportations)
-		player.setFlySpeed(0f);
-		player.setAllowFlight(true);
-		player.setFlying(true);
-
-		// All other players are hidden
-		for (Player other : p.getServer().getOnlinePlayers())
-		{
-			player.hidePlayer(other);
-			other.hidePlayer(player);
-		}
-
-		// The player's hour is updated, if needed
-		if(tutorialHour != null)
-		{
-			player.setPlayerTime(tutorialHour, false);
-		}
-
-
-		// The tutorial is started
-		viewers.put(
-				id, p.getServer().getScheduler().runTaskTimer(p, new TutorialRunner(this, id), 10L, 10L)
-		);
-	}
-
-
-	/**
-	 * Stops the tutorial for the given player.
-	 *
-	 * @param id The UUID of the player.
-	 */
-	public void stop(UUID id)
-	{
-		stop(id, true);
-	}
-
-	/**
-	 * Stops the tutorial for everyone.
-	 *
-	 * @param reason A reason displayed to the viewers. Nothing sent if null.
-	 */
-	public void stopForAll(String reason)
-	{
-		for (UUID viewerID : viewers.keySet())
-		{
-			stop(viewerID, true);
-
-			if(reason != null)
-			{
-				p.getServer().getPlayer(viewerID).sendMessage(reason);
-			}
-		}
-	}
+    /**
+     * This method is called when the tutorial is finished for the given player.
+     *
+     * @param player      The player who just finished the tutorial. May be {@code null}.
+     * @param interrupted {@code true} if the tutorial is stopped because it was interrupted
+     *                    using {@link #stopForAll(String)}, {@link #stop(UUID)} or if the
+     *                    user disconnected.
+     */
+    protected void onTutorialEnds(Player player, boolean interrupted) {
+    }
 
 
 
 
-	/* * ***  INTERNAL API  *** * */
+    /* * ***  TUTORIAL LAUNCHERS AND HALTERS  *** * */
 
 
-	/**
-	 * Stops the tutorial for the given player.
-	 *
-	 * @param id The UUID of the player.
-	 * @param interrupted {@code true} if the tutorial is stopped because it was interrupted
-	 *                    using {@link #stopForAll(String)}, {@link #stop(UUID)} or if the
-	 *                    user disconnected.
-	 */
-	void stop(UUID id, final Boolean interrupted) // package-private
-	{
-		if (!isWatchingTutorial(id)) return;
+    /**
+     * Starts the tutorial for the given player.
+     *
+     * @param id The UUID of the player.
+     */
+    public void start(UUID id) {
+        if (isWatchingTutorial(id)) {
+            p.getLogger().info(p.getServer().getPlayer(id).getName() + "(" + id + ") is trying to see the tutorial whilst watching it.");
+            return;
+        }
 
-		Player player = p.getServer().getPlayer(id);
+        Player player = p.getServer().getPlayer(id);
 
-		if (player != null)
-		{
-			// The player can now move.
-			player.setFlySpeed(0.1f);
-			player.setFlying(false);
-			player.setAllowFlight(false);
+        // The player cannot move anymore (except with our teleportations)
+        player.setFlySpeed(0f);
+        player.setAllowFlight(true);
+        player.setFlying(true);
 
-			// All other players are displayed
-			for (Player other : p.getServer().getOnlinePlayers())
-			{
-				player.showPlayer(other);
-				other.showPlayer(player);
-			}
+        // All other players are hidden
+        for (Player other : p.getServer().getOnlinePlayers()) {
+            player.hidePlayer(p, other);
+            other.hidePlayer(p, player);
+        }
 
-			player.resetPlayerTime();
-		}
-
-		try
-		{
-			viewers.get(id).cancel();
-		}
-		catch (IllegalStateException ignored) {}
-
-		viewers.remove(id);
-
-		onTutorialEnds(player, interrupted);
-	}
+        // The player's hour is updated, if needed
+        if (tutorialHour != null) {
+            player.setPlayerTime(tutorialHour, false);
+        }
 
 
-	/**
-	 * @return A list of {@link TutorialChapter}s.
-	 */
-	List<TutorialChapter> getContent()
-	{
-		return content;
-	}
+        // The tutorial is started
+        viewers.put(
+                id, p.getServer().getScheduler().runTaskTimer(p, new TutorialRunner(this, id), 10L, 10L)
+        );
+    }
 
-	/**
-	 * Checks if the given player is currently watching this tutorial.
-	 *
-	 * @param id The player's UUID.
-	 *
-	 * @return {@code true} if the player is watching this tutorial.
-	 */
-	boolean isWatchingTutorial(UUID id)
-	{
-		return viewers.containsKey(id);
-	}
+
+    /**
+     * Stops the tutorial for the given player.
+     *
+     * @param id The UUID of the player.
+     */
+    public void stop(UUID id) {
+        stop(id, true);
+    }
+
+    /**
+     * Stops the tutorial for everyone.
+     *
+     * @param reason A reason displayed to the viewers. Nothing sent if null.
+     */
+    public void stopForAll(String reason) {
+        for (UUID viewerID : viewers.keySet()) {
+            stop(viewerID, true);
+
+            if (reason != null) {
+                p.getServer().getPlayer(viewerID).sendMessage(reason);
+            }
+        }
+    }
 
 
 
 
-	/* * ***  INTERNAL EVENTS  *** * */
+    /* * ***  INTERNAL API  *** * */
 
-	@EventHandler
-	public void onToToggleFlight(PlayerToggleFlightEvent ev)
-	{
-		if(isWatchingTutorial(ev.getPlayer().getUniqueId()))
-		{
-			ev.setCancelled(true);
-			ev.getPlayer().setFlying(true);
-		}
-	}
 
-	@EventHandler
-	public void onPlayerQuits(PlayerQuitEvent ev)
-	{
-		onPlayerQuits(ev.getPlayer());
-	}
+    /**
+     * Stops the tutorial for the given player.
+     *
+     * @param id          The UUID of the player.
+     * @param interrupted {@code true} if the tutorial is stopped because it was interrupted
+     *                    using {@link #stopForAll(String)}, {@link #stop(UUID)} or if the
+     *                    user disconnected.
+     */
+    void stop(UUID id, final Boolean interrupted) // package-private
+    {
+        if (!isWatchingTutorial(id)) return;
 
-	@EventHandler
-	public void onPlayerQuits(PlayerKickEvent ev)
-	{
-		onPlayerQuits(ev.getPlayer());
-	}
+        Player player = p.getServer().getPlayer(id);
 
-	public void onPlayerQuits(Player player)
-	{
-		if(isWatchingTutorial(player.getUniqueId()))
-		{
-			stop(player.getUniqueId(), true);
-		}
-	}
+        if (player != null) {
+            // The player can now move.
+            player.setFlySpeed(0.1f);
+            player.setFlying(false);
+            player.setAllowFlight(false);
+
+            // All other players are displayed
+            for (Player other : p.getServer().getOnlinePlayers()) {
+                player.showPlayer(p, other);
+                other.showPlayer(p, player);
+            }
+
+            player.resetPlayerTime();
+        }
+
+        try {
+            viewers.get(id).cancel();
+        } catch (IllegalStateException ignored) {
+        }
+
+        viewers.remove(id);
+
+        onTutorialEnds(player, interrupted);
+    }
+
+
+    /**
+     * @return A list of {@link TutorialChapter}s.
+     */
+    List<TutorialChapter> getContent() {
+        return content;
+    }
+
+    /**
+     * Checks if the given player is currently watching this tutorial.
+     *
+     * @param id The player's UUID.
+     * @return {@code true} if the player is watching this tutorial.
+     */
+    boolean isWatchingTutorial(UUID id) {
+        return viewers.containsKey(id);
+    }
+
+
+
+
+    /* * ***  INTERNAL EVENTS  *** * */
+
+    @EventHandler
+    public void onToToggleFlight(PlayerToggleFlightEvent ev) {
+        if (isWatchingTutorial(ev.getPlayer().getUniqueId())) {
+            ev.setCancelled(true);
+            ev.getPlayer().setFlying(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuits(PlayerQuitEvent ev) {
+        onPlayerQuits(ev.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuits(PlayerKickEvent ev) {
+        onPlayerQuits(ev.getPlayer());
+    }
+
+    public void onPlayerQuits(Player player) {
+        if (isWatchingTutorial(player.getUniqueId())) {
+            stop(player.getUniqueId(), true);
+        }
+    }
 }

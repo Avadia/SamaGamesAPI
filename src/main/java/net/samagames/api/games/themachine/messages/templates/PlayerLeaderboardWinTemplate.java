@@ -24,29 +24,26 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class PlayerLeaderboardWinTemplate
-{
+public class PlayerLeaderboardWinTemplate {
     /**
      * Prepare a message to display a leaderboard with
      * given players
      *
      * @param winner Winner in the leaderboard
      * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
-     *
+     * @param third  Third in the leaderboard (can be null)
      * @return Formatted lines
      */
-    public List<String> prepare(Player winner, Player second, Player third)
-    {
+    public List<String> prepare(Player winner, Player second, Player third) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner)));
         lines.add("");
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner)));
         lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second)));
 
-        if(third != null)
+        if (third != null)
             lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third)));
-        
+
         return lines;
     }
 
@@ -54,24 +51,22 @@ public class PlayerLeaderboardWinTemplate
      * Prepare a message to display a leaderboard with
      * given players and their respective scores
      *
-     * @param winner Winner in the leaderboard
-     * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
+     * @param winner      Winner in the leaderboard
+     * @param second      Second in the leaderboard
+     * @param third       Third in the leaderboard (can be null)
      * @param winnerScore Winner's score
      * @param secondScore Second's score
-     * @param thirdScore Third's score
-     *
+     * @param thirdScore  Third's score
      * @return Formatted lines
      */
-    public List<String> prepare(Player winner, Player second, Player third, int winnerScore, int secondScore, int thirdScore)
-    {
+    public List<String> prepare(Player winner, Player second, Player third, int winnerScore, int secondScore, int thirdScore) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
         lines.add("");
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
         lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second) + ChatColor.GRAY + " (" + secondScore + ")"));
 
-        if(third != null)
+        if (third != null)
             lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third) + ChatColor.GRAY + " (" + thirdScore + ")"));
 
         return lines;
@@ -81,26 +76,24 @@ public class PlayerLeaderboardWinTemplate
      * Prepare a message to display a leaderboard with
      * given players and a commentary for the winner
      *
-     * @param winner Winner in the leaderboard
-     * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
+     * @param winner     Winner in the leaderboard
+     * @param second     Second in the leaderboard
+     * @param third      Third in the leaderboard (can be null)
      * @param commentary Commentary
-     *
      * @return Formatted lines
      */
-    public List<String> prepare(Player winner, Player second, Player third, String commentary)
-    {
+    public List<String> prepare(Player winner, Player second, Player third, String commentary) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner)));
 
-        if(commentary != null)
+        if (commentary != null)
             lines.add(ChatUtils.getCenteredText(commentary));
 
         lines.add("");
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner)));
         lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second)));
 
-        if(third != null)
+        if (third != null)
             lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third)));
 
         return lines;
@@ -111,29 +104,27 @@ public class PlayerLeaderboardWinTemplate
      * given players, their respective scores and a
      * commentary for the winner
      *
-     * @param winner Winner in the leaderboard
-     * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
-     * @param commentary Commentary
+     * @param winner      Winner in the leaderboard
+     * @param second      Second in the leaderboard
+     * @param third       Third in the leaderboard (can be null)
+     * @param commentary  Commentary
      * @param winnerScore Winner's score
      * @param secondScore Second's score
-     * @param thirdScore Third's score
-     *
+     * @param thirdScore  Third's score
      * @return Formatted lines
      */
-    public List<String> prepare(Player winner, Player second, Player third, String commentary, int winnerScore, int secondScore, int thirdScore)
-    {
+    public List<String> prepare(Player winner, Player second, Player third, String commentary, int winnerScore, int secondScore, int thirdScore) {
         List<String> lines = new ArrayList<>();
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
 
-        if(commentary != null)
+        if (commentary != null)
             lines.add(ChatUtils.getCenteredText(commentary));
 
         lines.add("");
         lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
         lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second) + ChatColor.GRAY + " (" + secondScore + ")"));
 
-        if(third != null)
+        if (third != null)
             lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third) + ChatColor.GRAY + " (" + secondScore + ")"));
         return lines;
     }
@@ -144,10 +135,9 @@ public class PlayerLeaderboardWinTemplate
      *
      * @param winner Winner in the leaderboard
      * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
+     * @param third  Third in the leaderboard (can be null)
      */
-    public void execute(Player winner, Player second, Player third)
-    {
+    public void execute(Player winner, Player second, Player third) {
         new WinMessageTemplate().execute(this.prepare(winner, second, third));
     }
 
@@ -155,15 +145,14 @@ public class PlayerLeaderboardWinTemplate
      * Send a message to display a leaderboard with
      * given players and their respective scores
      *
-     * @param winner Winner in the leaderboard
-     * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
+     * @param winner      Winner in the leaderboard
+     * @param second      Second in the leaderboard
+     * @param third       Third in the leaderboard (can be null)
      * @param winnerScore Winner's score
      * @param secondScore Second's score
-     * @param thirdScore Third's score
+     * @param thirdScore  Third's score
      */
-    public void execute(Player winner, Player second, Player third, int winnerScore, int secondScore, int thirdScore)
-    {
+    public void execute(Player winner, Player second, Player third, int winnerScore, int secondScore, int thirdScore) {
         new WinMessageTemplate().execute(this.prepare(winner, second, third, winnerScore, secondScore, thirdScore));
     }
 
@@ -171,13 +160,12 @@ public class PlayerLeaderboardWinTemplate
      * Send a message to display a leaderboard with
      * given players and a commentary for the winner
      *
-     * @param winner Winner in the leaderboard
-     * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
+     * @param winner     Winner in the leaderboard
+     * @param second     Second in the leaderboard
+     * @param third      Third in the leaderboard (can be null)
      * @param commentary Commentary
      */
-    public void execute(Player winner, Player second, Player third, String commentary)
-    {
+    public void execute(Player winner, Player second, Player third, String commentary) {
         new WinMessageTemplate().execute(this.prepare(winner, second, third, commentary));
     }
 
@@ -186,16 +174,15 @@ public class PlayerLeaderboardWinTemplate
      * given players, their respective scores and a
      * commentary for the winner
      *
-     * @param winner Winner in the leaderboard
-     * @param second Second in the leaderboard
-     * @param third Third in the leaderboard (can be null)
-     * @param commentary Commentary
+     * @param winner      Winner in the leaderboard
+     * @param second      Second in the leaderboard
+     * @param third       Third in the leaderboard (can be null)
+     * @param commentary  Commentary
      * @param winnerScore Winner's score
      * @param secondScore Second's score
-     * @param thirdScore Third's score
+     * @param thirdScore  Third's score
      */
-    public void execute(Player winner, Player second, Player third, String commentary, int winnerScore, int secondScore, int thirdScore)
-    {
+    public void execute(Player winner, Player second, Player third, String commentary, int winnerScore, int secondScore, int thirdScore) {
         new WinMessageTemplate().execute(this.prepare(winner, second, third, commentary, winnerScore, secondScore, thirdScore));
     }
 }

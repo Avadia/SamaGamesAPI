@@ -20,19 +20,17 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class UnknownPlayer
-{
+public class UnknownPlayer {
     private UUID playerId;
     private String playerName;
 
     /**
      * Constructor
      *
-     * @param playerId Player's UUID
+     * @param playerId   Player's UUID
      * @param playerName Player's username
      */
-    public UnknownPlayer(UUID playerId, String playerName)
-    {
+    public UnknownPlayer(UUID playerId, String playerName) {
         this.playerId = playerId;
         this.playerName = playerName;
     }
@@ -42,8 +40,7 @@ public class UnknownPlayer
      *
      * @param player Player
      */
-    public UnknownPlayer(Player player)
-    {
+    public UnknownPlayer(Player player) {
         this(player.getUniqueId(), player.getName());
     }
 
@@ -52,8 +49,7 @@ public class UnknownPlayer
      *
      * @param playerId Player's UUID
      */
-    public UnknownPlayer(UUID playerId)
-    {
+    public UnknownPlayer(UUID playerId) {
         this(playerId, null);
     }
 
@@ -62,8 +58,7 @@ public class UnknownPlayer
      *
      * @param playerId Player's UUID
      */
-    public void setPlayerId(UUID playerId)
-    {
+    public void setPlayerId(UUID playerId) {
         this.playerId = playerId;
     }
 
@@ -72,8 +67,7 @@ public class UnknownPlayer
      *
      * @param playerName Player's username
      */
-    public void setPlayerName(String playerName)
-    {
+    public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
@@ -101,8 +95,7 @@ public class UnknownPlayer
     }
 
     @Override
-    public boolean equals(Object compare)
-    {
+    public boolean equals(Object compare) {
         if (compare instanceof UnknownPlayer)
             return ((UnknownPlayer) compare).getPlayerId().equals(this.playerId);
         else

@@ -33,14 +33,13 @@ public enum GamesNames {
     CHUNKWARS(13),
     THEDROPPER(14);
 
-    private int value;
-    GamesNames(int value)
-    {
+    private final int value;
+
+    GamesNames(int value) {
         this.value = value;
     }
 
-    public int intValue()
-    {
+    public int intValue() {
         return value;
     }
 }

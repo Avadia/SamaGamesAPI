@@ -21,16 +21,14 @@ import org.bukkit.entity.Player;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class GameUtils
-{
+public class GameUtils {
     /**
      * Broadcast a message to all players
      *
      * @param message Message
      */
-    public static void broadcastMessage(String message)
-    {
-        for(Player player : Bukkit.getOnlinePlayers())
+    public static void broadcastMessage(String message) {
+        for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(message);
     }
 
@@ -39,33 +37,30 @@ public class GameUtils
      *
      * @param sound Sound
      */
-    public static void broadcastSound(Sound sound)
-    {
-        for(Player player : Bukkit.getOnlinePlayers())
+    public static void broadcastSound(Sound sound) {
+        for (Player player : Bukkit.getOnlinePlayers())
             player.playSound(player.getPlayer().getPlayer().getLocation(), sound, 1, 1);
     }
 
     /**
      * Broadcast a sound to all players
      *
-     * @param sound Sound
+     * @param sound  Sound
      * @param volume Sound's volume
      */
-    public static void broadcastSound(Sound sound, int volume)
-    {
-        for(Player player : Bukkit.getOnlinePlayers())
+    public static void broadcastSound(Sound sound, int volume) {
+        for (Player player : Bukkit.getOnlinePlayers())
             player.playSound(player.getPlayer().getPlayer().getLocation(), sound, volume, 1);
     }
 
     /**
      * Broadcast a sound to all players
      *
-     * @param sound Sound
+     * @param sound    Sound
      * @param location Sound's location
      */
-    public static void broadcastSound(Sound sound, Location location)
-    {
-        for(Player player : Bukkit.getOnlinePlayers())
+    public static void broadcastSound(Sound sound, Location location) {
+        for (Player player : Bukkit.getOnlinePlayers())
             player.playSound(location, sound, 1, 1);
     }
 }

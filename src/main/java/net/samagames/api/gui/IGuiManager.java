@@ -22,13 +22,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public interface IGuiManager
-{
+public interface IGuiManager {
     /**
      * Open the given Abstract GUI to the player
      *
      * @param player The player to show the gui
-     * @param gui The AbstractGui to show
+     * @param gui    The AbstractGui to show
      */
     void openGui(Player player, AbstractGui gui);
 
@@ -51,7 +50,6 @@ public interface IGuiManager
      * Get the GUI object of a player
      *
      * @param player The HumanPlayer object to get the GUI
-     *
      * @return The AbstractGui of the player
      */
     AbstractGui getPlayerGui(HumanEntity player);
@@ -60,7 +58,6 @@ public interface IGuiManager
      * Get the Gui object of a player
      *
      * @param player The UUID of the player to get the GUI
-     *
      * @return The AbstractGui of the player
      */
     AbstractGui getPlayerGui(UUID player);

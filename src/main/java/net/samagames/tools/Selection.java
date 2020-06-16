@@ -18,8 +18,7 @@ import org.bukkit.Location;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Selection
-{
+public class Selection {
     private Location firstPoint;
     private Location lastPoint;
 
@@ -27,10 +26,9 @@ public class Selection
      * Constructor
      *
      * @param firstPoint First point of the selection
-     * @param lastPoint Last point of the selection
+     * @param lastPoint  Last point of the selection
      */
-    public Selection(Location firstPoint, Location lastPoint)
-    {
+    public Selection(Location firstPoint, Location lastPoint) {
         this.firstPoint = firstPoint;
         this.lastPoint = lastPoint;
     }
@@ -40,8 +38,7 @@ public class Selection
      *
      * @param firstPoint First point
      */
-    public void setFirstPoint(Location firstPoint)
-    {
+    public void setFirstPoint(Location firstPoint) {
         this.firstPoint = firstPoint;
     }
 
@@ -50,8 +47,7 @@ public class Selection
      *
      * @param lastPoint Last point
      */
-    public void setLastPoint(Location lastPoint)
-    {
+    public void setLastPoint(Location lastPoint) {
         this.lastPoint = lastPoint;
     }
 
@@ -60,8 +56,7 @@ public class Selection
      *
      * @return A point
      */
-    public Location getMinimumPoint()
-    {
+    public Location getMinimumPoint() {
         double x = Math.min(this.firstPoint.getX(), this.lastPoint.getBlockX());
         double y = Math.min(this.firstPoint.getY(), this.lastPoint.getBlockY());
         double z = Math.min(this.firstPoint.getZ(), this.lastPoint.getBlockZ());
@@ -74,8 +69,7 @@ public class Selection
      *
      * @return A point
      */
-    public Location getMaximumPoint()
-    {
+    public Location getMaximumPoint() {
         double x = Math.max(this.firstPoint.getX(), this.lastPoint.getBlockX());
         double y = Math.max(this.firstPoint.getY(), this.lastPoint.getBlockY());
         double z = Math.max(this.firstPoint.getZ(), this.lastPoint.getBlockZ());

@@ -22,10 +22,8 @@ import java.lang.reflect.Field;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class VoidPlayerConnection extends PlayerConnection
-{
-    public VoidPlayerConnection(MinecraftServer minecraftserver, EntityPlayer entityplayer)
-    {
+public class VoidPlayerConnection extends PlayerConnection {
+    public VoidPlayerConnection(MinecraftServer minecraftserver, EntityPlayer entityplayer) {
         super(minecraftserver, new NPCNetworkManager(), entityplayer);
     }
 
@@ -164,10 +162,8 @@ public class VoidPlayerConnection extends PlayerConnection
 
     }
 
-    public static class NPCNetworkManager extends NetworkManager
-    {
-        public NPCNetworkManager()
-        {
+    public static class NPCNetworkManager extends NetworkManager {
+        public NPCNetworkManager() {
             super(EnumProtocolDirection.CLIENTBOUND); //MCP = isClientSide ---- SRG=field_150747_h
 
             Field channel = Reflection.makeField(NetworkManager.class, "channel"); //MCP = channel ---- SRG=field_150746_k

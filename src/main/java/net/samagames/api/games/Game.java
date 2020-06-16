@@ -36,8 +36,7 @@ import java.util.logging.Level;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class Game<GAMEPLAYER extends GamePlayer>
-{
+public class Game<GAMEPLAYER extends GamePlayer> {
     protected final IGameManager gameManager;
 
     protected final String gameCodeName;
@@ -58,18 +57,17 @@ public class Game<GAMEPLAYER extends GamePlayer>
     protected long startTime = -1;
 
     /**
-     * @param gameCodeName The code name of the game, given by an administrator.
-     * @param gameName The friendly name of the game.
+     * @param gameCodeName    The code name of the game, given by an administrator.
+     * @param gameName        The friendly name of the game.
      * @param gameDescription A short description of the game, displayed to the players
      *                        when they join the game through a /title.
      * @param gamePlayerClass The class of your custom {@link GamePlayer} object, the same
      *                        as the {@link GAMEPLAYER} class. Use {@code GamePlayer.class}
      *                        if you are not using a custom class.
-     * @param gameCreators An array of the UUID of the creators of this game (used for
-     *                     the achievement 'Play with the creator').
+     * @param gameCreators    An array of the UUID of the creators of this game (used for
+     *                        the achievement 'Play with the creator').
      */
-    public Game(String gameCodeName, String gameName, String gameDescription, Class<GAMEPLAYER> gamePlayerClass, UUID[] gameCreators)
-    {
+    public Game(String gameCodeName, String gameName, String gameDescription, Class<GAMEPLAYER> gamePlayerClass, UUID[] gameCreators) {
         this.gameManager = SamaGamesAPI.get().getGameManager();
         this.gameCodeName = gameCodeName.toLowerCase();
         this.gameName = gameName;
@@ -86,28 +84,26 @@ public class Game<GAMEPLAYER extends GamePlayer>
     }
 
     /**
-     * @param gameCodeName The code name of the game, given by an administrator.
-     * @param gameName The friendly name of the game.
+     * @param gameCodeName    The code name of the game, given by an administrator.
+     * @param gameName        The friendly name of the game.
      * @param gameDescription A short description of the game, displayed to the players
      *                        when they join the game through a /title.
      * @param gamePlayerClass The class of your custom {@link GamePlayer} object, the same
      *                        as the {@link GAMEPLAYER} class. Use {@code GamePlayer.class}
      *                        if you are not using a custom class.
      */
-    public Game(String gameCodeName, String gameName, String gameDescription, Class<GAMEPLAYER> gamePlayerClass)
-    {
+    public Game(String gameCodeName, String gameName, String gameDescription, Class<GAMEPLAYER> gamePlayerClass) {
         this(gameCodeName, gameName, gameDescription, gamePlayerClass, null);
     }
 
     /**
      * Starts the game.
-     *
+     * <p>
      * Override this command to execute something when the game starts.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      */
-    public void startGame()
-    {
+    public void startGame() {
         if (this.gameManager.isFreeMode())
             throw new UnsupportedOperationException("You can't use this method while using the free mode!");
 
@@ -135,11 +131,10 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
     /**
      * Override this method to execute something when the game was just registered.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      */
-    public void handlePostRegistration()
-    {
+    public void handlePostRegistration() {
         this.coherenceMachine = this.gameManager.getCoherenceMachine();
         this.beginObj = new BeginTimer(this);
 
@@ -154,15 +149,13 @@ public class Game<GAMEPLAYER extends GamePlayer>
      * Override this to execute something when a normal player joins the game at the
      * beginning of it (this will neo be called for reconnections).
      * Prefer the use of {@link GamePlayer#handleLogin(boolean)}.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      *
      * @param player The player who logged in.
      */
-    public void handleLogin(Player player)
-    {
-        try
-        {
+    public void handleLogin(Player player) {
+        try {
             GAMEPLAYER gamePlayerObject = this.gamePlayerClass.getConstructor(Player.class).newInstance(player);
             gamePlayerObject.handleLogin(false);
 
@@ -170,9 +163,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
             Titles.sendTitle(player, 20, 20 * 3, 20, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + this.gameName, ChatColor.AQUA + this.gameDescription);
             this.advertisingTask.addPlayer(player);
-        }
-        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
-        {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             SamaGamesAPI.get().slackLog(Level.SEVERE, new SlackMessage("[" + SamaGamesAPI.get().getServerName() + "] Failed to handle '" + player.getName() + "'s login: " + e.getMessage()));
         }
@@ -182,19 +173,17 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
     /**
      * Override this to execute something when a moderator joins the game.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      *
      * @param player The player who logged in.
      */
-    public void handleModeratorLogin(Player player)
-    {
-        for (GamePlayer gamePlayer : this.gamePlayers.values())
-        {
+    public void handleModeratorLogin(Player player) {
+        for (GamePlayer gamePlayer : this.gamePlayers.values()) {
             Player p = gamePlayer.getPlayerIfOnline();
 
             if (p != null)
-                p.hidePlayer(player);
+                p.hidePlayer(SamaGamesAPI.get().getPlugin(), player);
         }
 
         this.gameModerators.add(player.getUniqueId());
@@ -206,19 +195,17 @@ public class Game<GAMEPLAYER extends GamePlayer>
     /**
      * Override this to execute something when a player logout at any time.
      * Prefer the use of {@link GamePlayer#handleLogout()}.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      *
      * @param player The player who logged out.
      */
-    public void handleLogout(Player player)
-    {
+    public void handleLogout(Player player) {
         String key = "lastgame:" + player.getPlayer().toString();
 
         Jedis jedis = SamaGamesAPI.get().getBungeeResource();
 
-        if (jedis != null)
-        {
+        if (jedis != null) {
             jedis.set(key, this.gameCodeName);
             jedis.expire(key, 60 * 3);
             jedis.close();
@@ -227,16 +214,11 @@ public class Game<GAMEPLAYER extends GamePlayer>
         if (this.status == Status.FINISHED)
             return;
 
-        if (this.gamePlayers.containsKey(player.getUniqueId()))
-        {
-            if (!this.gamePlayers.get(player.getUniqueId()).isSpectator())
-            {
-                if (this.gameManager.isReconnectAllowed(player) && this.status == Status.IN_GAME)
-                {
+        if (this.gamePlayers.containsKey(player.getUniqueId())) {
+            if (!this.gamePlayers.get(player.getUniqueId()).isSpectator()) {
+                if (this.gameManager.isReconnectAllowed(player) && this.status == Status.IN_GAME) {
                     this.gameManager.getCoherenceMachine().getMessageManager().writePlayerDisconnected(player, this.gameManager.getMaxReconnectTime() * 60000);
-                }
-                else
-                {
+                } else {
                     this.gameManager.getCoherenceMachine().getMessageManager().writePlayerQuited(player);
                 }
             }
@@ -248,30 +230,24 @@ public class Game<GAMEPLAYER extends GamePlayer>
                 this.gamePlayers.remove(player.getUniqueId());
 
             this.gameManager.refreshArena();
-        }
-        else if (this.gameModerators.contains(player.getUniqueId()))
-        {
-            this.gameModerators.remove(player.getUniqueId());
-        }
+        } else this.gameModerators.remove(player.getUniqueId());
     }
 
     /**
      * Override this to execute something when a player reconnects into the game.
      * Prefer the use of {@link GamePlayer#handleLogin(boolean)}.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      *
      * @param player The player who just logged in back.
      */
-    public void handleReconnect(Player player)
-    {
+    public void handleReconnect(Player player) {
         if (this.gameManager.isFreeMode())
             throw new UnsupportedOperationException("You can't use this method while using the free mode!");
 
         GamePlayer gamePlayer = this.gamePlayers.get(player.getUniqueId());
 
-        if (gamePlayer == null)
-        {
+        if (gamePlayer == null) {
             this.handleReconnectTimeOut(player, true);
             return;
         }
@@ -287,19 +263,17 @@ public class Game<GAMEPLAYER extends GamePlayer>
     /**
      * Override this to execute something when a disconnected player can no longer join
      * the game.
-     *
+     * <p>
      * You need to call the {@code super} method at the beginning of your own one.
      *
      * @param player The player who can no longer rejoin the game.
      * @param silent Display a message
      */
-    public void handleReconnectTimeOut(OfflinePlayer player, boolean silent)
-    {
+    public void handleReconnectTimeOut(OfflinePlayer player, boolean silent) {
         if (this.gameManager.isFreeMode())
             throw new UnsupportedOperationException("You can't use this method while using the free mode!");
 
-        if (this.gamePlayers.containsKey(player.getUniqueId()))
-            this.gamePlayers.remove(player.getUniqueId());
+        this.gamePlayers.remove(player.getUniqueId());
 
         this.gameManager.refreshArena();
 
@@ -313,13 +287,11 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @param uuid UUID of the winner
      */
-    public void handleWinner(UUID uuid)
-    {
+    public void handleWinner(UUID uuid) {
         if (this.gameManager.isFreeMode())
             throw new UnsupportedOperationException("You can't use this method while using the free mode!");
 
-        try
-        {
+        try {
             this.gameWinners.add(uuid);
 
             if (this.gameManager.getGameStatisticsHelper() != null)
@@ -327,9 +299,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
             SamaGamesAPI.get().getAchievementManager().getAchievementByID(25).unlock(uuid);
             Arrays.asList(26, 27, 28, 29).forEach(id -> SamaGamesAPI.get().getAchievementManager().incrementAchievement(uuid, id, 1));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             SamaGamesAPI.get().slackLog(Level.SEVERE, new SlackMessage("[" + SamaGamesAPI.get().getServerName() + "] Failed to handle '" + SamaGamesAPI.get().getUUIDTranslator().getName(uuid) + "'s win: " + e.getMessage()));
         }
@@ -337,12 +307,11 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
     /**
      * Call this method when the game is finished.
-     *
+     * <p>
      * If for some reasons you want to override this method, you will need to call the
      * {@code super} method at the beginning of your own one.
      */
-    public void handleGameEnd()
-    {
+    public void handleGameEnd() {
         if (this.gameManager.isFreeMode())
             throw new UnsupportedOperationException("You can't use this method while using the free mode!");
 
@@ -352,14 +321,12 @@ public class Game<GAMEPLAYER extends GamePlayer>
         this.gameManager.stopTimer();
         this.getInGamePlayers().values().forEach(GamePlayer::stepPlayedTimeCounter);
 
-        for (GamePlayer player : this.getRegisteredGamePlayers().values())
-        {
-            try
-            {
+        for (GamePlayer player : this.getRegisteredGamePlayers().values()) {
+            try {
                 if (this.gameManager.getGameStatisticsHelper() != null)
                     this.gameManager.getGameStatisticsHelper().increasePlayedTime(player.getUUID(), player.getPlayedTime());
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
         }
 
         boolean wasAStaffMember = false;
@@ -368,24 +335,18 @@ public class Game<GAMEPLAYER extends GamePlayer>
         boolean wasASamAllieInGame = false;
         boolean wasAnHidden = false;
 
-        for (GamePlayer player : this.gamePlayers.values())
-        {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player.getUUID(), "network.staff"))
-            {
+        for (GamePlayer player : this.gamePlayers.values()) {
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player.getUUID(), "network.staff")) {
                 wasAStaffMember = true;
 
                 if (this.gameCreators != null && this.gameCreators.contains(player.getUUID()))
                     wasAGameCreator = true;
-            }
-            else if (SamaGamesAPI.get().getPermissionsManager().getPlayer(player.getUUID()).getGroupId() == 4)
-            {
+            } else if (SamaGamesAPI.get().getPermissionsManager().getPlayer(player.getUUID()).getGroupId() == 4) {
                 wasACoupaingInGame = true;
 
                 if (SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUUID()).hasNickname())
                     wasAnHidden = true;
-            }
-            else if (SamaGamesAPI.get().getPermissionsManager().getPlayer(player.getUUID()).getGroupId() == 5)
-            {
+            } else if (SamaGamesAPI.get().getPermissionsManager().getPlayer(player.getUUID()).getGroupId() == 5) {
                 wasASamAllieInGame = true;
 
                 if (SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUUID()).hasNickname())
@@ -393,10 +354,8 @@ public class Game<GAMEPLAYER extends GamePlayer>
             }
         }
 
-        for (GamePlayer player : this.gamePlayers.values())
-        {
-            if (player.isOnline())
-            {
+        for (GamePlayer player : this.gamePlayers.values()) {
+            if (player.isOnline()) {
                 boolean finalWasAStaffMember = wasAStaffMember;
                 boolean finalWasAGameCreator = wasAGameCreator;
                 boolean finalWasACoupaingInGame = wasACoupaingInGame;
@@ -405,8 +364,8 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
                 Bukkit.getScheduler().runTask(SamaGamesAPI.get().getPlugin(), () ->
                 {
-                   if (finalWasAStaffMember)
-                       SamaGamesAPI.get().getAchievementManager().getAchievementByID(15).unlock(player.getUUID());
+                    if (finalWasAStaffMember)
+                        SamaGamesAPI.get().getAchievementManager().getAchievementByID(15).unlock(player.getUUID());
 
                     if (finalWasAGameCreator)
                         SamaGamesAPI.get().getAchievementManager().getAchievementByID(16).unlock(player.getUUID());
@@ -426,15 +385,13 @@ public class Game<GAMEPLAYER extends GamePlayer>
         }
 
         Bukkit.getScheduler().runTaskLater(SamaGamesAPI.get().getPlugin(), () ->
-        {
-            this.gamePlayers.keySet().stream().filter(playerUUID -> Bukkit.getPlayer(playerUUID) != null).forEach(playerUUID ->
-            {
-                Pearl pearl = this.gameManager.getPearlManager().runGiveAlgorythm(Bukkit.getPlayer(playerUUID), (int) TimeUnit.MILLISECONDS.toSeconds(this.gameManager.getGameTime()), this.gameWinners.contains(playerUUID));
+                this.gamePlayers.keySet().stream().filter(playerUUID -> Bukkit.getPlayer(playerUUID) != null).forEach(playerUUID ->
+                {
+                    Pearl pearl = this.gameManager.getPearlManager().runGiveAlgorythm(Bukkit.getPlayer(playerUUID), (int) TimeUnit.MILLISECONDS.toSeconds(this.gameManager.getGameTime()), this.gameWinners.contains(playerUUID));
 
-                EarningMessageTemplate earningMessageTemplate = this.coherenceMachine.getTemplateManager().getEarningMessageTemplate();
-                earningMessageTemplate.execute(Bukkit.getPlayer(playerUUID), this.getPlayer(playerUUID).getCoins(), pearl);
-            });
-        }, 20L * 3);
+                    EarningMessageTemplate earningMessageTemplate = this.coherenceMachine.getTemplateManager().getEarningMessageTemplate();
+                    earningMessageTemplate.execute(Bukkit.getPlayer(playerUUID), this.getPlayer(playerUUID).getCoins(), pearl);
+                }), 20L * 3);
 
         Bukkit.getScheduler().runTaskLater(SamaGamesAPI.get().getPlugin(), () ->
         {
@@ -454,23 +411,21 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @param player Player who will receive the fireworks
      */
-    public void effectsOnWinner(Player player)
-    {
+    public void effectsOnWinner(Player player) {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(SamaGamesAPI.get().getPlugin(), new WinEffect(player), 5L, 5L);
     }
 
     /**
      * Credits coins to the given player. Works for offline players.
-     *
+     * <p>
      * Use {@link GamePlayer#addCoins(int, String)} instead, if possible.
      *
      * @param player The receiver of the coins.
-     * @param coins The amount of coins.
+     * @param coins  The amount of coins.
      * @param reason The displayed reason of this credit.
      */
-    public void addCoins(Player player, int coins, String reason)
-    {
-        if(this.gamePlayers.containsKey(player.getUniqueId()))
+    public void addCoins(Player player, int coins, String reason) {
+        if (this.gamePlayers.containsKey(player.getUniqueId()))
             this.gamePlayers.get(player.getUniqueId()).addCoins(coins, reason);
         else
             SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).creditCoins(coins, reason, true);
@@ -480,11 +435,9 @@ public class Game<GAMEPLAYER extends GamePlayer>
      * Marks a player as spectator.
      *
      * @param player The player to mark as spectator.
-     *
      * @see GamePlayer#setSpectator() The method of the GamePlayer object (to be used if possible).
      */
-    public void setSpectator(Player player)
-    {
+    public void setSpectator(Player player) {
         if (player == null)
             return;
 
@@ -497,8 +450,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @return The code.
      */
-    public String getGameCodeName()
-    {
+    public String getGameCodeName() {
         return this.gameCodeName;
     }
 
@@ -507,8 +459,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @return The name.
      */
-    public String getGameName()
-    {
+    public String getGameName() {
         return this.gameName;
     }
 
@@ -517,19 +468,8 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @return The status.
      */
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return this.status;
-    }
-
-    /**
-     * Returns the CoherenceMachine instance
-     *
-     * @return The instance
-     */
-    public ICoherenceMachine getCoherenceMachine()
-    {
-        return this.coherenceMachine;
     }
 
     /**
@@ -537,10 +477,18 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @param status The new status.
      */
-    public void setStatus(Status status)
-    {
+    public void setStatus(Status status) {
         this.status = status;
         this.gameManager.refreshArena();
+    }
+
+    /**
+     * Returns the CoherenceMachine instance
+     *
+     * @return The instance
+     */
+    public ICoherenceMachine getCoherenceMachine() {
+        return this.coherenceMachine;
     }
 
     /**
@@ -549,29 +497,23 @@ public class Game<GAMEPLAYER extends GamePlayer>
      * @param player The player's UUID.
      * @return The instance of {@link GAMEPLAYER} representing this player.
      */
-    public GAMEPLAYER getPlayer(UUID player)
-    {
-        if(this.gamePlayers.containsKey(player))
-            return this.gamePlayers.get(player);
-        else
-            return null;
+    public GAMEPLAYER getPlayer(UUID player) {
+        return this.gamePlayers.getOrDefault(player, null);
     }
 
     /**
      * Return a map ({@link UUID} → {@link GamePlayer}) of the currently in-game
      * players (i.e. players neither dead nor moderators).
-     *
+     * <p>
      * This map contains offline players who are still able to login, if the reconnection is
      * allowed.
      *
      * @return The map containing the in-game players.
      */
-    public Map<UUID, GAMEPLAYER> getInGamePlayers()
-    {
+    public Map<UUID, GAMEPLAYER> getInGamePlayers() {
         Map<UUID, GAMEPLAYER> inGamePlayers = new HashMap<>();
 
-        for(UUID key : this.gamePlayers.keySet())
-        {
+        for (UUID key : this.gamePlayers.keySet()) {
             final GAMEPLAYER gPlayer = this.gamePlayers.get(key);
 
             if (!gPlayer.isSpectator())
@@ -583,21 +525,19 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
     /**
      * Return a map ({@link UUID} → {@link GamePlayer}) of the currently spectating players.
-     *
+     * <p>
      * This map does not contains offline players who are still able to login, if the
      * reconnection is allowed.
      *
      * @return The map containing the spectating players.
      */
-    public Map<UUID, GAMEPLAYER> getSpectatorPlayers()
-    {
+    public Map<UUID, GAMEPLAYER> getSpectatorPlayers() {
         Map<UUID, GAMEPLAYER> spectators = new HashMap<>();
 
-        for(UUID key : this.gamePlayers.keySet())
-        {
+        for (UUID key : this.gamePlayers.keySet()) {
             final GAMEPLAYER gPlayer = this.gamePlayers.get(key);
 
-            if(gPlayer.isSpectator())
+            if (gPlayer.isSpectator())
                 spectators.put(key, gPlayer);
         }
 
@@ -606,18 +546,16 @@ public class Game<GAMEPLAYER extends GamePlayer>
 
     /**
      * Return a map ({@link UUID} → {@link GamePlayer}) of the currently spectating players.
-     *
+     * <p>
      * This map does not contains offline players who are still able to login, if the
      * reconnection is allowed.
      *
      * @return The map containing the spectating players.
      */
-    public Map<UUID, GAMEPLAYER> getVisibleSpectatingPlayers()
-    {
+    public Map<UUID, GAMEPLAYER> getVisibleSpectatingPlayers() {
         Map<UUID, GAMEPLAYER> spectators = new HashMap<>();
 
-        for (UUID key : this.gamePlayers.keySet())
-        {
+        for (UUID key : this.gamePlayers.keySet()) {
             GAMEPLAYER gamePlayer = this.gamePlayers.get(key);
 
             if (gamePlayer.isSpectator() && !this.gameModerators.contains(gamePlayer.getUUID()))
@@ -632,8 +570,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @return All registered game players.
      */
-    public Map<UUID, GAMEPLAYER> getRegisteredGamePlayers()
-    {
+    public Map<UUID, GAMEPLAYER> getRegisteredGamePlayers() {
         return Collections.unmodifiableMap(this.gamePlayers);
     }
 
@@ -642,21 +579,19 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @return The timer.
      */
-    public BukkitTask getBeginTimer()
-    {
+    public BukkitTask getBeginTimer() {
         return this.beginTimer;
     }
 
     /**
      * Returns the amount of in-game (alive) players.
-     *
+     * <p>
      * Calling this is mostly the same as calling {@code getInGamePlayers().size()}, but
      * with better performances.
      *
      * @return The amount of in-game (alive) players.
      */
-    public int getConnectedPlayers()
-    {
+    public int getConnectedPlayers() {
         int i = 0;
 
         for (GamePlayer player : this.gamePlayers.values())
@@ -673,21 +608,19 @@ public class Game<GAMEPLAYER extends GamePlayer>
      * @param player The player.
      * @return {@code true} if registered.
      */
-    public boolean hasPlayer(Player player)
-    {
+    public boolean hasPlayer(Player player) {
         return this.gamePlayers.containsKey(player.getUniqueId());
     }
 
     /**
      * Called when a player try to login into the game, this will check if the player
      * is able to join or not.
-     *
+     * <p>
      * The default implementation allows anyone to join or rejoin (if the reconnection is
      * allowed); override this to change this behavior.
      *
-     * @param player The player trying to login.
+     * @param player    The player trying to login.
      * @param reconnect {@code true} if the player is reconnecting.
-     *
      * @return A {@link Pair} instance, where:
      * <ul>
      *     <li>
@@ -700,20 +633,18 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *     </li>
      * </ul>
      */
-    public Pair<Boolean, String> canJoinGame(UUID player, boolean reconnect)
-    {
+    public Pair<Boolean, String> canJoinGame(UUID player, boolean reconnect) {
         return Pair.of(true, "");
     }
 
     /**
      * Called when a party try to join the server; this will check if the whole party can login
      * or not.
-     *
+     * <p>
      * The default implementation allows any party to join (assuming the server is large enough
      * to accept all players, of course).
      *
      * @param partyMembers A {@link Set} containing the {@link UUID} of the party's members.
-     *
      * @return A {@link Pair} instance, where:
      * <ul>
      *     <li>
@@ -726,8 +657,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *     </li>
      * </ul>
      */
-    public Pair<Boolean, String> canPartyJoinGame(List<UUID> partyMembers)
-    {
+    public Pair<Boolean, String> canPartyJoinGame(List<UUID> partyMembers) {
         return Pair.of(true, "");
     }
 
@@ -737,8 +667,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      * @param player The player.
      * @return {@code true} if spectating.
      */
-    public boolean isSpectator(Player player)
-    {
+    public boolean isSpectator(Player player) {
         if (this.gamePlayers.containsKey(player.getUniqueId()))
             return this.gamePlayers.get(player.getUniqueId()).isSpectator();
         else
@@ -751,8 +680,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      * @param player The player.
      * @return {@code true} if moderating.
      */
-    public boolean isModerator(Player player)
-    {
+    public boolean isModerator(Player player) {
         return this.gameModerators.contains(player.getUniqueId());
     }
 
@@ -762,8 +690,7 @@ public class Game<GAMEPLAYER extends GamePlayer>
      *
      * @return {@code true} if the game is started.
      */
-    public boolean isGameStarted()
-    {
+    public boolean isGameStarted() {
         return this.status == Status.IN_GAME || this.status == Status.FINISHED || this.status == Status.REBOOTING;
     }
 }
