@@ -1,5 +1,6 @@
 package net.samagames.tools;
 
+import net.samagames.api.shops.IItemDescription;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -33,16 +34,14 @@ import java.util.List;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-@SuppressWarnings("DanglingJavadoc")
 public class PersistanceUtils {
     /**
      * @see @code{PersistanceUtils.makeStack(plugin, itemId, itemName, itemDescription)}
      */
-    //TODO Missing class
-//    @SuppressWarnings("JavaDoc")
-//    public static ItemStack makeStack(JavaPlugin plugin, IItemDescription itemDescription) {
-//        return makeStack(plugin, itemDescription.getItemMinecraftId(), itemDescription.getItemName(), itemDescription.getItemDesc());
-//    }
+    @SuppressWarnings("JavaDoc")
+    public static ItemStack makeStack(JavaPlugin plugin, IItemDescription itemDescription) {
+        return makeStack(plugin, itemDescription.getItemMinecraftId(), itemDescription.getItemName(), itemDescription.getItemDesc());
+    }
 
     /**
      * Create an ItemStack via the database data.

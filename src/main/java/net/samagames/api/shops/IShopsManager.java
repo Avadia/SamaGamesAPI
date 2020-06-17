@@ -20,7 +20,6 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-@SuppressWarnings("DanglingJavadoc")
 public interface IShopsManager {
     /**
      * Define a game to load, by default it's false for a game server and true for hub
@@ -46,8 +45,7 @@ public interface IShopsManager {
      * @return The item description object
      * @throws Exception If the item does not exist in the database (call a sysadmin to create it)
      */
-    //TODO Missing class
-    //IItemDescription getItemDescription(int itemID) throws Exception;
+    IItemDescription getItemDescription(int itemID) throws Exception;
 
     /**
      * Get the item description and data.
@@ -57,8 +55,7 @@ public interface IShopsManager {
      * @return The item description object
      * @throws Exception If the item does not exist in the database (call a sysadmin to create it)
      */
-    //TODO Missing class
-    //IItemDescription getItemDescriptionByName(String itemName) throws Exception;
+    IItemDescription getItemDescriptionByName(String itemName) throws Exception;
 
     /**
      * The player shop loaded at join, all items for players are managed here

@@ -23,7 +23,6 @@ repositories {
     }
 }
 
-
 dependencies {
     compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
     compile group: 'in.ashwanthkumar', name: 'slack-java-webhook', version: '0.0.10'

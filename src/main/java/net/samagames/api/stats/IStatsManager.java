@@ -2,6 +2,8 @@ package net.samagames.api.stats;
 
 import net.samagames.api.games.GamesNames;
 
+import java.util.UUID;
+
 /*
  * This file is part of SamaGamesAPI.
  *
@@ -18,7 +20,6 @@ import net.samagames.api.games.GamesNames;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-@SuppressWarnings("DanglingJavadoc")
 public interface IStatsManager {
     void finish();
 
@@ -30,8 +31,7 @@ public interface IStatsManager {
      *
      * @return IPlayerStats with all stats loaded
      */
-    //TODO Missing class
-    //IPlayerStats getPlayerStats(UUID player);
+    IPlayerStats getPlayerStats(UUID player);
 
     /**
      * Define if a game will be loaded at player join

@@ -1,5 +1,7 @@
 package net.samagames.api.settings;
 
+import java.util.UUID;
+
 /*
  * This file is part of SamaGamesAPI.
  *
@@ -16,7 +18,6 @@ package net.samagames.api.settings;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-@SuppressWarnings("DanglingJavadoc")
 public interface ISettingsManager {
     /**
      * Get the settings object of a given player
@@ -24,6 +25,5 @@ public interface ISettingsManager {
      * @param player Player's UUID
      * @return Setting's object values
      */
-    //TODO Missing class
-    //IPlayerSettings getSettings(UUID player);
+    IPlayerSettings getSettings(UUID player);
 }

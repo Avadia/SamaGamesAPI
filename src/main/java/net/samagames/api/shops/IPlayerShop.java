@@ -18,7 +18,6 @@ import net.samagames.tools.CallBack;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-@SuppressWarnings("DanglingJavadoc")
 public interface IPlayerShop {
 
     /**
@@ -81,6 +80,5 @@ public interface IPlayerShop {
      * @param itemID The item to know about
      * @return null if the player don't have the item, ItemTransaction otherwise
      */
-    //TODO Missing class
-    //ITransaction getTransactionsByID(int itemID);
+    ITransaction getTransactionsByID(int itemID);
 }
