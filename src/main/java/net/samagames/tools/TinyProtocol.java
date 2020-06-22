@@ -350,7 +350,11 @@ public abstract class TinyProtocol {
             // Inject our packet interceptor
             if (interceptor == null) {
                 interceptor = new PacketInterceptor();
-                channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
+                if (channel.pipeline().get("packet_handler") != null) {
+                    channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
+                } else {
+                    channel.pipeline().addLast(handlerName, interceptor);
+                }
                 uninjectedChannels.remove(channel);
             }
 
