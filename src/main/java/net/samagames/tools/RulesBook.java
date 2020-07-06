@@ -1,5 +1,6 @@
 package net.samagames.tools;
 
+import fr.farmvivi.Servers;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +29,7 @@ import java.util.Set;
  */
 public class RulesBook {
     private final String title;
+    private final Servers server;
     private final List<RulesBookPage> pages;
     private final Set<String> owners;
     private final Set<String> contributors;
@@ -37,8 +39,9 @@ public class RulesBook {
      *
      * @param title The name of the game
      */
-    public RulesBook(String title) {
+    public RulesBook(String title, Servers server) {
         this.title = ChatColor.translateAlternateColorCodes('&', title);
+        this.server = server;
         this.pages = new ArrayList<>();
         this.owners = new HashSet<>();
         this.contributors = new HashSet<>();
@@ -140,7 +143,7 @@ public class RulesBook {
         StringBuilder main = new StringBuilder(ChatColor.translateAlternateColorCodes('&',
                 "\n   ]--------------[" +
                         "\n") + getCenteredText(title) + ChatColor.translateAlternateColorCodes('&', "&0" +
-                "\n       par &lAvadia&0" +
+                "\n") + getCenteredText(ChatColor.translateAlternateColorCodes('&', "par &l" + server.getDisplayName())) + ChatColor.translateAlternateColorCodes('&', "&0" +
                 "\n   ]--------------[" +
                 "\n\n\n"));
         int i = 1;

@@ -1,5 +1,6 @@
 package net.samagames.api.games.themachine.messages.templates;
 
+import fr.farmvivi.Messages;
 import net.samagames.api.games.pearls.Pearl;
 import net.samagames.tools.chat.ChatUtils;
 import org.bukkit.ChatColor;
@@ -37,12 +38,12 @@ public class EarningMessageTemplate {
         List<String> finalLines = new ArrayList<>();
         finalLines.add(ChatUtils.getCenteredText(ChatColor.WHITE + "•" + ChatColor.BOLD + " Récompenses " + ChatColor.RESET + ChatColor.WHITE + "•"));
         finalLines.add("");
-        finalLines.add(ChatUtils.getCenteredText(ChatColor.GOLD + "Vous avez gagné " + coins + (coins == 1 ? " pièce !" : " pièces !")));
+        finalLines.add(ChatUtils.getCenteredText(ChatColor.GOLD + "Vous avez gagné " + coins + (coins == 1 ? " " + Messages.PIECE.getMessage() + " !" : " " + Messages.PIECES.getMessage() + " !")));
         finalLines.add("");
 
         if (pearl != null) {
-            finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Vous avez gagné une perle de " + ChatColor.AQUA + "niveau " + pearl.getStars() + ChatColor.GREEN + "!"));
-            finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Echangez-là auprès de " + ChatColor.GOLD + "Graou" + ChatColor.GREEN + " dans le Hub !"));
+            finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Vous avez gagné une " + Messages.PERLE.getMessage() + " de " + ChatColor.AQUA + "niveau " + pearl.getStars() + ChatColor.GREEN + "!"));
+            finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Echangez-là auprès de " + ChatColor.GOLD + Messages.GRAOU.getMessage() + ChatColor.GREEN + " dans le " + Messages.HUB.getMessage() + " !"));
             finalLines.add("");
         }
 

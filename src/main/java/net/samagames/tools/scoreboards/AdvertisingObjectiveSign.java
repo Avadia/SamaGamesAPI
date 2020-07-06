@@ -1,5 +1,6 @@
 package net.samagames.tools.scoreboards;
 
+import fr.farmvivi.Servers;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,7 +40,7 @@ public class AdvertisingObjectiveSign extends ObjectiveSign implements Runnable 
         super(name, displayName);
 
         this.originalDisplayName = displayName;
-        this.advertisingText = "      Vous jouez sur play.avadia.fr !                  "; // 6 spaces before and 18 spaces after
+        this.advertisingText = "      Vous jouez sur " + Servers.DEFAULT.getIp() + " !                  "; // 6 spaces before and 18 spaces after
 
         this.finalText = this.advertisingText;
         this.ticks = 0;

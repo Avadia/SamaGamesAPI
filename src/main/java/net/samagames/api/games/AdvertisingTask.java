@@ -1,5 +1,6 @@
 package net.samagames.api.games;
 
+import fr.farmvivi.Servers;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.bossbar.BossBarAPI;
 import org.bukkit.ChatColor;
@@ -41,20 +42,20 @@ class AdvertisingTask extends BukkitRunnable {
     public void run() {
         if (this.style == 0) {
             if (this.loop < 20)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
             else if (this.loop < 22)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
             else if (this.loop < 24)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
             else if (this.loop < 26)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
             else if (this.loop < 28)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
             else if (this.loop < 30)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
         } else if (this.style == 1) {
             if (this.loop < 20)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + "play.avadia.fr" + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
             else if (this.loop < 36)
                 this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + this.colorIpAt() + ChatColor.YELLOW + " !";
         }
@@ -82,7 +83,7 @@ class AdvertisingTask extends BukkitRunnable {
 
     private String colorIpAt() {
         int charIndex = this.loop - 20;
-        String ip = "play.avadia.fr";
+        String ip = Servers.DEFAULT.getIp();
 
         StringBuilder formattedIp = new StringBuilder();
 

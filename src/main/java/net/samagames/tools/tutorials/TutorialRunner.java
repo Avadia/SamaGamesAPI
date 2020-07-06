@@ -26,8 +26,6 @@ import java.util.UUID;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class TutorialRunner implements Runnable {
-    private final Plugin p;
-
     private final String tutorialInChatPrefix = ChatColor.GRAY + "│ " + ChatColor.RESET;
 
     private final Player player;
@@ -38,7 +36,7 @@ public class TutorialRunner implements Runnable {
     private long currentTimer = 0;
 
     public TutorialRunner(Tutorial tutorial, UUID playerId) {
-        this.p = SamaGamesAPI.get().getPlugin();
+        Plugin p = SamaGamesAPI.get().getPlugin();
 
         this.player = p.getServer().getPlayer(playerId);
         this.tutorial = tutorial;

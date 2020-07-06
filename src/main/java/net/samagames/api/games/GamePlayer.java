@@ -1,5 +1,6 @@
 package net.samagames.api.games;
 
+import fr.farmvivi.Messages;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.player.AbstractPlayerData;
 import net.samagames.tools.chat.fanciful.FancyMessage;
@@ -115,7 +116,7 @@ public class GamePlayer {
             for (Player player : Bukkit.getOnlinePlayers())
                 player.hidePlayer(SamaGamesAPI.get().getPlugin(), bukkitPlayer);
 
-            new FancyMessage("Cliquez ").color(ChatColor.YELLOW).style(ChatColor.BOLD).then("[ICI]").command("/hub").color(ChatColor.AQUA).style(ChatColor.BOLD).then(" pour retourner au hub !").color(ChatColor.YELLOW).style(ChatColor.BOLD).send(bukkitPlayer);
+            new FancyMessage("Cliquez ").color(ChatColor.YELLOW).style(ChatColor.BOLD).then("[ICI]").command("/" + Messages.HUB.getMessage()).color(ChatColor.AQUA).style(ChatColor.BOLD).then(" pour retourner au " + Messages.HUB.getMessage() + " !").color(ChatColor.YELLOW).style(ChatColor.BOLD).send(bukkitPlayer);
         });
     }
 

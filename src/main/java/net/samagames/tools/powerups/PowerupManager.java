@@ -1,5 +1,6 @@
 package net.samagames.tools.powerups;
 
+import fr.farmvivi.Messages;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.Reflection;
 import net.samagames.tools.Titles;
@@ -110,7 +111,7 @@ public class PowerupManager {
             Titles.sendTitle(player, 5, 30, 5, ChatColor.GOLD + "✯", "");
         }
 
-        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Un bonus vient de faire son apparition !", true);
+        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Un " + Messages.POWERUP.getMessage() + " vient de faire son apparition !", true);
 
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
         {

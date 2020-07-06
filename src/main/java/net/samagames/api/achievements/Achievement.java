@@ -1,5 +1,6 @@
 package net.samagames.api.achievements;
 
+import fr.farmvivi.Servers;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.Reflection;
 import net.samagames.tools.chat.fanciful.FancyMessage;
@@ -141,7 +142,7 @@ public class Achievement {
                         .then(ChatColor.WHITE + " ! ")
                         .then(ChatColor.DARK_AQUA + "[Tweeter]")
                         .tooltip(ChatColor.AQUA + "Partager sur Twitter")
-                        .link("https://twitter.com/intent/tweet?text=Je+viens+de+d%C3%A9bloquer+l%27objectif+%27" + URLEncoder.encode(this.getDisplayName(), "UTF-8") + "%27+sur+%40AvadiaMC+%21")
+                        .link("https://twitter.com/intent/tweet?text=Je+viens+de+d%C3%A9bloquer+l%27objectif+%27" + URLEncoder.encode(this.getDisplayName(), "UTF-8") + "%27+sur+%40" + Servers.DEFAULT.getTwitter() + "+%21")
                         .then(ChatColor.DARK_AQUA + " \u25A0");
 
                 personalMessage.send(player);

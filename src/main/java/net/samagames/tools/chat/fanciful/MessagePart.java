@@ -151,5 +151,4 @@ final class MessagePart implements JsonRepresentedObject, ConfigurationSerializa
         map.put("translationReplacements", translationReplacements);
         return map;
     }
-
 }
