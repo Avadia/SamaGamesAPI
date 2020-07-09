@@ -1,6 +1,6 @@
 package net.samagames.api.network;
 
-import fr.farmvivi.Messages;
+import fr.farmvivi.api.commons.Messages;
 import org.bukkit.ChatColor;
 
 /*

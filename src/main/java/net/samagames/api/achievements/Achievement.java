@@ -1,6 +1,6 @@
 package net.samagames.api.achievements;
 
-import fr.farmvivi.Servers;
+import fr.farmvivi.api.commons.Servers;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.Reflection;
 import net.samagames.tools.chat.fanciful.FancyMessage;

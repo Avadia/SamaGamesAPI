@@ -1,6 +1,6 @@
 package net.samagames.tools.scoreboards;
 
-import fr.farmvivi.Servers;
+import fr.farmvivi.api.commons.Servers;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 

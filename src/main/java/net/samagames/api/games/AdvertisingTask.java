@@ -1,6 +1,6 @@
 package net.samagames.api.games;
 
-import fr.farmvivi.Servers;
+import fr.farmvivi.api.commons.Servers;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.bossbar.BossBarAPI;
 import org.bukkit.ChatColor;

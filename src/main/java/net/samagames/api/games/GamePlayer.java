@@ -1,6 +1,6 @@
 package net.samagames.api.games;
 
-import fr.farmvivi.Messages;
+import fr.farmvivi.api.commons.Messages;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.player.AbstractPlayerData;
 import net.samagames.tools.chat.fanciful.FancyMessage;

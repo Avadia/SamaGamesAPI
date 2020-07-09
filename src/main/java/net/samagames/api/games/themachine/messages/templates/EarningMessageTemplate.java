@@ -1,6 +1,6 @@
 package net.samagames.api.games.themachine.messages.templates;
 
-import fr.farmvivi.Messages;
+import fr.farmvivi.api.commons.Messages;
 import net.samagames.api.games.pearls.Pearl;
 import net.samagames.tools.chat.ChatUtils;
 import org.bukkit.ChatColor;

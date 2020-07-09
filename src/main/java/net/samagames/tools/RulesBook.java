@@ -1,6 +1,6 @@
 package net.samagames.tools;
 
-import fr.farmvivi.Servers;
+import fr.farmvivi.api.commons.Servers;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

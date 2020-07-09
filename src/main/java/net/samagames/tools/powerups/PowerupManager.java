@@ -1,6 +1,6 @@
 package net.samagames.tools.powerups;
 
-import fr.farmvivi.Messages;
+import fr.farmvivi.api.commons.Messages;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.tools.Reflection;
 import net.samagames.tools.Titles;
