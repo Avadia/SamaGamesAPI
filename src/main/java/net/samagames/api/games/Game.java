@@ -299,7 +299,13 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                 this.gameManager.getGameStatisticsHelper().increaseWins(uuid);
 
             SamaGamesAPI.get().getAchievementManager().getAchievementByID(25).unlock(uuid);
-            Arrays.asList(26, 27, 28, 29).forEach(id -> SamaGamesAPI.get().getAchievementManager().incrementAchievement(uuid, id, 1));
+            Arrays.asList(26, 27, 28, 29).forEach(id -> {
+                try {
+                    SamaGamesAPI.get().getAchievementManager().incrementAchievement(uuid, id, 1);
+                } catch (AchivementNotFoundException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             SamaGamesAPI.get().slackLog(Level.SEVERE, new SlackMessage("[" + SamaGamesAPI.get().getServerName() + "] Failed to handle '" + SamaGamesAPI.get().getUUIDTranslator().getName(uuid) + "'s win: " + e.getMessage()));
@@ -405,7 +411,13 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                         }
                     }
 
-                    Arrays.asList(30, 31, 32, 33, 34).forEach(id -> SamaGamesAPI.get().getAchievementManager().incrementAchievement(player.getUUID(), id, player.getCoins()));
+                    Arrays.asList(30, 31, 32, 33, 34).forEach(id -> {
+                        try {
+                            SamaGamesAPI.get().getAchievementManager().incrementAchievement(player.getUUID(), id, player.getCoins());
+                        } catch (AchivementNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 });
             }
         }
