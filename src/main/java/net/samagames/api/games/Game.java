@@ -2,6 +2,7 @@ package net.samagames.api.games;
 
 import in.ashwanthkumar.slack.webhook.SlackMessage;
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.achievements.exceptions.AchivementNotFoundException;
 import net.samagames.api.games.pearls.Pearl;
 import net.samagames.api.games.themachine.ICoherenceMachine;
 import net.samagames.api.games.themachine.messages.templates.EarningMessageTemplate;
@@ -364,20 +365,45 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
                 Bukkit.getScheduler().runTask(SamaGamesAPI.get().getPlugin(), () ->
                 {
-                    if (finalWasAStaffMember)
-                        SamaGamesAPI.get().getAchievementManager().getAchievementByID(15).unlock(player.getUUID());
+                    if (finalWasAStaffMember) {
+                        try {
+                            SamaGamesAPI.get().getAchievementManager().getAchievementByID(15).unlock(player.getUUID());
+                        } catch (AchivementNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    if (finalWasAGameCreator)
-                        SamaGamesAPI.get().getAchievementManager().getAchievementByID(16).unlock(player.getUUID());
+                    if (finalWasAGameCreator) {
+                        try {
+                            SamaGamesAPI.get().getAchievementManager().getAchievementByID(16).unlock(player.getUUID());
+                        } catch (AchivementNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    if (finalWasACoupaingInGame)
-                        SamaGamesAPI.get().getAchievementManager().getAchievementByID(13).unlock(player.getUUID());
+                    if (finalWasACoupaingInGame) {
+                        try {
+                            SamaGamesAPI.get().getAchievementManager().getAchievementByID(13).unlock(player.getUUID());
+                        } catch (AchivementNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    if (finalWasASamAllieInGame)
-                        SamaGamesAPI.get().getAchievementManager().getAchievementByID(14).unlock(player.getUUID());
+                    if (finalWasASamAllieInGame) {
+                        try {
+                            SamaGamesAPI.get().getAchievementManager().getAchievementByID(14).unlock(player.getUUID());
+                        } catch (AchivementNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    if (finalWasAnHidden)
-                        SamaGamesAPI.get().getAchievementManager().getAchievementByID(17).unlock(player.getUUID());
+                    if (finalWasAnHidden) {
+                        try {
+                            SamaGamesAPI.get().getAchievementManager().getAchievementByID(17).unlock(player.getUUID());
+                        } catch (AchivementNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     Arrays.asList(30, 31, 32, 33, 34).forEach(id -> SamaGamesAPI.get().getAchievementManager().incrementAchievement(player.getUUID(), id, player.getCoins()));
                 });
