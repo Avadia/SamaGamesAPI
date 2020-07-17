@@ -1,5 +1,7 @@
 package net.samagames.api.achievements;
 
+import net.samagames.api.achievements.exceptions.AchivementNotFoundException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -53,7 +55,7 @@ public interface IAchievementManager {
      * @param id ID
      * @return Achievement
      */
-    Achievement getAchievementByID(int id);
+    Achievement getAchievementByID(int id) throws AchivementNotFoundException;
 
     /**
      * Get the achievement category with the given ID
@@ -61,7 +63,7 @@ public interface IAchievementManager {
      * @param id ID
      * @return Achievement category
      */
-    AchievementCategory getAchievementCategoryByID(int id);
+    AchievementCategory getAchievementCategoryByID(int id) throws AchivementNotFoundException;
 
     /**
      * Get all the achievements of the database
