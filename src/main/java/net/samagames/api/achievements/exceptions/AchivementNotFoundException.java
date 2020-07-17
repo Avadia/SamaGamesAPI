@@ -16,4 +16,9 @@ public class AchivementNotFoundException extends Exception {
     public AchivementNotFoundException(Throwable cause) {
         super(cause);
     }
+
+    @Override
+    public void printStackTrace() {
+        //super.printStackTrace();
+    }
 }
