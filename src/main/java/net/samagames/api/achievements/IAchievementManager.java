@@ -29,7 +29,7 @@ public interface IAchievementManager {
      * @param achievement Achievement
      * @param amount      Amount
      */
-    void incrementAchievement(UUID player, IncrementationAchievement achievement, int amount);
+    void incrementAchievement(UUID player, IncrementationAchievement achievement, int amount) throws AchivementNotFoundException;
 
     /**
      * Increase the progress of a given achievement to a given player
@@ -38,7 +38,7 @@ public interface IAchievementManager {
      * @param achievement Achievement
      * @param amount      Amount
      */
-    void incrementAchievement(UUID player, int achievement, int amount);
+    void incrementAchievement(UUID player, int achievement, int amount) throws AchivementNotFoundException;
 
     /**
      * Increase achievements progress, usefull for linked achievements
@@ -47,7 +47,7 @@ public interface IAchievementManager {
      * @param achievements Achievement id array
      * @param amount       Amount
      */
-    void incrementAchievements(UUID player, int[] achievements, int amount);
+    void incrementAchievements(UUID player, int[] achievements, int amount) throws AchivementNotFoundException;
 
     /**
      * Get the achievement with the given ID
@@ -95,5 +95,5 @@ public interface IAchievementManager {
      * @param id     Achievement's ID
      * @return {@code true} if unlocked
      */
-    boolean isUnlocked(UUID player, int id);
+    boolean isUnlocked(UUID player, int id) throws AchivementNotFoundException;
 }
