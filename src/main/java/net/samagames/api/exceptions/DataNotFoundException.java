@@ -1,5 +1,7 @@
 package net.samagames.api.exceptions;
 
+import net.samagames.api.SamaGamesAPI;
+
 public class DataNotFoundException extends Exception {
     public DataNotFoundException() {
         super();
@@ -19,7 +21,7 @@ public class DataNotFoundException extends Exception {
 
     @Override
     public void printStackTrace() {
-        System.out.println("WARN: " + getMessage());
+        SamaGamesAPI.get().getPlugin().getLogger().warning(getMessage());
         //super.printStackTrace();
     }
 }
