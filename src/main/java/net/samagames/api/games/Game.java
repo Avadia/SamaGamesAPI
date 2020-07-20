@@ -2,7 +2,7 @@ package net.samagames.api.games;
 
 import in.ashwanthkumar.slack.webhook.SlackMessage;
 import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.achievements.exceptions.AchivementNotFoundException;
+import net.samagames.api.exceptions.DataNotFoundException;
 import net.samagames.api.games.pearls.Pearl;
 import net.samagames.api.games.themachine.ICoherenceMachine;
 import net.samagames.api.games.themachine.messages.templates.EarningMessageTemplate;
@@ -302,7 +302,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
             Arrays.asList(26, 27, 28, 29).forEach(id -> {
                 try {
                     SamaGamesAPI.get().getAchievementManager().incrementAchievement(uuid, id, 1);
-                } catch (AchivementNotFoundException e) {
+                } catch (DataNotFoundException e) {
                     e.printStackTrace();
                 }
             });
@@ -374,7 +374,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                     if (finalWasAStaffMember) {
                         try {
                             SamaGamesAPI.get().getAchievementManager().getAchievementByID(15).unlock(player.getUUID());
-                        } catch (AchivementNotFoundException e) {
+                        } catch (DataNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -382,7 +382,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                     if (finalWasAGameCreator) {
                         try {
                             SamaGamesAPI.get().getAchievementManager().getAchievementByID(16).unlock(player.getUUID());
-                        } catch (AchivementNotFoundException e) {
+                        } catch (DataNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -390,7 +390,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                     if (finalWasACoupaingInGame) {
                         try {
                             SamaGamesAPI.get().getAchievementManager().getAchievementByID(13).unlock(player.getUUID());
-                        } catch (AchivementNotFoundException e) {
+                        } catch (DataNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -398,7 +398,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                     if (finalWasASamAllieInGame) {
                         try {
                             SamaGamesAPI.get().getAchievementManager().getAchievementByID(14).unlock(player.getUUID());
-                        } catch (AchivementNotFoundException e) {
+                        } catch (DataNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -406,7 +406,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                     if (finalWasAnHidden) {
                         try {
                             SamaGamesAPI.get().getAchievementManager().getAchievementByID(17).unlock(player.getUUID());
-                        } catch (AchivementNotFoundException e) {
+                        } catch (DataNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -414,7 +414,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                     Arrays.asList(30, 31, 32, 33, 34).forEach(id -> {
                         try {
                             SamaGamesAPI.get().getAchievementManager().incrementAchievement(player.getUUID(), id, player.getCoins());
-                        } catch (AchivementNotFoundException e) {
+                        } catch (DataNotFoundException e) {
                             e.printStackTrace();
                         }
                     });

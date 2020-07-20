@@ -1,6 +1,6 @@
 package net.samagames.api.achievements;
 
-import net.samagames.api.achievements.exceptions.AchivementNotFoundException;
+import net.samagames.api.exceptions.DataNotFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +29,7 @@ public interface IAchievementManager {
      * @param achievement Achievement
      * @param amount      Amount
      */
-    void incrementAchievement(UUID player, IncrementationAchievement achievement, int amount) throws AchivementNotFoundException;
+    void incrementAchievement(UUID player, IncrementationAchievement achievement, int amount) throws DataNotFoundException;
 
     /**
      * Increase the progress of a given achievement to a given player
@@ -38,7 +38,7 @@ public interface IAchievementManager {
      * @param achievement Achievement
      * @param amount      Amount
      */
-    void incrementAchievement(UUID player, int achievement, int amount) throws AchivementNotFoundException;
+    void incrementAchievement(UUID player, int achievement, int amount) throws DataNotFoundException;
 
     /**
      * Increase achievements progress, usefull for linked achievements
@@ -47,7 +47,7 @@ public interface IAchievementManager {
      * @param achievements Achievement id array
      * @param amount       Amount
      */
-    void incrementAchievements(UUID player, int[] achievements, int amount) throws AchivementNotFoundException;
+    void incrementAchievements(UUID player, int[] achievements, int amount) throws DataNotFoundException;
 
     /**
      * Get the achievement with the given ID
@@ -55,7 +55,7 @@ public interface IAchievementManager {
      * @param id ID
      * @return Achievement
      */
-    Achievement getAchievementByID(int id) throws AchivementNotFoundException;
+    Achievement getAchievementByID(int id) throws DataNotFoundException;
 
     /**
      * Get the achievement category with the given ID
@@ -63,7 +63,7 @@ public interface IAchievementManager {
      * @param id ID
      * @return Achievement category
      */
-    AchievementCategory getAchievementCategoryByID(int id) throws AchivementNotFoundException;
+    AchievementCategory getAchievementCategoryByID(int id) throws DataNotFoundException;
 
     /**
      * Get all the achievements of the database
@@ -95,5 +95,5 @@ public interface IAchievementManager {
      * @param id     Achievement's ID
      * @return {@code true} if unlocked
      */
-    boolean isUnlocked(UUID player, int id) throws AchivementNotFoundException;
+    boolean isUnlocked(UUID player, int id) throws DataNotFoundException;
 }
