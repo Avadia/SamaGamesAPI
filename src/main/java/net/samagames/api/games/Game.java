@@ -127,7 +127,6 @@ public class Game<GAMEPLAYER extends GamePlayer> {
                 this.gameManager.getGameStatisticsHelper().increasePlayedGames(uuid);
 
         this.coherenceMachine.getMessageManager().writeGameStart();
-
     }
 
     /**

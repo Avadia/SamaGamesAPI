@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 class AdvertisingTask extends BukkitRunnable {
     private final BossBar bossBar;
+    private final String ip;
     private String lastMessage;
     private int style;
     private int loop;
@@ -34,6 +35,7 @@ class AdvertisingTask extends BukkitRunnable {
         this.bossBar = BossBarAPI.getBar("").getValue();
         this.style = 0;
         this.loop = 0;
+        this.ip = Servers.DEFAULT.getIp();
 
         this.runTaskTimer(SamaGamesAPI.get().getPlugin(), 5L, 5L);
     }
@@ -42,21 +44,21 @@ class AdvertisingTask extends BukkitRunnable {
     public void run() {
         if (this.style == 0) {
             if (this.loop < 20)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + ip + ChatColor.YELLOW + " !";
             else if (this.loop < 22)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + ip + ChatColor.YELLOW + " !";
             else if (this.loop < 24)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + ip + ChatColor.YELLOW + " !";
             else if (this.loop < 26)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + ip + ChatColor.YELLOW + " !";
             else if (this.loop < 28)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + ip + ChatColor.YELLOW + " !";
             else if (this.loop < 30)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.RED + ip + ChatColor.YELLOW + " !";
         } else if (this.style == 1) {
             if (this.loop < 20)
-                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + Servers.DEFAULT.getIp() + ChatColor.YELLOW + " !";
-            else if (this.loop < 36)
+                this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + ip + ChatColor.YELLOW + " !";
+            else if (this.loop < 20 + ip.length())
                 this.lastMessage = ChatColor.YELLOW + "Vous jouez sur " + ChatColor.GOLD + this.colorIpAt() + ChatColor.YELLOW + " !";
         }
 
@@ -64,7 +66,7 @@ class AdvertisingTask extends BukkitRunnable {
 
         this.loop++;
 
-        if ((this.style == 0 && this.loop >= 30) || (this.style == 1 && this.loop >= 36)) {
+        if ((this.style == 0 && this.loop >= 30) || (this.style == 1 && this.loop >= 20 + ip.length())) {
             this.loop = 0;
             this.style++;
 
@@ -83,7 +85,6 @@ class AdvertisingTask extends BukkitRunnable {
 
     private String colorIpAt() {
         int charIndex = this.loop - 20;
-        String ip = Servers.DEFAULT.getIp();
 
         StringBuilder formattedIp = new StringBuilder();
 
