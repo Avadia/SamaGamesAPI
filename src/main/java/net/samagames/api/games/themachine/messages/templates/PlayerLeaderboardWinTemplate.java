@@ -115,17 +115,20 @@ public class PlayerLeaderboardWinTemplate {
      */
     public List<String> prepare(Player winner, Player second, Player third, String commentary, int winnerScore, int secondScore, int thirdScore) {
         List<String> lines = new ArrayList<>();
-        lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
+        if (winner != null) {
+            lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
 
-        if (commentary != null)
-            lines.add(ChatUtils.getCenteredText(commentary));
+            if (commentary != null)
+                lines.add(ChatUtils.getCenteredText(commentary));
 
-        lines.add("");
-        lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
-        lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second) + ChatColor.GRAY + " (" + secondScore + ")"));
+            lines.add("");
+            lines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(winner) + ChatColor.GRAY + " (" + winnerScore + ")"));
+            if (second != null)
+                lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second) + ChatColor.GRAY + " (" + secondScore + ")"));
 
-        if (third != null)
-            lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third) + ChatColor.GRAY + " (" + secondScore + ")"));
+            if (third != null)
+                lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third) + ChatColor.GRAY + " (" + secondScore + ")"));
+        }
         return lines;
     }
 
