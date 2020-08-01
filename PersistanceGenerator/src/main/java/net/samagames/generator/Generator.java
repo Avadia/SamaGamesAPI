@@ -36,11 +36,9 @@ import java.util.UUID;
 public class Generator {
     private static final List<JavaFile> toBuild = new ArrayList<>();
 
-    private static final String header =
-            " Dynamic code generation by Silvanoky";
+    private static final String header = " Dynamic code generation by Silvanoky";
 
     public static void main(String[] args) {
-
         loadGameStats();
 
         build();
