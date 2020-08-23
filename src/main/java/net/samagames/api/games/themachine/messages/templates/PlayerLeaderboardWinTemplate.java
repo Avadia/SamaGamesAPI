@@ -127,7 +127,7 @@ public class PlayerLeaderboardWinTemplate {
                 lines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(second) + ChatColor.GRAY + " (" + secondScore + ")"));
 
             if (third != null)
-                lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third) + ChatColor.GRAY + " (" + secondScore + ")"));
+                lines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(third) + ChatColor.GRAY + " (" + thirdScore + ")"));
         }
         return lines;
     }
