@@ -82,7 +82,7 @@ public class BeginTimer implements Runnable {
         if (this.ready) {
             this.time--;
 
-            if ((this.time < 5 && this.time > 0) || (this.time > 5 && this.time % 10 == 0))
+            if ((this.time <= 5 && this.time > 0) || (this.time > 5 && this.time % 10 == 0))
                 this.api.getGameManager().getCoherenceMachine().getMessageManager().writeGameStartIn(this.time);
 
             if (this.time <= 5 && this.time > 0)
