@@ -147,7 +147,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
             Bukkit.getLogger().severe("NO STATISTICS HELPER REGISTERED, PLAYERS WILL LOST THEIR STATISTICS DURING THIS GAME.");
 
         Bukkit.getLogger().info("Creating discord channel...");
-        discordChannelId = DiscordAPI.createChannel(gameName + " - " + gameManager.getGameProperties().getMapName());
+        discordChannelId = DiscordAPI.createChannel(SamaGamesAPI.get().getServerName());
     }
 
     /**
