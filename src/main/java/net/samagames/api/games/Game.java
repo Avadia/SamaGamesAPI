@@ -7,6 +7,7 @@ import net.samagames.api.games.pearls.Pearl;
 import net.samagames.api.games.themachine.ICoherenceMachine;
 import net.samagames.api.games.themachine.messages.templates.EarningMessageTemplate;
 import net.samagames.tools.Titles;
+import net.samagames.tools.discord.DiscordAPI;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,6 +57,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
     protected ICoherenceMachine coherenceMachine;
     protected Status status;
     protected long startTime = -1;
+    protected int discordChannelId;
 
     /**
      * @param gameCodeName    The code name of the game, given by an administrator.
@@ -143,6 +145,9 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
         if (this.gameManager.getGameStatisticsHelper() == null)
             Bukkit.getLogger().severe("NO STATISTICS HELPER REGISTERED, PLAYERS WILL LOST THEIR STATISTICS DURING THIS GAME.");
+
+        Bukkit.getLogger().info("Creating discord channel...");
+        discordChannelId = DiscordAPI.createChannel(gameName + " - " + gameManager.getGameProperties().getMapName());
     }
 
     /**
@@ -163,6 +168,15 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
             Titles.sendTitle(player, 20, 20 * 3, 20, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + this.gameName, ChatColor.AQUA + this.gameDescription);
             this.advertisingTask.addPlayer(player);
+
+            if (discordChannelId != -1)
+                Bukkit.getScheduler().runTaskAsynchronously(SamaGamesAPI.get().getPlugin(), () -> {
+                    if (DiscordAPI.isConnected(player.getUniqueId())) {
+                        List<UUID> playerUUID = new ArrayList<>();
+                        playerUUID.add(player.getUniqueId());
+                        DiscordAPI.movePlayers(playerUUID, discordChannelId);
+                    }
+                });
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             SamaGamesAPI.get().slackLog(Level.SEVERE, new SlackMessage("[" + SamaGamesAPI.get().getServerName() + "] Failed to handle '" + player.getName() + "'s login: " + e.getMessage()));
@@ -438,6 +452,8 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
         Bukkit.getScheduler().runTaskLater(SamaGamesAPI.get().getPlugin(), () ->
         {
+            if (discordChannelId != -1)
+                DiscordAPI.deleteChannel(discordChannelId);
             SamaGamesAPI.get().getStatsManager().finish();
             Bukkit.shutdown();
         }, 20L * 15);
