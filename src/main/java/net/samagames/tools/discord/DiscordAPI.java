@@ -1,4 +1,4 @@
-package net.samagames.tools.teamspeak;
+package net.samagames.tools.discord;
 
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.pubsub.IPacketsReceiver;
@@ -6,7 +6,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -26,17 +25,13 @@ import java.util.logging.Level;
  * You should have received a copy of the GNU General Public License
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
-@SuppressWarnings("ALL")
-public class TeamSpeakAPI {
+public class DiscordAPI {
     private static final int TIMEOUT = 20000;
     private static int generator = 0;
-    private static Map<Integer, MutablePair<ResultType, Object>> results = new HashMap<>();
+    private static final Map<Integer, MutablePair<ResultType, Object>> results = new HashMap<>();
 
     static {
-        SamaGamesAPI.get().getPubSub().subscribe("tsbotresponse", new TeamSpeakConsumer());
-    }
-
-    private TeamSpeakAPI() {
+        SamaGamesAPI.get().getPubSub().subscribe("discordbot.response", new TeamSpeakConsumer());
     }
 
     private static void publish(int id, String string) {
@@ -44,7 +39,7 @@ public class TeamSpeakAPI {
         try {
             jedis = SamaGamesAPI.get().getBungeeResource();
             if (jedis != null)
-                jedis.publish("tsbot", SamaGamesAPI.get().getServerName() + "/" + id + ":" + string);
+                jedis.publish("discordbot", SamaGamesAPI.get().getServerName() + "/" + id + "/" + string);
         } catch (Exception exception) {
             SamaGamesAPI.get().getPlugin().getLogger().log(Level.SEVERE, "Jedis error", exception);
         } finally {
@@ -53,19 +48,14 @@ public class TeamSpeakAPI {
         }
     }
 
-    public static int createChannel(@Nonnull String name, @Nullable Map<ChannelProperty, String> channelProperties, @Nullable Map<ChannelPermission, Integer> permissions) {
+    public static int createChannel(@Nonnull String name) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.INTEGER, -1);
         int id = generator++;
-        TeamSpeakAPI.results.put(id, pair);
-        final String[] msg = {"createchannel:" + name};
-        if (channelProperties != null)
-            channelProperties.forEach(((channelProperty, s) -> msg[0] += ":" + channelProperties.toString().toUpperCase() + "=" + s));
-        if (permissions != null)
-            permissions.forEach(((channelPermission, integer) -> msg[0] += ":" + channelPermission.toString().toLowerCase() + "-" + integer));
-        TeamSpeakAPI.publish(id, msg[0]);
+        DiscordAPI.results.put(id, pair);
+        DiscordAPI.publish(id, "createchannel:" + name);
         try {
             synchronized (pair) {
-                pair.wait(TeamSpeakAPI.TIMEOUT);
+                pair.wait(DiscordAPI.TIMEOUT);
             }
         } catch (Exception ignored) {
         }
@@ -75,11 +65,11 @@ public class TeamSpeakAPI {
     public static boolean deleteChannel(int channelId) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.BOOLEAN, false);
         int id = generator++;
-        TeamSpeakAPI.results.put(id, pair);
-        TeamSpeakAPI.publish(id, "deletechannel:" + channelId);
+        DiscordAPI.results.put(id, pair);
+        DiscordAPI.publish(id, "deletechannel:" + channelId);
         try {
             synchronized (pair) {
-                pair.wait(TeamSpeakAPI.TIMEOUT);
+                pair.wait(DiscordAPI.TIMEOUT);
             }
         } catch (Exception ignored) {
         }
@@ -89,27 +79,27 @@ public class TeamSpeakAPI {
     public static List<UUID> movePlayers(@Nonnull List<UUID> uuids, int channelId) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.UUID_LIST, new ArrayList<>());
         int id = generator++;
-        TeamSpeakAPI.results.put(id, pair);
+        DiscordAPI.results.put(id, pair);
         final String[] msg = {"move:" + channelId};
-        uuids.forEach(uuid -> msg[0] += ":" + uuid);
-        TeamSpeakAPI.publish(id, msg[0]);
+        uuids.forEach(uuid -> msg[0] += ":" + uuid.toString());
+        DiscordAPI.publish(id, msg[0]);
         try {
             synchronized (pair) {
-                pair.wait(TeamSpeakAPI.TIMEOUT);
+                pair.wait(DiscordAPI.TIMEOUT);
             }
         } catch (Exception ignored) {
         }
         return (List<UUID>) pair.getRight();
     }
 
-    public static boolean isLinked(@Nonnull UUID uuid) {
+    public static boolean isConnected(@Nonnull UUID player) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.BOOLEAN, false);
         int id = generator++;
-        TeamSpeakAPI.results.put(id, pair);
-        TeamSpeakAPI.publish(id, "linked:" + uuid);
+        DiscordAPI.results.put(id, pair);
+        DiscordAPI.publish(id, "isconnected:" + player.toString());
         try {
             synchronized (pair) {
-                pair.wait(TeamSpeakAPI.TIMEOUT);
+                pair.wait(DiscordAPI.TIMEOUT);
             }
         } catch (Exception ignored) {
         }
@@ -125,32 +115,34 @@ public class TeamSpeakAPI {
     private static class TeamSpeakConsumer implements IPacketsReceiver {
         @Override
         public void receive(String channel, String packet) {
-            String[] args = packet.split(":");
-            String[] prefix = args[0].split("/");
-            if (!prefix[0].equals(SamaGamesAPI.get().getServerName()))
+            String[] args = packet.split("/");
+            if (!args[0].equals(SamaGamesAPI.get().getServerName()))
                 return;
-            int id = Integer.parseInt(prefix[1]);
-            MutablePair<ResultType, Object> result = TeamSpeakAPI.results.get(id);
-            TeamSpeakAPI.results.remove(id);
+            int id = Integer.parseInt(args[1]);
+            MutablePair<ResultType, Object> result = DiscordAPI.results.get(id);
+            DiscordAPI.results.remove(id);
             boolean ok = args.length > 1 && !args[1].equals("ERROR");
-            if (!ok)
-                SamaGamesAPI.get().getPlugin().getLogger().severe("[TeamSpeakAPI] Error : " + (args.length > 2 ? args[2] : "Unknown") + "(packet = " + packet + ")");
-            else
+            if (!ok) {
+                SamaGamesAPI.get().getPlugin().getLogger().severe(args.length > 2 ? "[DiscordAPI] Error : " + args[2] + "(packet = " + packet + ")" : "[DiscordAPI] Error : " + "Unknown" + "(packet = " + packet + ")");
+            } else {
+                String[] content = args[2].split(":");
                 switch (result.getLeft()) {
                     case UUID_LIST:
-                        List<UUID> uuid = (List<UUID>) result.getRight();
-                        for (int i = 1; i < args.length; i++)
-                            uuid.add(UUID.fromString(args[i]));
+                        List<UUID> uuid = new ArrayList<>();
+                        for (int i = 1; i < content.length; i++)
+                            uuid.add(UUID.fromString(content[i]));
+                        result.setRight(uuid);
                         break;
                     case INTEGER:
-                        result.setRight(Integer.parseInt(args[1]));
+                        result.setRight(Integer.parseInt(content[0]));
                         break;
                     case BOOLEAN:
-                        result.setRight(args[1].equalsIgnoreCase("OK") || args[1].equalsIgnoreCase("true"));
+                        result.setRight(content[0].equalsIgnoreCase("OK") || content[0].equalsIgnoreCase("true"));
                         break;
                     default:
                         break;
                 }
+            }
             synchronized (result) {
                 result.notifyAll();
             }
