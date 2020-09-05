@@ -59,6 +59,8 @@ public class CustomNPC extends EntityPlayer {
 
     public void setLocation(Location loc) {
         setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        setYawPitch(loc.getYaw(), loc.getPitch());
+        setHeadRotation(loc.getYaw());
     }
 
     @Override

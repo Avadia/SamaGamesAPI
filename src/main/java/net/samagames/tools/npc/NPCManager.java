@@ -89,7 +89,6 @@ public class NPCManager implements Listener {
         CustomNPC npc = new CustomNPC(world, gameProfile);
 
         npc.setLocation(location);
-        npc.setHeadRotation(location.getYaw());
 
         Hologram hologram = null;
 
