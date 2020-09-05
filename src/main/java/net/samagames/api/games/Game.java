@@ -57,7 +57,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
     protected ICoherenceMachine coherenceMachine;
     protected Status status;
     protected long startTime = -1;
-    protected long discordChannelId;
+    protected long discordChannelID;
 
     /**
      * @param gameCodeName    The code name of the game, given by an administrator.
@@ -146,7 +146,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
         if (this.gameManager.getGameStatisticsHelper() == null)
             Bukkit.getLogger().severe("NO STATISTICS HELPER REGISTERED, PLAYERS WILL LOST THEIR STATISTICS DURING THIS GAME.");
 
-        discordChannelId = DiscordAPI.createChannel(SamaGamesAPI.get().getServerName());
+        discordChannelID = DiscordAPI.createChannel(SamaGamesAPI.get().getServerName());
     }
 
     /**
@@ -168,12 +168,12 @@ public class Game<GAMEPLAYER extends GamePlayer> {
             Titles.sendTitle(player, 20, 20 * 3, 20, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + this.gameName, ChatColor.AQUA + this.gameDescription);
             this.advertisingTask.addPlayer(player);
 
-            if (discordChannelId != -1L)
+            if (discordChannelID != -1L && SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).getDiscordID() != 0L)
                 Bukkit.getScheduler().runTaskAsynchronously(SamaGamesAPI.get().getPlugin(), () -> {
                     if (DiscordAPI.isConnected(player.getUniqueId())) {
                         List<UUID> playerUUID = new ArrayList<>();
                         playerUUID.add(player.getUniqueId());
-                        DiscordAPI.movePlayers(playerUUID, discordChannelId);
+                        DiscordAPI.movePlayers(playerUUID, discordChannelID);
                     }
                 });
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -451,8 +451,8 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
         Bukkit.getScheduler().runTaskLater(SamaGamesAPI.get().getPlugin(), () ->
         {
-            if (discordChannelId != -1L)
-                DiscordAPI.deleteChannel(discordChannelId);
+            if (discordChannelID != -1L)
+                DiscordAPI.deleteChannel(discordChannelID);
             SamaGamesAPI.get().getStatsManager().finish();
             Bukkit.shutdown();
         }, 20L * 15);

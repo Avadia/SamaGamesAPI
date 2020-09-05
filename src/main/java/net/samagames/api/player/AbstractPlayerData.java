@@ -314,4 +314,11 @@ public abstract class AbstractPlayerData {
      * @return boolean
      */
     public abstract boolean hasNickname();
+
+    /**
+     * Return discord id of the player
+     *
+     * @return boolean
+     */
+    public abstract long getDiscordID();
 }
