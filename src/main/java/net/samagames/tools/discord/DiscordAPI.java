@@ -35,6 +35,7 @@ public class DiscordAPI {
     }
 
     private static void publish(int id, String string) {
+        SamaGamesAPI.get().getPlugin().getLogger().info("[DiscordAPI] Sending packet " + id + " with content: " + string);
         Jedis jedis = null;
         try {
             jedis = SamaGamesAPI.get().getBungeeResource();
@@ -48,8 +49,8 @@ public class DiscordAPI {
         }
     }
 
-    public static int createChannel(@Nonnull String name) {
-        MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.INTEGER, -1);
+    public static long createChannel(@Nonnull String name) {
+        MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.LONG, -1L);
         int id = generator++;
         DiscordAPI.results.put(id, pair);
         DiscordAPI.publish(id, "createchannel:" + name);
@@ -59,10 +60,10 @@ public class DiscordAPI {
             }
         } catch (Exception ignored) {
         }
-        return (int) pair.getRight();
+        return (long) pair.getRight();
     }
 
-    public static boolean deleteChannel(int channelId) {
+    public static boolean deleteChannel(long channelId) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.BOOLEAN, false);
         int id = generator++;
         DiscordAPI.results.put(id, pair);
@@ -76,7 +77,7 @@ public class DiscordAPI {
         return (boolean) pair.getRight();
     }
 
-    public static List<UUID> movePlayers(@Nonnull List<UUID> uuids, int channelId) {
+    public static List<UUID> movePlayers(@Nonnull List<UUID> uuids, long channelId) {
         MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.UUID_LIST, new ArrayList<>());
         int id = generator++;
         DiscordAPI.results.put(id, pair);
@@ -109,7 +110,7 @@ public class DiscordAPI {
     private enum ResultType {
         UUID_LIST,
         BOOLEAN,
-        INTEGER
+        LONG
     }
 
     private static class TeamSpeakConsumer implements IPacketsReceiver {
@@ -119,6 +120,7 @@ public class DiscordAPI {
             if (!args[0].equals(SamaGamesAPI.get().getServerName()))
                 return;
             int id = Integer.parseInt(args[1]);
+            SamaGamesAPI.get().getPlugin().getLogger().info("[DiscordAPI] Received packet " + id + " with content: " + packet);
             MutablePair<ResultType, Object> result = DiscordAPI.results.get(id);
             DiscordAPI.results.remove(id);
             boolean ok = args.length > 1 && !args[1].equals("ERROR");
@@ -133,8 +135,8 @@ public class DiscordAPI {
                             uuid.add(UUID.fromString(content[i]));
                         result.setRight(uuid);
                         break;
-                    case INTEGER:
-                        result.setRight(Integer.parseInt(content[0]));
+                    case LONG:
+                        result.setRight(Long.parseLong(content[0]));
                         break;
                     case BOOLEAN:
                         result.setRight(content[0].equalsIgnoreCase("OK") || content[0].equalsIgnoreCase("true"));
