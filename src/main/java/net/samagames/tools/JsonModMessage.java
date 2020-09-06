@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 public class JsonModMessage {
     protected String sender;
     protected ModChannel modChannel;
-    protected ChatColor senderPrefix;
+    protected String senderPrefix;
     protected String message;
 
     /**
@@ -39,7 +39,7 @@ public class JsonModMessage {
     public JsonModMessage(String sender, ModChannel modChannel, ChatColor senderPrefix, String message) {
         this.sender = sender;
         this.modChannel = modChannel;
-        this.senderPrefix = senderPrefix;
+        this.senderPrefix = senderPrefix.name();
         this.message = message;
     }
 
@@ -126,7 +126,7 @@ public class JsonModMessage {
      * @return Prefix's color
      */
     public ChatColor getSenderPrefix() {
-        return this.senderPrefix;
+        return ChatColor.valueOf(this.senderPrefix);
     }
 
     /**
@@ -135,7 +135,7 @@ public class JsonModMessage {
      * @param senderPrefix Prefix's color
      */
     public void setSenderPrefix(ChatColor senderPrefix) {
-        this.senderPrefix = senderPrefix;
+        this.senderPrefix = senderPrefix.name();
     }
 
     /**

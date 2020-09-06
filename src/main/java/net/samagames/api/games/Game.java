@@ -454,7 +454,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
             if (discordChannelID != -1L)
                 DiscordAPI.deleteChannel(discordChannelID);
             SamaGamesAPI.get().getStatsManager().finish();
-            Bukkit.shutdown();
+            SamaGamesAPI.get().getBungeeResource().publish("shutdownChannel", SamaGamesAPI.get().getServerName());
         }, 20L * 15);
     }
 
