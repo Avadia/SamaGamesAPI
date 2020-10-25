@@ -16,9 +16,17 @@ repositories {
     mavenLocal()
     maven {
         url = "https://nexus.avadia.fr/repository/avadia-minecraft-release/"
+        credentials {
+            username avadiaUser
+            password avadiaPassword
+        }
     }
     maven {
         url = "https://nexus.avadia.fr/repository/avadia-minecraft-snapshot/"
+        credentials {
+            username avadiaUser
+            password avadiaPassword
+        }
     }
 }
 
