@@ -31,7 +31,7 @@ public class DiscordAPI {
     private static final Map<Integer, MutablePair<ResultType, Object>> results = new HashMap<>();
 
     static {
-        SamaGamesAPI.get().getPubSub().subscribe("discordbot.response", new TeamSpeakConsumer());
+        SamaGamesAPI.get().getPubSub().subscribe("discordbot.response", new DiscordConsumer());
     }
 
     private static void publish(int id, String string) {
@@ -161,7 +161,7 @@ public class DiscordAPI {
         LONG
     }
 
-    private static class TeamSpeakConsumer implements IPacketsReceiver {
+    private static class DiscordConsumer implements IPacketsReceiver {
         @Override
         public void receive(String channel, String packet) {
             String[] args = packet.split("/");
@@ -171,8 +171,7 @@ public class DiscordAPI {
             SamaGamesAPI.get().getPlugin().getLogger().info("[DiscordAPI] Received packet " + id + " with content: " + packet);
             MutablePair<ResultType, Object> result = DiscordAPI.results.get(id);
             DiscordAPI.results.remove(id);
-            boolean ok = args.length > 1 && !args[1].equals("ERROR");
-            if (!ok) {
+            if (args[1].equals("ERROR")) {
                 SamaGamesAPI.get().getPlugin().getLogger().severe(args.length > 2 ? "[DiscordAPI] Error : " + args[2] + "(packet = " + packet + ")" : "[DiscordAPI] Error : " + "Unknown" + "(packet = " + packet + ")");
             } else {
                 String[] content = args[2].split(":");
