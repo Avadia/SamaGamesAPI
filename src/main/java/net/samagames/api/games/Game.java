@@ -498,6 +498,15 @@ public class Game<GAMEPLAYER extends GamePlayer> {
     }
 
     /**
+     * Returns this game's discord channel ID.
+     *
+     * @return The discord channel ID.
+     */
+    public long getDiscordChannelID() {
+        return this.discordChannelID;
+    }
+
+    /**
      * Returns this game's code name.
      *
      * @return The code.
