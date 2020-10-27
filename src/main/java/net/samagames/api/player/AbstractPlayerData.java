@@ -316,6 +316,13 @@ public abstract class AbstractPlayerData {
     public abstract boolean hasNickname();
 
     /**
+     * Returns if the player is linked to discord.
+     *
+     * @return boolean
+     */
+    public abstract boolean isLinkedToDiscord();
+
+    /**
      * Return discord id of the player
      *
      * @return boolean

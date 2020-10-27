@@ -168,7 +168,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
             Titles.sendTitle(player, 20, 20 * 3, 20, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + this.gameName, ChatColor.AQUA + this.gameDescription);
             this.advertisingTask.addPlayer(player);
 
-            if (discordChannelID != -1L && SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).getDiscordID() != 0L)
+            if (hasDiscordChannel() && SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).isLinkedToDiscord())
                 Bukkit.getScheduler().runTaskAsynchronously(SamaGamesAPI.get().getPlugin(), () -> {
                     if (DiscordAPI.isConnected(player.getUniqueId())) {
                         List<UUID> playerUUID = new ArrayList<>();
@@ -451,7 +451,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
         Bukkit.getScheduler().runTaskLater(SamaGamesAPI.get().getPlugin(), () ->
         {
-            if (discordChannelID != -1L)
+            if (hasDiscordChannel())
                 DiscordAPI.deleteChannel(discordChannelID);
             SamaGamesAPI.get().getStatsManager().finish();
             SamaGamesAPI.get().getBungeeResource().publish("shutdownChannel", SamaGamesAPI.get().getServerName());
@@ -495,6 +495,15 @@ public class Game<GAMEPLAYER extends GamePlayer> {
 
         if (this.gamePlayers.containsKey(player.getUniqueId()))
             this.gamePlayers.get(player.getUniqueId()).setSpectator();
+    }
+
+    /**
+     * Returns if this game has a discord channel.
+     *
+     * @return boolean
+     */
+    public boolean hasDiscordChannel() {
+        return this.discordChannelID != -1L;
     }
 
     /**
