@@ -139,6 +139,22 @@ public class DiscordAPI {
         return (boolean) pair.getRight();
     }
 
+    public static List<UUID> kickPlayers(@Nonnull List<UUID> uuids) {
+        MutablePair<ResultType, Object> pair = MutablePair.of(ResultType.UUID_LIST, new ArrayList<>());
+        int id = generator++;
+        DiscordAPI.results.put(id, pair);
+        final String[] msg = {"kick"};
+        uuids.forEach(uuid -> msg[0] += ":" + uuid.toString());
+        DiscordAPI.publish(id, msg[0]);
+        try {
+            synchronized (pair) {
+                pair.wait(DiscordAPI.TIMEOUT);
+            }
+        } catch (Exception ignored) {
+        }
+        return (List<UUID>) pair.getRight();
+    }
+
     private enum ResultType {
         UUID_LIST,
         BOOLEAN,
