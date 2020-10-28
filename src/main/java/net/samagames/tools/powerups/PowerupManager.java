@@ -2,6 +2,7 @@ package net.samagames.tools.powerups;
 
 import fr.farmvivi.api.commons.Messages;
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.tools.Area;
 import net.samagames.tools.Reflection;
 import net.samagames.tools.Titles;
 import org.bukkit.ChatColor;
@@ -35,6 +36,7 @@ public class PowerupManager {
     private final Random random;
     private final List<Powerup> powerups;
     private final List<Location> locations;
+    private final List<Area> areas;
 
     private BukkitTask spawnTask;
     private int inverseFrequency;
@@ -47,6 +49,7 @@ public class PowerupManager {
 
         this.powerups = new ArrayList<>();
         this.locations = new ArrayList<>();
+        this.areas = new ArrayList<>();
 
         this.inverseFrequency = 750;
         this.despawnTime = 20;
@@ -73,6 +76,10 @@ public class PowerupManager {
         this.locations.add(location);
     }
 
+    public void registerArea(Area area) {
+        this.areas.add(area);
+    }
+
     public void setInverseFrequency(int inverseFrequency) {
         this.inverseFrequency = inverseFrequency;
     }
@@ -85,7 +92,14 @@ public class PowerupManager {
         if (this.locations.isEmpty())
             return;
 
-        Location location = this.locations.get(this.random.nextInt(this.locations.size()));
+        List<Location> temp = new ArrayList<>(this.locations);
+        for (Area area : areas) {
+            Location temp2 = area.getRandomLocationOnTopOfABlock();
+            if (temp2 != null)
+                temp.add(temp2.clone().add(0.5, 1, 0.5));
+        }
+
+        Location location = temp.get(this.random.nextInt(temp.size()));
 
         Powerup powerup = null;
         double randomIndex = this.random.nextDouble() * this.totalWeight;

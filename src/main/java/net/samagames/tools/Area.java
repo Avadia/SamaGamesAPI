@@ -201,6 +201,10 @@ public class Area {
             }
         }
 
-        return blocks.get(new Random().nextInt(blocks.size()));
+        if (!blocks.isEmpty()) {
+            return blocks.get(new Random().nextInt(blocks.size()));
+        } else {
+            return null;
+        }
     }
 }
