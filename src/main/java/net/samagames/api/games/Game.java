@@ -57,7 +57,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
     protected ICoherenceMachine coherenceMachine;
     protected Status status;
     protected long startTime = -1;
-    protected long discordChannelID;
+    protected long discordChannelID = -1L;
 
     /**
      * @param gameCodeName    The code name of the game, given by an administrator.
@@ -110,6 +110,20 @@ public class Game<GAMEPLAYER extends GamePlayer> {
         if (this.gameManager.isFreeMode())
             throw new UnsupportedOperationException("You can't use this method while using the free mode!");
 
+        Bukkit.getScheduler().runTaskAsynchronously(SamaGamesAPI.get().getPlugin(), () -> {
+            if (!hasDiscordChannel())
+                this.discordChannelID = DiscordAPI.createChannel(SamaGamesAPI.get().getServerName());
+            if (hasDiscordChannel()) {
+                for (GAMEPLAYER player : getInGamePlayers().values()) {
+                    if (player.isOnline()) {
+                        final List<UUID> playerUUID = new ArrayList<>();
+                        playerUUID.add(player.getPlayerIfOnline().getUniqueId());
+                        DiscordAPI.movePlayers(playerUUID, this.discordChannelID);
+                    }
+                }
+            }
+        });
+
         //Network hook don't touch
         this.gameManager.startTimer();
 
@@ -146,7 +160,10 @@ public class Game<GAMEPLAYER extends GamePlayer> {
         if (this.gameManager.getGameStatisticsHelper() == null)
             Bukkit.getLogger().severe("NO STATISTICS HELPER REGISTERED, PLAYERS WILL LOST THEIR STATISTICS DURING THIS GAME.");
 
-        discordChannelID = DiscordAPI.createChannel(SamaGamesAPI.get().getServerName());
+        Bukkit.getScheduler().runTaskAsynchronously(SamaGamesAPI.get().getPlugin(), () -> {
+            if (!hasDiscordChannel())
+                this.discordChannelID = DiscordAPI.createChannel(SamaGamesAPI.get().getServerName());
+        });
     }
 
     /**
@@ -171,9 +188,9 @@ public class Game<GAMEPLAYER extends GamePlayer> {
             if (hasDiscordChannel() && SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).isLinkedToDiscord())
                 Bukkit.getScheduler().runTaskAsynchronously(SamaGamesAPI.get().getPlugin(), () -> {
                     if (DiscordAPI.isConnected(player.getUniqueId())) {
-                        List<UUID> playerUUID = new ArrayList<>();
+                        final List<UUID> playerUUID = new ArrayList<>();
                         playerUUID.add(player.getUniqueId());
-                        DiscordAPI.movePlayers(playerUUID, discordChannelID);
+                        DiscordAPI.movePlayers(playerUUID, this.discordChannelID);
                     }
                 });
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -452,7 +469,7 @@ public class Game<GAMEPLAYER extends GamePlayer> {
         Bukkit.getScheduler().runTaskLater(SamaGamesAPI.get().getPlugin(), () ->
         {
             if (hasDiscordChannel())
-                DiscordAPI.deleteChannel(discordChannelID);
+                DiscordAPI.deleteChannel(this.discordChannelID);
             SamaGamesAPI.get().getStatsManager().finish();
             SamaGamesAPI.get().getBungeeResource().publish("shutdownChannel", SamaGamesAPI.get().getServerName());
         }, 20L * 15);
