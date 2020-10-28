@@ -2,7 +2,13 @@ package net.samagames.tools;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /*
  * This file is part of SamaGamesAPI.
@@ -175,5 +181,26 @@ public class Area {
         else if (loc.getY() > this.max.getY() + range || this.min.getY() - range > loc.getY())
             return false;
         else return !(loc.getZ() > this.max.getZ() + range) && !(this.min.getZ() - range > loc.getZ());
+    }
+
+    public Location getRandomLocationOnTopOfABlock() {
+        List<Location> blocks = new ArrayList<>();
+
+        for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+            for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                Location tempLocation = null;
+                for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
+                    Block block = min.getWorld().getBlockAt(x, y, z);
+                    if (!block.getType().equals(Material.AIR)) {
+                        tempLocation = block.getLocation();
+                    }
+                }
+                if (tempLocation != null && tempLocation.clone().add(0, 1, 0).getBlock().getType().equals(Material.AIR)) {
+                    blocks.add(tempLocation);
+                }
+            }
+        }
+
+        return blocks.get(new Random().nextInt(blocks.size()));
     }
 }
