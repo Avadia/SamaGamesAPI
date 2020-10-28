@@ -36,6 +36,7 @@ public class PowerupManager {
     private final Random random;
     private final List<Powerup> powerups;
     private final List<Location> locations;
+    private final List<Location> removedLocations;
     private final List<Area> areas;
 
     private BukkitTask spawnTask;
@@ -49,6 +50,7 @@ public class PowerupManager {
 
         this.powerups = new ArrayList<>();
         this.locations = new ArrayList<>();
+        this.removedLocations = new ArrayList<>();
         this.areas = new ArrayList<>();
 
         this.inverseFrequency = 750;
@@ -89,17 +91,20 @@ public class PowerupManager {
     }
 
     private void spawnRandomPowerup() {
-        if (this.locations.isEmpty())
+        if (this.locations.isEmpty() && this.areas.isEmpty())
             return;
 
-        List<Location> temp = new ArrayList<>(this.locations);
-        for (Area area : areas) {
-            Location temp2 = area.getRandomLocationOnTopOfABlock();
-            if (temp2 != null)
-                temp.add(temp2.clone().add(0.5, 1, 0.5));
-        }
+        List<Location> differentsLocations = new ArrayList<>();
+        if (!this.locations.isEmpty())
+            differentsLocations.addAll(this.locations);
+        if (!this.areas.isEmpty())
+            for (Area area : areas) {
+                Location location = area.getRandomLocationOnTopOfABlock();
+                if (location != null)
+                    differentsLocations.add(location.clone().add(0.5, 1, 0.5));
+            }
 
-        Location location = temp.get(this.random.nextInt(temp.size()));
+        Location location = differentsLocations.get(this.random.nextInt(differentsLocations.size()));
 
         Powerup powerup = null;
         double randomIndex = this.random.nextDouble() * this.totalWeight;
@@ -116,7 +121,8 @@ public class PowerupManager {
         if (powerup == null)
             throw new RuntimeException("Cannot find a powerup to spawn");
 
-        this.locations.remove(location);
+        if (this.locations.remove(location))
+            this.removedLocations.add(location);
 
         ActivePowerup activePowerup = powerup.spawn(location);
 
@@ -131,7 +137,8 @@ public class PowerupManager {
         {
             if (activePowerup.isAlive()) {
                 activePowerup.remove(false);
-                this.locations.add(location);
+                if (this.removedLocations.remove(location))
+                    this.locations.add(location);
             }
         }, this.despawnTime * 20L);
     }
