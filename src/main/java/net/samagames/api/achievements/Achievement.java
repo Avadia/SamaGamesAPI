@@ -39,15 +39,15 @@ import java.util.UUID;
 public class Achievement {
     private static final FireworkEffect FIREWORK_EFFECT;
 
+    static {
+        FIREWORK_EFFECT = FireworkEffect.builder().with(FireworkEffect.Type.STAR).withColor(Color.BLUE).withColor(Color.AQUA).withColor(Color.WHITE).build();
+    }
+
     protected final int id;
     protected final String displayName;
     protected final AchievementCategory parentCategory;
     protected final String[] description;
     protected Map<UUID, AchievementProgress> progress;
-
-    static {
-        FIREWORK_EFFECT = FireworkEffect.builder().with(FireworkEffect.Type.STAR).withColor(Color.BLUE).withColor(Color.AQUA).withColor(Color.WHITE).build();
-    }
 
     /**
      * Constructor

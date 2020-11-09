@@ -387,10 +387,6 @@ public enum ParticleEffect {
 
     private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<>();
     private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<>();
-    private final String name;
-    private final int id;
-    private final int requiredVersion;
-    private final List<ParticleProperty> properties;
 
     // Initialize map for quick name and id lookup
     static {
@@ -399,6 +395,11 @@ public enum ParticleEffect {
             ID_MAP.put(effect.id, effect);
         }
     }
+
+    private final String name;
+    private final int id;
+    private final int requiredVersion;
+    private final List<ParticleProperty> properties;
 
     /**
      * Construct a new particle effect

@@ -657,8 +657,6 @@ public class Reflection {
         BOOLEAN(boolean.class, Boolean.class);
 
         private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<>();
-        private final Class<?> primitive;
-        private final Class<?> reference;
 
         // Initialize map for quick class lookup
         static {
@@ -667,6 +665,9 @@ public class Reflection {
                 CLASS_MAP.put(type.reference, type);
             }
         }
+
+        private final Class<?> primitive;
+        private final Class<?> reference;
 
         /**
          * Construct a new data type
@@ -925,8 +926,6 @@ public class Reflection {
 
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private static final Map<String, PacketType> NAME_MAP = new HashMap<>();
-        private final String name;
-        private Class<?> packet;
 
         // Initialize map for quick name lookup
         static {
@@ -934,6 +933,9 @@ public class Reflection {
                 NAME_MAP.put(type.name, type);
             }
         }
+
+        private final String name;
+        private Class<?> packet;
 
         /**
          * Construct a new packet type

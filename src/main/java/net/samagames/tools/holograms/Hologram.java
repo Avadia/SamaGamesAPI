@@ -39,10 +39,10 @@ public class Hologram {
 
     private final HashMap<OfflinePlayer, Boolean> receivers;
     private final HashMap<Integer, EntityArmorStand> entities;
-    private List<String> lines;
-    private Location location;
     private final BukkitTask taskID;
     private final double rangeView = 60;
+    private List<String> lines;
+    private Location location;
     private boolean linesChanged;
 
     /**

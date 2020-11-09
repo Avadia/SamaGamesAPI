@@ -24,9 +24,9 @@ import java.lang.reflect.Field;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class GlowEffect extends EnchantmentWrapper {
-    private static Enchantment glow;
     private final static int ENCHANTMENT_ID = 254;
     private final static String ENCHANTMENT_NAME = "GlowEffect";
+    private static Enchantment glow;
 
     public GlowEffect(int id) {
         super(id);

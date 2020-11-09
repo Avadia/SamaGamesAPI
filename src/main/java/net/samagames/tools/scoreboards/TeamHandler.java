@@ -377,8 +377,8 @@ public class TeamHandler {
 
     public static class VTeam {
         private final String name;
-        private String realName = "";
         private final CopyOnWriteArrayList<String> players = new CopyOnWriteArrayList<>();
+        private String realName = "";
         private String prefix = ChatColor.GRAY + "";
         private String suffix = "";
         private boolean hideToOtherTeams = false;

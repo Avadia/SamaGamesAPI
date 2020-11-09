@@ -24,10 +24,10 @@ import org.bukkit.entity.Player;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class BeginTimer implements Runnable {
-    private int timeStart = 30;
     @SuppressWarnings("rawtypes")
     private final Game game;
     private final SamaGamesAPI api;
+    private int timeStart = 30;
     private int time;
     private boolean ready;
 

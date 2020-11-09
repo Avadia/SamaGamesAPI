@@ -78,37 +78,6 @@ public interface IGameManager {
     void stopTimer();
 
     /**
-     * Set the reconnect time for a player.
-     *
-     * <b>DISCLAIMER - TO ENABLE RECONNECT PLEASE USE THIS FUNCTION AND SET A TIME</b>
-     *
-     * @param minutes Time in minute
-     */
-    void setMaxReconnectTime(int minutes);
-
-    /**
-     * Disable automatic mechanisms of the game
-     *
-     * @param freeMode {@code true} if activated
-     */
-    void setFreeMode(boolean freeMode);
-
-    /**
-     * Enable the Minecraft 1.8 based PvP mechanics to bypass 1.9's
-     *
-     * @param legacyPvP {@code true} if activated
-     */
-    void setLegacyPvP(boolean legacyPvP);
-
-    /**
-     * Set an optional statistics helper to never forget the statistics
-     * to increase
-     *
-     * @param gameStatisticsHelper Statistics helper instance
-     */
-    void setGameStatisticsHelper(IGameStatisticsHelper gameStatisticsHelper);
-
-    /**
      * Get the registered game
      *
      * @return The registered game (null if none)
@@ -160,11 +129,28 @@ public interface IGameManager {
     IGameStatisticsHelper getGameStatisticsHelper();
 
     /**
+     * Set an optional statistics helper to never forget the statistics
+     * to increase
+     *
+     * @param gameStatisticsHelper Statistics helper instance
+     */
+    void setGameStatisticsHelper(IGameStatisticsHelper gameStatisticsHelper);
+
+    /**
      * Get the max reconnect time in minutes
      *
      * @return The time
      */
     int getMaxReconnectTime();
+
+    /**
+     * Set the reconnect time for a player.
+     *
+     * <b>DISCLAIMER - TO ENABLE RECONNECT PLEASE USE THIS FUNCTION AND SET A TIME</b>
+     *
+     * @param minutes Time in minute
+     */
+    void setMaxReconnectTime(int minutes);
 
     /**
      * Get the time of the game
@@ -189,12 +175,26 @@ public interface IGameManager {
     boolean isFreeMode();
 
     /**
+     * Disable automatic mechanisms of the game
+     *
+     * @param freeMode {@code true} if activated
+     */
+    void setFreeMode(boolean freeMode);
+
+    /**
      * Return if the Minecraft 1.8 based PvP mechanics are enabled
      * to bypass 1.9's
      *
      * @return True or False
      */
     boolean isLegacyPvP();
+
+    /**
+     * Enable the Minecraft 1.8 based PvP mechanics to bypass 1.9's
+     *
+     * @param legacyPvP {@code true} if activated
+     */
+    void setLegacyPvP(boolean legacyPvP);
 
     /**
      * Return if the game support the reconnect

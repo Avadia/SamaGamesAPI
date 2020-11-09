@@ -24,21 +24,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public interface ICoherenceMachine {
     /**
-     * Override the sub-title message when there is less
-     * than 5seconds remaining before the game starts.
-     *
-     * @param phrase Catch phrase
-     */
-    void setStartCountdownCatchPhrase(String phrase);
-
-    /**
-     * Override the game's prefix in chat messages.
-     *
-     * @param shortcut Shortcut
-     */
-    void setNameShortcut(String shortcut);
-
-    /**
      * Get the game tag
      *
      * @return Game tag
@@ -90,9 +75,24 @@ public interface ICoherenceMachine {
     String getStartCountdownCatchPhrase();
 
     /**
+     * Override the sub-title message when there is less
+     * than 5seconds remaining before the game starts.
+     *
+     * @param phrase Catch phrase
+     */
+    void setStartCountdownCatchPhrase(String phrase);
+
+    /**
      * Get the game's prefix in chat messages.
      *
      * @return Shortcut
      */
     String getNameShortcut();
+
+    /**
+     * Override the game's prefix in chat messages.
+     *
+     * @param shortcut Shortcut
+     */
+    void setNameShortcut(String shortcut);
 }

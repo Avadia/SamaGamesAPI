@@ -41,10 +41,8 @@ import java.util.UUID;
  * along with SamaGamesAPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class NPCManager implements Listener {
-    public SamaGamesAPI api;
-
     private final Map<CustomNPC, Hologram> entities = new HashMap<>();
-
+    public SamaGamesAPI api;
     private CallBack<CustomNPC> scoreBoardRegister;
 
     public NPCManager(SamaGamesAPI api) {

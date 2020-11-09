@@ -21,8 +21,8 @@ import java.time.Instant;
  */
 public class AchievementProgress {
     private final long progressId;
-    private int progress;
     private final Timestamp startTime;
+    private int progress;
     private Timestamp unlockTime;
     private boolean changed;
 

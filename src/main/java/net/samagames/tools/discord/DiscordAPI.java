@@ -27,8 +27,8 @@ import java.util.logging.Level;
  */
 public class DiscordAPI {
     private static final int TIMEOUT = 15000;
-    private static int generator = 0;
     private static final Map<Integer, MutablePair<ResultType, Object>> results = new HashMap<>();
+    private static int generator = 0;
 
     static {
         SamaGamesAPI.get().getPubSub().subscribe("discordbot.response", new DiscordConsumer());

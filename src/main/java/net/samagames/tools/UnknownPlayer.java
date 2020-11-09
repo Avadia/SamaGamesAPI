@@ -54,24 +54,6 @@ public class UnknownPlayer {
     }
 
     /**
-     * Set player's UUID
-     *
-     * @param playerId Player's UUID
-     */
-    public void setPlayerId(UUID playerId) {
-        this.playerId = playerId;
-    }
-
-    /**
-     * Set player's username
-     *
-     * @param playerName Player's username
-     */
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    /**
      * Get player's UUID
      *
      * @return Player's UUID
@@ -81,12 +63,30 @@ public class UnknownPlayer {
     }
 
     /**
+     * Set player's UUID
+     *
+     * @param playerId Player's UUID
+     */
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+    }
+
+    /**
      * Get player's username
      *
      * @return Player's username
      */
     public String getPlayerName() {
         return this.playerName;
+    }
+
+    /**
+     * Set player's username
+     *
+     * @param playerName Player's username
+     */
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
     @Override
