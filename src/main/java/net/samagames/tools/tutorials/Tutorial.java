@@ -243,7 +243,7 @@ public class Tutorial implements Listener {
      * @param id The player's UUID.
      * @return {@code true} if the player is watching this tutorial.
      */
-    boolean isWatchingTutorial(UUID id) {
+    public boolean isWatchingTutorial(UUID id) {
         return viewers.containsKey(id);
     }
 
